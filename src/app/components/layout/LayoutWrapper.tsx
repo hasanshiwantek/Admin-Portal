@@ -22,13 +22,13 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
         <div className="flex flex-1 overflow-hidden">
           {/* Sidebar */}
            <aside
-          className={`${isCollapsed ? "w-20" : "w-[26.8rem]"} shrink-0 overflow-y-auto border-r bg-white transition-all duration-300`}
+          className={`${isCollapsed ? "w-20" : "w-[26rem]"} shrink-0 overflow-y-auto border-r bg-white transition-all duration-300`}
         >
           <SideBar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         </aside>
  
           {/* Main content with scroll */}
-          <main className="flex-1 pl-[5rem] overflow-y-auto bg-[var(--store-bg)] mt-20 ">
+          <main className="flex-1 pl-[2rem] overflow-y-auto bg-[var(--store-bg)] mt-20 ">
             {children}
           </main>
         </div>
