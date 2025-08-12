@@ -6,7 +6,7 @@ import { LogOut } from "lucide-react";
 import Image from "next/image";
 const Header: React.FC = () => {
   return (
-    <header className="w-full fixed h-28 px-4 z-40  bg-white">
+    <header className="w-full fixed h-28 px-4 z-40  bg-white shadow-sm">
       {/* HEADER */}
 
       <div className="flex justify-between items-center gap-10 p-4 mx-10">
@@ -23,8 +23,8 @@ const Header: React.FC = () => {
         <div>
           <div className="flex justify-start items-center gap-5">
             <div className="flex justify-start items-center gap-2">
-              <div className=" rounded-full bg-green-600 ">
-                <span className="!text-white !text-3xl p-4">J</span>
+              <div className=" rounded-full bg-green-700 ">
+                <span className="!text-white !text-3xl p-4 !font-light">J</span>
               </div>
               <div>
                 <h2 className="!font-bold">John Doe</h2>
