@@ -61,7 +61,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center bg-black">
-      <h1 className="!text-5xl mb-2 !text-white">Login to your store</h1>
+      <h1 className="!text-5xl mb-2 !text-white">Login to your portal</h1>
 
       <form
         onSubmit={handleLogin}
@@ -108,15 +108,10 @@ export default function LoginPage() {
           </Button>
 
           <div className="flex justify-between text-base text-gray-100 mt-2 whitespace-nowrap">
-            <a href="#" className="hover:underline !text-xl">
-              Log in with SSO
-            </a>
+    
             <div className="space-x-3 ml-40">
               <a href="#" className="hover:underline !text-xl">
                 Forgot?
-              </a>
-              <a href="/register" className="hover:underline !text-xl">
-                Sign up
               </a>
             </div>
           </div>
