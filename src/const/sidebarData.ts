@@ -1,5 +1,12 @@
-import { Home, ShoppingCart, Users, Store, LineChart, Gift, Settings, AppWindow, Layers, Banknote, Megaphone } from "lucide-react";
-
+// import { Home, ShoppingCart, Users, Store, LineChart, Gift, Settings, AppWindow, Layers, Banknote, Megaphone } from "lucide-react";
+import {
+  Home,
+  MessageSquareText,
+  IdCard,       // or SquareUser
+  Users,
+  User,
+  BarChart3,
+} from "lucide-react";
 export const sidebarData = [
   {
     title: "Home",
@@ -8,14 +15,14 @@ export const sidebarData = [
   },
   {
     title: "Administrative Functions",
-    icon: ShoppingCart,
+    icon:  MessageSquareText,
     children: [
       { title: "Functions to explore", url: "/manage/orders" },
     ],
   },
   {
     title: "Info for Leaders",
-    icon: Gift,
+    icon:IdCard,
     children: [
      
     ],
@@ -29,10 +36,10 @@ export const sidebarData = [
   },
   {
     title: "View Wellers by day",
-    icon: Store,
+    icon:   User,
     children: [
      
     ],
   },
-  { title: "Weekly Reports", icon: Megaphone, url: "/marketing" },
+  { title: "Weekly Reports", icon: BarChart3, url: "/marketing" },
 ];

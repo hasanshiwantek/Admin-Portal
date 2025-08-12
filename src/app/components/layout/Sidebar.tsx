@@ -16,7 +16,12 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
-import { ChevronDown, Menu as MenuIcon, ChevronRight, ChevronLeft } from "lucide-react";
+import {
+  ChevronDown,
+  Menu as MenuIcon,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
 import { sidebarData } from "@/const/sidebarData";
 import {
   Tooltip,
@@ -30,13 +35,16 @@ interface SideBarProps {
   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const SideBar: React.FC<SideBarProps> = ({ isCollapsed, setIsCollapsed }) => {
+export const SideBar: React.FC<SideBarProps> = ({
+  isCollapsed,
+  setIsCollapsed,
+}) => {
   const pathname = usePathname();
 
   return (
     <div
-      className={`shrink-0 h-auto z-20 fixed top-29 max-h-full  overflow-hidden bg-white text-gray-700  custom-scroll transition-all duration-300
-        ${isCollapsed ? "w-[10rem] overflow-hidden" : "w-[30rem]"}`}
+      className={`shrink-0 h-auto z-20 fixed top-29 max-h-full  overflow-hidden bg-white text-gray-700 shadow-lg  custom-scroll transition-all duration-300
+        ${isCollapsed ? "w-[7rem] overflow-hidden" : "w-[26rem]"}`}
     >
       <SidebarProvider>
         {/* <div className="flex justify-end p-2 border-b ">
@@ -48,9 +56,16 @@ export const SideBar: React.FC<SideBarProps> = ({ isCollapsed, setIsCollapsed })
           </button>
         </div> */}
 
-        <div className="absolute right-[-8px] top-1/2 -translate-y-1/2 bg-gray-200 rounded-full shadow p-2">
-          <button onClick={() => setIsCollapsed(!isCollapsed)}>
-            {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
+        <div
+          className="absolute right-[-10px] top-1/3 z-40 -translate-y-1/2 bg-gray-200/50 rounded-full shadow-lg p-2"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <button>
+            {isCollapsed ? (
+              <ChevronRight className="h-6 w-6" />
+            ) : (
+              <ChevronLeft className="h-6 w-6" />
+            )}
           </button>
         </div>
 
@@ -62,10 +77,12 @@ export const SideBar: React.FC<SideBarProps> = ({ isCollapsed, setIsCollapsed })
                   <TooltipProvider>
                     <Tooltip delayDuration={100}>
                       <TooltipTrigger asChild>
-                        <CollapsibleTrigger asChild  >
+                        <CollapsibleTrigger asChild>
                           <SidebarMenuButton
                             className={`group w-full flex items-center p-8 cursor-pointer text-xl my-5  whitespace-nowrap ${
-                              pathname === item.url ? "bg-[#008696] text-white" : ""
+                              pathname === item.url
+                                ? "bg-[#008696] text-white"
+                                : ""
                             }`}
                           >
                             {item.icon && (
@@ -81,7 +98,9 @@ export const SideBar: React.FC<SideBarProps> = ({ isCollapsed, setIsCollapsed })
                         </CollapsibleTrigger>
                       </TooltipTrigger>
                       {isCollapsed && (
-                        <TooltipContent side="right">{item.title}</TooltipContent>
+                        <TooltipContent side="right">
+                          {item.title}
+                        </TooltipContent>
                       )}
                     </Tooltip>
                   </TooltipProvider>
