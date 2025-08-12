@@ -10,17 +10,17 @@ const UsersBreakdown: React.FC<Props> = ({ active = 1830, inactive = 600 }) => {
   const activePct = total ? Math.round((active / total) * 100) : 0;
 
   // Colors chosen to match the SS (teal + pink)
-  const teal = "#0ea5a6";   // active
+  const teal = "#008696";   // active
   const pink = "#f9a8d4";   // inactive
 
   return (
-    <div className="w-[35%] rounded-md bg-white p-5 shadow-sm ring-1 ring-gray-100">
+    <div className="w-[33%] rounded-md bg-white p-5 shadow-sm ring-1 ring-gray-100">
       <h2 className="text-lg font-semibold text-gray-800">Users breakdown</h2>
 
       {/* Donut */}
       <div className="mt-4 flex justify-center">
         <div
-          className="relative h-96 w-96 rounded-full"
+          className="relative h-92 w-92 rounded-full"
           style={{
             background: `conic-gradient(${teal} 0 ${activePct}%, ${pink} ${activePct}% 100%)`,
           }}
