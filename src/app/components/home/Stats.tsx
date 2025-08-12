@@ -8,7 +8,9 @@ const numberFmt = (n?: number) =>
   typeof n === "number" ? new Intl.NumberFormat().format(n) : "0";
 
 const Stats = () => {
-  const { statistics, loading, error } = useAppSelector((state: any) => state.home);
+  const { statistics, loading, error } = useAppSelector(
+    (state: any) => state.home
+  );
   const data = statistics?.data;
   const dispatch = useAppDispatch();
 
@@ -17,12 +19,25 @@ const Stats = () => {
   }, [dispatch]);
 
   const stats = [
-    { label: "Total Prayer Groups", value: numberFmt(data?.totalOrders), icon: Users },
-    { label: "Total Wellers", value: numberFmt(data?.totalCustomers), icon: User },
-    { label: "Total Group Leaders", value: numberFmt(data?.totalProducts), icon: User2 },
+    {
+      label: "Total Prayer Groups",
+      value: numberFmt(data?.totalOrders),
+      icon: Users,
+    },
+    {
+      label: "Total Wellers",
+      value: numberFmt(data?.totalCustomers),
+      icon: User,
+    },
+    {
+      label: "Total Group Leaders",
+      value: numberFmt(data?.totalProducts),
+      icon: User2,
+    },
   ];
 
-  if (error) return <div className="px-4 text-red-600">Failed to load stats.</div>;
+  if (error)
+    return <div className="px-4 text-red-600">Failed to load stats.</div>;
 
   return (
     <div className="mt-5">
@@ -30,13 +45,13 @@ const Stats = () => {
         {stats.map(({ label, value, icon: Icon }, idx) => (
           <div
             key={idx}
-            className="rounded-lg bg-white shadow-sm ring-1 ring-gray-100 p-10 h-40"
+            className="rounded-md bg-white shadow-sm ring-1 ring-gray-100 p-10 h-45"
           >
             <div className="flex items-start justify-between">
               <div className="text-xl text-gray-500">{label}</div>
-              <Icon className="h-8 w-8 text-gray-600"  />
+              <Icon className="h-8 w-8 text-gray-400 fill-gray-400 stroke-gray-400" />
             </div>
-            <div className="mt-2 text-2xl font-extrabold text-gray-800 tracking-tight">
+            <div className="mt-2 text-3xl font-extrabold text-gray-800 tracking-tight">
               {value}
             </div>
           </div>
