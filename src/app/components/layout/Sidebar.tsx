@@ -21,7 +21,7 @@ export const SideBar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="  shrink-0 h-auto  z-20 fixed top-28 w-[26.7rem]  max-h-full overflow-y-auto overflow-x-hidden  bg-[rgb(3,16,51)] text-white border-t-2 border-[#2d3748] custom-scroll">
+    <div className="  shrink-0 h-auto  z-20 fixed top-27 w-[26.7rem]  max-h-full overflow-y-auto overflow-x-hidden  bg-white text-gray-600 border-t-2 border-[#2d3748] custom-scroll">
       <SidebarProvider>
         <SidebarMenu>
           {sidebarData.map((item) =>
@@ -42,7 +42,9 @@ export const SideBar = () => {
                           <Link
                             href={child.url}
                             className={`!text-[13px] !leading-8 cursor-pointer px-4 py-2 rounded-md block ${
-                              pathname === child.url ? "bg-[#24345c]" : ""
+                              pathname === child.url
+                                ? "bg-[#008696] text-white"
+                                : ""
                             }`}
                           >
                             {child.title}
@@ -58,7 +60,7 @@ export const SideBar = () => {
                 <Link href={item.url || "#"} className="block">
                   <SidebarMenuButton
                     className={`p-8 cursor-pointer text-xl rounded-md ${
-                      pathname === item.url ? "bg-[#24345c]" : ""
+                      pathname === item.url ? "bg-[#008696] text-white" : ""
                     }`}
                   >
                     {item.icon && <item.icon className="mr-2 !h-8 !w-8 " />}

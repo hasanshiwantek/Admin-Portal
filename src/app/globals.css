@@ -48,7 +48,7 @@
   --font-color: #323232;
   --border-color: #f2f2f2;
   --header-bg: rgb(3, 16, 51);
-  --store-bg:#f6f7f9;
+  --store-bg: #f6f7f9;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -106,18 +106,17 @@ html {
 html,
 body {
   height: 100%;
-  overflow: hidden; 
+  overflow: hidden;
   scroll-behavior: smooth;
-
 }
 
 /* Tailwind Typography System */
 h1 {
-  @apply text-2xl font-medium text-[#34313f]; /* 2.5rem */
+  @apply text-3xl font-medium text-[#34313f]; /* 2.5rem */
 }
 
 h2 {
-  @apply text-xl font-medium text-[#303540]; /* 1.5rem */
+  @apply text-2xl font-bold text-[#303540]; /* 1.5rem */
 }
 
 h3 {
@@ -131,7 +130,7 @@ li {
 }
 
 span {
-  @apply text-lg font-bold leading-relaxed tracking-wide text-[#5e637a];
+  @apply text-lg font-medium leading-relaxed tracking-wide text-[#5e637a];
 }
 
 p {
@@ -145,12 +144,12 @@ a {
 
 /* Buttons (Optional Custom Tailwind Styling) */
 
-button{
+button {
   cursor: pointer;
 }
 
 .btn-outline-primary {
-  @apply text-[#2c83ec] border border-[#2c83ec] font-medium rounded px-4 py-[8px] text-xl transition-all my-1 duration-200 cursor-pointer;
+  @apply text-[#008696] border border-[#008696] font-medium rounded px-4 py-[8px] text-xl transition-all my-1 duration-200 cursor-pointer;
   background-color: transparent;
 }
 
@@ -158,25 +157,20 @@ button{
   @apply bg-[#f1f8fe];
 }
 
-
 .btn-primary {
-  @apply text-white border border-[#2c83ec]  font-medium rounded px-4 py-[6px] text-xl transition-all my-1 duration-200 cursor-pointer;
-  background-color:#2c83ec ;
+  @apply text-white border border-[#008696]  font-medium rounded px-4 py-[6px] text-xl transition-all my-1 duration-200 cursor-pointer;
+  background-color: #008696;
 }
 
 .btn-primary:hover {
-  @apply border-[#418ce7] bg-white text-[#2c83ec];
+  @apply border-[#008696] bg-white text-[#008696];
 }
-
-
-
 
 /* Input & Text */
 input {
   font-size: 1.1rem;
   font-weight: 700;
 }
-
 
 /* Image Reset */
 img {
