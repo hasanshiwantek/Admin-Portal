@@ -16,10 +16,12 @@ import OrderTable from "./components/home/OrderTable";
 import UsersBreakdown from "./components/home/UsersBreakdown";
 // import PrayersGroup from "./PrayersGroup";
 import PrayersGroup from "./components/home/PrayersGroup";
+import LayoutWrapper from "./components/layout/LayoutWrapper";
 
 const Home = () => {
   return (
     <>
+    <LayoutWrapper>
       <div className=" p-10  ">
         <div>
           <Stats />
@@ -33,6 +35,7 @@ const Home = () => {
         {/* <StorePerformanceChart /> */}
         {/* <OrderTable/> */}
       </div>
+      </LayoutWrapper>
     </>
   );
 };
