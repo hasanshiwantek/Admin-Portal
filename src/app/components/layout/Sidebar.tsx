@@ -35,8 +35,8 @@ export const SideBar: React.FC<SideBarProps> = ({ isCollapsed, setIsCollapsed })
 
   return (
     <div
-      className={`shrink-0 h-auto z-20 fixed top-27 max-h-full overflow-y-auto overflow-x-hidden bg-white text-gray-600 border-t-2 border-[#2d3748] custom-scroll transition-all duration-300
-        ${isCollapsed ? "w-[10rem] overflow-hidden" : "w-[26.7rem]"}`}
+      className={`shrink-0 h-auto z-20 fixed top-29 max-h-full  overflow-hidden bg-white text-gray-700  custom-scroll transition-all duration-300
+        ${isCollapsed ? "w-[10rem] overflow-hidden" : "w-[30rem]"}`}
     >
       <SidebarProvider>
         {/* Toggle button */}
@@ -45,21 +45,21 @@ export const SideBar: React.FC<SideBarProps> = ({ isCollapsed, setIsCollapsed })
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="p-2 rounded hover:bg-gray-100"
           >
-            <MenuIcon className="h-5 w-5" />
+            <MenuIcon className="h-6 w-6" />
           </button>
         </div>
 
         <SidebarMenu className="w-full">
           {sidebarData.map((item) =>
             item.children ? (
-              <Collapsible key={item.title} className="group/collapsible">
+              <Collapsible key={item.title} className="group/collapsible ">
                 <SidebarMenuItem>
                   <TooltipProvider>
                     <Tooltip delayDuration={100}>
                       <TooltipTrigger asChild>
-                        <CollapsibleTrigger asChild>
+                        <CollapsibleTrigger asChild  >
                           <SidebarMenuButton
-                            className={`group w-full flex items-center p-8 cursor-pointer text-xl ${
+                            className={`group w-full flex items-center p-8 cursor-pointer text-xl my-5  whitespace-nowrap ${
                               pathname === item.url ? "bg-[#008696] text-white" : ""
                             }`}
                           >
