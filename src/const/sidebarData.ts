@@ -7,7 +7,7 @@ export const sidebarData = [
     icon: Home,
   },
   {
-    title: "Orders",
+    title: "Administrative Functions",
     icon: ShoppingCart,
     children: [
       { title: "All Orders", url: "/manage/orders" },
@@ -22,7 +22,7 @@ export const sidebarData = [
     ],
   },
   {
-    title: "Products",
+    title: "Info for Leaders",
     icon: Gift,
     children: [
       { title: "All Products", url: "/manage/products" },
@@ -41,7 +41,7 @@ export const sidebarData = [
     ],
   },
   {
-    title: "Customers",
+    title: "Prayers groups",
     icon: Users,
     children: [
       { title: "All Customers", url: "/manage/customers" },
@@ -53,7 +53,7 @@ export const sidebarData = [
     ],
   },
   {
-    title: "Storefront",
+    title: "View Wellers by day",
     icon: Store,
     children: [
       { title: "Themes", url: "/storefront/themes" },
@@ -67,10 +67,5 @@ export const sidebarData = [
       { title: "Image Manager", url: "/storefront/images" },
     ],
   },
-  { title: "Marketing", icon: Megaphone, url: "/marketing" },
-  { title: "Analytics", icon: LineChart, url: "/analytics" },
-  { title: "Apps", icon: AppWindow, url: "/apps" },
-  { title: "Channels", icon: Layers, url: "/channels" },
-  { title: "Financing", icon: Banknote, url: "/financing" },
-  { title: "Settings", icon: Settings, url: "/settings" },
+  { title: "Weekly Reports", icon: Megaphone, url: "/marketing" },
 ];
