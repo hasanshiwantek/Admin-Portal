@@ -16,7 +16,7 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
-import { ChevronDown, Menu as MenuIcon } from "lucide-react";
+import { ChevronDown, Menu as MenuIcon, ChevronRight, ChevronLeft } from "lucide-react";
 import { sidebarData } from "@/const/sidebarData";
 import {
   Tooltip,
@@ -39,15 +39,21 @@ export const SideBar: React.FC<SideBarProps> = ({ isCollapsed, setIsCollapsed })
         ${isCollapsed ? "w-[10rem] overflow-hidden" : "w-[30rem]"}`}
     >
       <SidebarProvider>
-        {/* Toggle button */}
-        <div className="flex justify-end p-2 border-b bg-white">
+        {/* <div className="flex justify-end p-2 border-b ">
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 rounded hover:bg-gray-100"
+            className="p-2 rounded "
           >
             <MenuIcon className="h-6 w-6" />
           </button>
-        </div>
+        </div> */}
+
+        <div className="absolute right-[-8px] top-1/2 -translate-y-1/2 bg-white rounded-full shadow p-2">
+  <button onClick={() => setIsCollapsed(!isCollapsed)}>
+    {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
+  </button>
+</div>
+
 
         <SidebarMenu className="w-full">
           {sidebarData.map((item) =>
