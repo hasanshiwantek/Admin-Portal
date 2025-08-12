@@ -2,56 +2,50 @@
 import React, { useEffect } from "react";
 import { fetchStoreStatistics } from "@/redux/slices/homeSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useReduxHooks";
-import Link from "next/link";
-const Stats = () => {
-  const { statistics, loading, error } = useAppSelector(
-    (state: any) => state.home
-  );
-  const data=statistics?.data
-  const dispatch = useAppDispatch();
-  console.log("Stats Data from frontend: ", data);
+import { Users, User, User2 } from "lucide-react";
 
-  const stats = [
-    { label: "Orders", value: data?.totalOrders, link: "/manage/orders" },
-    {
-      label: "Customers",
-      value: data?.totalCustomers,
-      link: "/manage/customers",
-    },
-    { label: "Products", value: data?.totalProducts, link: "/manage/products" },
-    {
-      label: "Categories",
-      value: data?.totalCategories,
-      link: "/manage/categories",
-    },
-  ];
+const numberFmt = (n?: number) =>
+  typeof n === "number" ? new Intl.NumberFormat().format(n) : "0";
+
+const Stats = () => {
+  const { statistics, loading, error } = useAppSelector((state: any) => state.home);
+  const data = statistics?.data;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchStoreStatistics());
   }, [dispatch]);
 
+  const stats = [
+    { label: "Total Prayer Groups", value: numberFmt(data?.totalOrders), icon: Users },
+    { label: "Total Wellers", value: numberFmt(data?.totalCustomers), icon: User },
+    { label: "Total Group Leaders", value: numberFmt(data?.totalProducts), icon: User2 },
+  ];
+
+  if (error) return <div className="px-4 text-red-600">Failed to load stats.</div>;
+
   return (
-    <div className="bg-[#f7f8fa]  rounded-md">
-      <h1 className=" my-5">Store statistics</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border rounded bg-white overflow-hidden">
-        {stats.map((item, index) => (
+    <div className="mt-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {stats.map(({ label, value, icon: Icon }, idx) => (
           <div
-            key={index}
-            className={`group py-6 px-4 text-center hover:bg-[#f1f8fe] cursor-pointer ${
-              index < stats.length - 1 ? "border-r" : ""
-            }`}
+            key={idx}
+            className="rounded-lg bg-white shadow-sm ring-1 ring-gray-100 p-10 h-40"
           >
-            <Link href={item.link}>
-              <div className="text-[2rem] font-light text-gray-600 group-hover:text-[#4b71fc]">
-                {item.value}
-              </div>
-              <div className="text-lg text-gray-600 mt-1 group-hover:text-[#4b71fc]">
-                {item.label}
-              </div>
-            </Link>
+            <div className="flex items-start justify-between">
+              <div className="text-xl text-gray-500">{label}</div>
+              <Icon className="h-8 w-8 text-gray-600"  />
+            </div>
+            <div className="mt-2 text-2xl font-extrabold text-gray-800 tracking-tight">
+              {value}
+            </div>
           </div>
         ))}
       </div>
+
+      {loading && (
+        <div className="mt-3 text-sm text-gray-500">Loading statistics…</div>
+      )}
     </div>
   );
 };
