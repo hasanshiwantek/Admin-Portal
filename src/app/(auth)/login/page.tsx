@@ -96,13 +96,13 @@ export default function LoginPage() {
             >
               {formData.showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
-          </div> 
+          </div>
           <Button
             type="submit"
             variant="default"
             size="xxl"
             disabled={loading}
-            className="w-[30rem]  cursor-pointer my-5  bg-blue-600  rounded-lg font-medium !text-2xl focus-within:ring-blue-200 focus-within:border-blue-200 border border-[#2c2c2c]  transition hover:border-blue-200 hover:bg-[#3A426E] "
+            className="w-[30rem] cursor-pointer my-5  bg-blue-600  rounded-lg font-medium !text-2xl focus-within:ring-blue-200 focus-within:border-blue-200 border border-[#2c2c2c]  transition hover:border-blue-200 hover:bg-[#3A426E] "
           >
             {loading ? "Logging in..." : "Log In"}
           </Button>
