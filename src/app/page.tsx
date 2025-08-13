@@ -7,7 +7,6 @@
 
 import React from "react";
 // import SetupProgress from "./SetupProgress";
-import SetupProgress from "./components/home/SetupProgress";
 // import Stats from "./Stats";
 import Stats from "./components/home/Stats";
 // import OrderTable from "./OrderTable";
