@@ -122,7 +122,7 @@ const rows = [
 export default function Page() {
   const [view, setView] = useState<"table" | "columns">("table");
   const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState("50");
+  const [perPage, setPerPage] = useState("20");
   const totalPages = 10;
   return (
     <div className="p-6 space-y-8 shadow-sm rounded-md bg-white ">

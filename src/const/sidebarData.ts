@@ -31,7 +31,10 @@ export const sidebarData = [
   {
     title: "View Wellers by day",
     icon: User,
-    children: [{ title: "View Wellers", url: "/wellers" }],
+    children: [
+      { title: "View Wellers", url: "/wellers" },
+      { title: "Screen name", url: "/screen-name" },
+    ],
   },
   { title: "Weekly Reports", icon: BarChart3, url: "/marketing" },
 ];
