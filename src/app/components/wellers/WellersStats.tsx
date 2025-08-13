@@ -1,0 +1,90 @@
+// app/components/WellersStats.tsx
+"use client";
+
+import * as React from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+type Pill = {
+  label: string;
+  note?: string;
+  variant?: "default" | "bold" | "yellow";
+  dot?: "blue" | "darkBlue" | "pink";
+};
+
+const PILLS: Pill[] = [
+  { label: "BLUE", note: "New This Session", dot: "blue" },
+  { label: "DARK BLUE", note: "First Time Weller", dot: "darkBlue" },
+  { label: "BOLD", note: "PG Leader", variant: "bold" },
+  { label: "PINK", note: "Backup PG Leade", dot: "pink" },
+  { label: "YELLOW BACKGROUND", note: "Has Notes", variant: "yellow" },
+  { label: "Bible Study Teacher" },
+];
+
+export default function WellersStats() {
+  return (
+    <section className="rounded-md bg-white p-5 shadow-sm w-[50%]">
+      {/* Header */}
+      <div className="flex flex-col space-y-4">
+      <h2 className="">
+        Total Active All Days:405 | DD: | TD:
+      </h2>
+      <span >Total Dropped:211, of which 108 were new.</span>
+      </div>
+
+      {/* Legend pills */}
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {PILLS.map((p, i) => (
+          <div
+            key={i}
+            className={cn(
+              "flex items-center gap-2 rounded-md border px-3 py-2 text-sm",
+              "bg-slate-100 border-slate-200 text-slate-700",
+              p.variant === "yellow" &&
+                "bg-yellow-100 border-yellow-200 text-slate-700",
+              p.variant === "bold" && "font-semibold"
+            )}
+          >
+            {/* Colored dot (if any) */}
+            {p.dot && (
+              <span
+                className={cn(
+                  "inline-block h-3 w-3 rounded-full",
+                  p.dot === "blue" && "bg-blue-500",
+                  p.dot === "darkBlue" && "bg-blue-800",
+                  p.dot === "pink" && "bg-pink-500"
+                )}
+              />
+            )}
+
+            {/* Label and optional note */}
+            <span className="whitespace-nowrap">
+              {p.label}
+              {p.variant === "bold" && ":"}
+            </span>
+            {p.note && (
+              <span
+                className={cn(
+                  "text-slate-500",
+                  p.variant === "bold" && "font-normal"
+                )}
+              >
+                – {p.note}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <div className="mt-5">
+        <Button
+          variant="outline"
+          className="h-11 !rounded-full !p-6 btn-outline-primary"
+        >
+          See my pg only
+        </Button>
+      </div>
+    </section>
+  );
+}
