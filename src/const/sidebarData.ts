@@ -34,6 +34,8 @@ export const sidebarData = [
     children: [
       { title: "View Wellers", url: "/wellers" },
       { title: "Screen name", url: "/screen-name" },
+      { title: "WAM Backup", url: "/wam-backup" },
+
     ],
   },
   { title: "Weekly Reports", icon: BarChart3, url: "/marketing" },
