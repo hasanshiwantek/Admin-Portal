@@ -2,7 +2,7 @@
 import {
   Home,
   MessageSquareText,
-  IdCard,       // or SquareUser
+  IdCard, // or SquareUser
   Users,
   User,
   BarChart3,
@@ -15,31 +15,23 @@ export const sidebarData = [
   },
   {
     title: "Administrative Functions",
-    icon:  MessageSquareText,
-    children: [
-      { title: "Functions to explore", url: "/manage/orders" },
-    ],
+    icon: MessageSquareText,
+    children: [{ title: "Functions to explore", url: "/manage/orders" }],
   },
   {
     title: "Info for Leaders",
-    icon:IdCard,
-    children: [
-     
-    ],
+    icon: IdCard,
+    children: [],
   },
   {
     title: "Prayers groups",
     icon: Users,
-    children: [
-    
-    ],
+    children: [],
   },
   {
     title: "View Wellers by day",
-    icon:   User,
-    children: [
-     
-    ],
+    icon: User,
+    children: [{ title: "View Wellers", url: "/wellers" }],
   },
   { title: "Weekly Reports", icon: BarChart3, url: "/marketing" },
 ];

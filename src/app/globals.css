@@ -130,7 +130,7 @@ li {
 }
 
 span {
-  @apply text-lg font-medium leading-relaxed tracking-wide text-[#5e637a];
+  @apply text-lg font-semibold leading-relaxed tracking-wide text-gray-700;
 }
 
 p {

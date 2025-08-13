@@ -63,8 +63,8 @@ const Pagination = ({
               key={i}
               variant={currentPage === page ? "secondary" : "ghost"}
               size="lg"
-              className={`h-7 w-7 p-2 text-blue-600 font-medium text-xl cursor-pointer hover:text-gray-400 hover:border ${
-                currentPage === page && "bg-gray-400 text-white"
+              className={`h-7 w-7 p-2 text-[var(--primary-color)] font-medium text-xl cursor-pointer hover:text-gray-400 hover:border ${
+                currentPage === page && "bg-[var(--primary-color)] text-white "
               }`}
               onClick={() => onPageChange(Number(page))}
             >
@@ -75,7 +75,7 @@ const Pagination = ({
         {currentPage < totalPages && (
           <button
             onClick={() => onPageChange(currentPage + 1)}
-            className="text-blue-600 mx-4 text-xl"
+            className="text-[var(--primary-color)]  mx-4 text-xl"
           >
             Next
           </button>
