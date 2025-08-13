@@ -10,7 +10,6 @@ import React from "react";
 // import Stats from "./Stats";
 import Stats from "./components/home/Stats";
 // import OrderTable from "./OrderTable";
-import OrderTable from "./components/home/OrderTable";
 // import UsersBreakdown from "./UsersBreakdown";
 import UsersBreakdown from "./components/home/UsersBreakdown";
 // import PrayersGroup from "./PrayersGroup";
