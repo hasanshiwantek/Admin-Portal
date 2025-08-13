@@ -10,7 +10,7 @@ import {
 export const sidebarData = [
   {
     title: "Home",
-    url: "/manage/dashboard",
+    url: "/",
     icon: Home,
   },
   {
