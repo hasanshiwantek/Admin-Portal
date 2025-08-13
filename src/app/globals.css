@@ -48,7 +48,7 @@
   --font-color: #323232;
   --border-color: #f2f2f2;
   --header-bg: rgb(3, 16, 51);
-  --store-bg: #FAFAFA;
+  --store-bg: #fafafa;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -149,7 +149,7 @@ button {
 }
 
 .btn-outline-primary {
-  @apply text-[#008696] border border-[#008696] font-medium rounded px-4 py-[8px] text-xl transition-all my-1 duration-200 cursor-pointer;
+  @apply text-[#008696] border border-[#008696] font-medium rounded-md px-4 py-[8px] text-xl transition-all my-1 duration-200 cursor-pointer;
   background-color: transparent;
 }
 
@@ -158,7 +158,7 @@ button {
 }
 
 .btn-primary {
-  @apply text-white border border-[#008696]  font-medium rounded px-4 py-[6px] text-xl transition-all my-1 duration-200 cursor-pointer;
+  @apply text-white border border-[#008696]  font-medium rounded-md px-4 py-[6px] text-xl transition-all my-1 duration-200 cursor-pointer;
   background-color: #008696;
 }
 
