@@ -1,29 +1,29 @@
 import React from "react";
-import WellersAttendance from "./WellersAttendance";
-import WellersStats from "./WellersStats";
-import WellersTable from "./WellersTable";
+import ScreenNameStats from "./ScreenNameStats";
+import SelectWeller from "./SelectWeller";
+import WellerColumn from "./WellerColumn";
 import { ChevronRight } from "lucide-react";
-const ViewWellers = () => {
+const ScreenName = () => {
   return (
     <>
       <div>
         <div className="text-lg flex justify-start items-center font-light p-4 text-gray-500">
           Home <ChevronRight className="h-5 w-6" />
           <span className="!font-light !text-[var(--primary-color)]">
-            View Wellers by day
+            Screen name
           </span>
         </div>
 
         <div className="flex justify-between gap-10 mt-5">
-          <WellersAttendance />
-          <WellersStats />
+          <SelectWeller />
+          <ScreenNameStats />
         </div>
         <div className="my-5">
-          <WellersTable />
+          <WellerColumn />
         </div>
       </div>
     </>
   );
 };
 
-export default ViewWellers;
+export default ScreenName;
