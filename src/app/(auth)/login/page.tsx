@@ -109,7 +109,7 @@ export default function LoginPage() {
 
           <div className="flex justify-between text-base text-gray-100 mt-2 whitespace-nowrap">
     
-            <div className="space-x-3 ml-40">
+            <div className="space-x-3 ">
               <a href="#" className="hover:underline !text-xl">
                 Forgot?
               </a>
