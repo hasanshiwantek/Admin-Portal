@@ -3,7 +3,7 @@ import { Home, ShoppingCart, Users, Store, LineChart, Gift, Settings, AppWindow,
 export const sidebarData = [
   {
     title: "Home",
-    url: "/manage/dashboard",
+    url: "/",
     icon: Home,
   },
   {
