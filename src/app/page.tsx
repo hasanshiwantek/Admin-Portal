@@ -29,9 +29,6 @@ const Home = () => {
           <PrayersGroup />
         </div>
 
-        {/* <SetupProgress /> */}
-        {/* <StorePerformanceChart /> */}
-        {/* <OrderTable/> */}
       </div>
       </LayoutWrapper>
     </>
