@@ -30,8 +30,6 @@ export default function LoginPage() {
       Cookies.set("token", token, { expires: 7 });
       localStorage.setItem("token", token);
       localStorage.setItem("tokenExpiry", new Date(expireAt).getTime().toString());
-
-
       if (stores.length === 1) {
         localStorage.setItem("storeId", stores[0].id.toString());
         dispatch(setStoreId(stores[0].id));
