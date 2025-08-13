@@ -1,5 +1,4 @@
 import React from "react";
-import SetupProgress from "./SetupProgress";
 import Stats from "./Stats";
 import UsersBreakdown from "./UsersBreakdown";
 import PrayersGroup from "./PrayersGroup";
