@@ -56,9 +56,16 @@ export const SideBar: React.FC<SideBarProps> = ({
           </button>
         </div> */}
 
-        <div className="absolute right-[-8px] top-1/2 z-1 -translate-y-1/2 bg-gray-200 rounded-full shadow p-2">
-          <button onClick={() => setIsCollapsed(!isCollapsed)}>
-            {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
+        <div
+          className="absolute right-[-10px] top-1/3 z-40 -translate-y-1/2 bg-gray-200/50 rounded-full shadow-lg p-2"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <button>
+            {isCollapsed ? (
+              <ChevronRight className="h-6 w-6" />
+            ) : (
+              <ChevronLeft className="h-6 w-6" />
+            )}
           </button>
         </div>
 
