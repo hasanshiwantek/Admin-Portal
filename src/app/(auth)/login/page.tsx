@@ -90,7 +90,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={toggleShowPassword}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 "
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
             >
               {formData.showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
