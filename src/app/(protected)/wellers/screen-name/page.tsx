@@ -1,6 +1,6 @@
 import React from "react";
-import ScreenName from "../../components/wellers/screenName/ScreenName";
-import LayoutWrapper from "../../components/layout/LayoutWrapper";
+import ScreenName from "../../../components/wellers/screenName/ScreenName";
+import LayoutWrapper from "../../../components/layout/LayoutWrapper";
 const page = () => {
   return (
     <>

@@ -4,7 +4,24 @@ import styles from "@/styles/Header/Header.module.css";
 import logo from "@/assets/portal-logo.png";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
+import { logout } from "@/redux/slices/authSlice";
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/hooks/useReduxHooks";
+
 const Header: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    const confirm = window.confirm("Are you sure want to logout?");
+    if (!confirm) {
+      return;
+    } else {
+      dispatch(logout());
+      router.push("/login");
+    }
+  };
+
   return (
     <header className="w-full fixed h-28 px-4 z-40  bg-white shadow-xs">
       {/* HEADER */}
@@ -31,7 +48,10 @@ const Header: React.FC = () => {
                 <span>Saturday-August 9,2025</span>
               </div>
             </div>
-            <div>
+            <div 
+            className="cursor-pointer text-[#008696] hover:text-black"
+            onClick={handleLogout}
+            >
               <LogOut className="w-6 h-6" />
             </div>
           </div>

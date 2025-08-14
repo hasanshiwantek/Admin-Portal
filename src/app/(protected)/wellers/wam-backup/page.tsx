@@ -1,6 +1,6 @@
 import React from "react";
-import WamBackup from "../../components/wellers/WamBackup/WamBackup";
-import LayoutWrapper from "../../components/layout/LayoutWrapper";
+import WamBackup from "../../../components/wellers/WamBackup/WamBackup";
+import LayoutWrapper from "../../../components/layout/LayoutWrapper";
 import { ChevronRight } from "lucide-react";
 const page = () => {
   return (
