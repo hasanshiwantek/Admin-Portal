@@ -2,7 +2,6 @@
 
 import React from "react";
 
-
 const columns = [
   [
     "Dennis Callis",
@@ -59,9 +58,12 @@ export default function BackupGreeters() {
             </div>
 
             {/* Names */}
-            <ul>
+            <ul className="space-y-3">
               {names.map((name, i) => (
-                <li key={i} className="px-4 py-4 text-sm border-b last:border-b-0">
+                <li
+                  key={i}
+                  className="px-4 py-2 text-sm border-b last:border-b-0"
+                >
                   {name}
                 </li>
               ))}

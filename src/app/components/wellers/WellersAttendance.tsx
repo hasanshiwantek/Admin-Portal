@@ -46,8 +46,8 @@ export default function WellersAttendance() {
           <Card key={idx} className="rounded-lg border border-slate-200 p-0">
             {/* Date bar */}
             <div className="flex items-center gap-2 rounded-t-md bg-gray-100 px-3 py-2 text-sm font-semibold ">
-              <CalendarDays className="h-6 w-6" />
-              <span className="!font-bold">{item.date}</span>
+              <CalendarDays className="h-5 w-5" />
+              <span className="">{item.date}</span>
             </div>
 
             <CardContent className="px-3 py-3">

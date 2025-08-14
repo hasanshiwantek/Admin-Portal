@@ -160,29 +160,147 @@ export default function Page() {
 
       <h2 className="">Wed-AM Wellers: 106 Active | 59 Dropped</h2>
       <div>
-        <DataTable
-          headers={headers}
-          rows={rows}
-          renderRow={(row, i) => (
-            <TableRow key={i}>
-              <TableCell>
+        {view === "table" ? (
+          <DataTable
+            headers={headers}
+            rows={rows}
+            renderRow={(row, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                  <div
+                    className={`inline-block px-2 py-1 rounded-sm ${
+                      row.nameHighlight === "yellow" ? "bg-yellow-100" : ""
+                    }`}
+                  >
+                    {row.name}
+                  </div>
+                </TableCell>
+                <TableCell>{row.pg}</TableCell>
+                <TableCell>{row.lastAttended}</TableCell>
+                <TableCell>{row.email}</TableCell>
+                <TableCell>{row.phone}</TableCell>
+                <TableCell>{row.address}</TableCell>
+                <TableCell>{row.klass}</TableCell>
+              </TableRow>
+            )}
+          />
+        ) : (
+          <div className="grid grid-cols-5 gap-2 rounded-md overflow-y-auto ">
+            {/* Column: Name */}
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
+                Name
+              </div>
+              {rows.map((row, i) => (
                 <div
-                  className={`inline-block px-2 py-1 rounded-sm ${
+                  key={i}
+                  className={`p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  ${
                     row.nameHighlight === "yellow" ? "bg-yellow-100" : ""
+                  } ${
+                    row.nameStyle === "bold"
+                      ? "font-bold"
+                      : row.nameStyle === "mutedItalic"
+                      ? "italic text-gray-500"
+                      : ""
                   }`}
                 >
-                  {row.name}
+                  {row.nameStyle === "link" ? (
+                    <a href="#" className="text-blue-600 underline">
+                      {row.name}
+                    </a>
+                  ) : (
+                    row.name
+                  )}
                 </div>
-              </TableCell>
-              <TableCell>{row.pg}</TableCell>
-              <TableCell>{row.lastAttended}</TableCell>
-              <TableCell>{row.email}</TableCell>
-              <TableCell>{row.phone}</TableCell>
-              <TableCell>{row.address}</TableCell>
-              <TableCell>{row.klass}</TableCell>
-            </TableRow>
-          )}
-        />
+              ))}
+            </div>
+            {/* Column: Last Attended */}
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
+              <div className="font-semibold p-2  border-b !bg-[#F5F5F5]">
+                PG
+              </div>
+              {rows.map((row, i) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
+                >
+                  {row.pg}
+                </div>
+              ))}
+            </div>
+            {/* Column: Last Attended */}
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
+              <div className="font-semibold p-2  border-b !bg-[#F5F5F5]">
+                Last Attended
+              </div>
+              {rows.map((row, i) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
+                >
+                  {row.lastAttended}
+                </div>
+              ))}
+            </div>
+            {/* Column: Email */}
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
+                Email
+              </div>
+              {rows.map((row, i) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
+                >
+                  {row.email}
+                </div>
+              ))}
+            </div>
+            {/* Column: Phone */}
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
+                Phone
+              </div>
+              {rows.map((row, i) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
+                >
+                  {row.phone}
+                </div>
+              ))}
+            </div>
+            {/* Column: Address */}
+            <div className="flex flex-col border w-[300px]  rounded-md shadow-xs space-y-2  ">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]  ">
+                Address
+              </div>
+              {rows.map((row, i) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
+                >
+                  {row.address}
+                </div>
+              ))}
+            </div>
+
+            {/* Column: Class*/}
+            <div className="flex flex-col w-full border rounded-md  shadow-xs space-y-2 ml-[11rem]">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5] w-full">
+                Class
+              </div>
+              {rows.map((row, i) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]   "
+                >
+                  {row.klass}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex justify-end">
