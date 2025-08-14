@@ -76,7 +76,6 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       localStorage.removeItem("token");
-      localStorage.removeItem("storeId");
     },
   },
   extraReducers: (builder) => {
@@ -97,15 +96,15 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = true;
-        state.stores = action.payload.stores.map((store: any) => ({
-          storeId: store.id,
-          name: store.name,
-        }));
+        // state.stores = action.payload.stores.map((store: any) => ({
+        //   storeId: store.id,
+        //   name: store.name,
+        // }));
 
         localStorage.setItem("token", action.payload.token);
-        if (action.payload.stores?.length === 1) {
-          localStorage.setItem("storeId", action.payload.stores[0].id.toString());
-        }
+        // if (action.payload.stores?.length === 1) {
+        //   localStorage.setItem("storeId", action.payload.stores[0].id.toString());
+        // }
       })
 
       // Fulfilled - register

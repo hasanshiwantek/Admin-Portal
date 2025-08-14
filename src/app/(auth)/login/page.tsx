@@ -26,21 +26,20 @@ export default function LoginPage() {
     const result = await dispatch(loginUser({ email: formData.email, password: formData.password }));
 
     if (loginUser.fulfilled.match(result)) {
-      const { token, stores, expireAt } = result.payload;
+      const { token, expireAt } = result.payload;
       Cookies.set("token", token, { expires: 7 });
       localStorage.setItem("token", token);
       localStorage.setItem("tokenExpiry", new Date(expireAt).getTime().toString());
-
-
-      if (stores.length === 1) {
-        localStorage.setItem("storeId", stores[0].id.toString());
-        dispatch(setStoreId(stores[0].id));
-        router.push("/manage/dashboard");``
-      } else {
-        // Multiple stores – let user select
-        localStorage.setItem("availableStores", JSON.stringify(stores));
-        router.push("/store-select");
-      }
+      router.push("/dashboard")
+      // if (stores.length === 1) {
+      //   localStorage.setItem("storeId", stores[0].id.toString());
+      //   dispatch(setStoreId(stores[0].id));
+      //   router.push("/manage/dashboard");
+      // } else {
+      //   // Multiple stores – let user select
+      //   localStorage.setItem("availableStores", JSON.stringify(stores));
+      //   router.push("/store-select");
+      // }
     }
   };
 
@@ -55,17 +54,17 @@ export default function LoginPage() {
   useEffect (() => {
     const token = localStorage.getItem("token")
     if (token) {
-      router.replace('/manage/dashboard')
+      router.replace('/dashboard')
     }
   }, [])
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-black">
-      <h1 className="!text-5xl mb-2 !text-white">Login to your portal</h1>
+    <div className="flex flex-col min-h-screen items-center justify-center ">
+      <h1 className="!text-4xl mb-4 ">The Well Management Portal</h1>
 
       <form
         onSubmit={handleLogin}
-        className=" p-10 rounded shadow-md w-full max-w-md"
+        className=" p-10 rounded shadow-lg w-full border border-2 max-w-[40rem]"
       >
         <div className="flex justify-center flex-col items-center">
           {error && <div className="text-red-400 text-xl mb-4">{error}</div>}
@@ -76,7 +75,7 @@ export default function LoginPage() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-[40rem] !text-2xl my-5 px-6 py-8 bg-blue-50 text-black placeholder:text-gray-500"
+            className="w-[40rem] !text-2xl !font-light my-5 px-6 py-8 bg-blue-50 text-black placeholder:text-gray-500"
           />
 
           <div className="relative">
@@ -87,29 +86,29 @@ export default function LoginPage() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-[40rem] !text-2xl my-5 px-6 py-8 bg-blue-50 text-black placeholder:text-gray-500"
+              className="w-[40rem] !text-2xl !font-light my-5 px-6 py-8 bg-blue-50 text-black placeholder:text-gray-500"
             />
             <button
               type="button"
               onClick={toggleShowPassword}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 "
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
             >
               {formData.showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
-          </div> 
+          </div>
           <Button
             type="submit"
             variant="default"
             size="xxl"
             disabled={loading}
-            className="w-[30rem]  cursor-pointer my-5  bg-blue-600  rounded-lg font-medium !text-2xl focus-within:ring-blue-200 focus-within:border-blue-200 border border-[#2c2c2c]  transition hover:border-blue-200 hover:bg-[#3A426E] "
+            className="w-[25rem] cursor-pointer my-3 !h-[4rem] bg-[#008696] rounded-lg font-medium !text-2xl focus-within:ring-blue-200 focus-within:border-blue-200 transition hover:border-blue-200 hover:bg-[#3A426E] "
           >
             {loading ? "Logging in..." : "Log In"}
           </Button>
 
-          <div className="flex justify-between text-base text-gray-100 mt-2 whitespace-nowrap">
+          <div className="flex justify-between text-base text-black-100 mt-2 whitespace-nowrap">
     
-            <div className="space-x-3 ml-40">
+            <div className="space-x-3 ">
               <a href="#" className="hover:underline !text-xl">
                 Forgot?
               </a>

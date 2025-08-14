@@ -7,7 +7,7 @@ import NavigationLoader from "../loader/NavigationLoader";
 interface LayoutWrapperProps {
   children: React.ReactNode;
 }
- 
+
 const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -22,7 +22,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
         <div className="flex flex-1 overflow-hidden">
           {/* Sidebar */}
            <aside
-          className={`${isCollapsed ? "w-20" : "w-[26rem]"} shrink-0 overflow-y-auto border-r bg-white transition-all duration-300`}
+          className={`${isCollapsed ? "w-20" : "w-[26rem]"} shrink-0 overflow-y-auto border-r bg-white transition-all duration-200`}
         >
           <SideBar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         </aside>

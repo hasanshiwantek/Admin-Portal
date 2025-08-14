@@ -36,7 +36,7 @@ const ProtectedLayout = ({ children }: Props) => {
         // Token expired
         localStorage.removeItem("token");
         localStorage.removeItem("tokenExpiry");
-        localStorage.removeItem("storeId")
+        // localStorage.removeItem("storeId")
         router.replace("/login");
         setIsAuthenticated(false);
       }

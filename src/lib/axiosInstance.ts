@@ -8,13 +8,13 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
   if (typeof window != "undefined") {
     const token = localStorage.getItem("token");
-    const storeId = localStorage.getItem("storeId");
+    // const storeId = localStorage.getItem("storeId");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    if (storeId) {
-      config.headers["storeId"] = Number(storeId);
-    }
+    // if (storeId) {
+    //   config.headers["storeId"] = Number(storeId);
+    // }
   }
 
   return config;

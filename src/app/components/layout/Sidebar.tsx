@@ -104,19 +104,11 @@ export const SideBar: React.FC<SideBarProps> = ({
                                 : ""
                             }`}
                           >
-                            {item.icon && (
-                              <item.icon className="mr-2 !h-8 !w-8" />
-                            )}
-                            {!isCollapsed && (
-                              <>
-                                {item.title}
-                                <ChevronDown
-                                  className={`ml-auto !h-7 !w-7 transform transition-transform duration-300 ${
-                                    openMenus[index] ? "rotate-180" : "rotate-0"
-                                  }`}
-                                />
-                              </>
-                            )}
+                            {item.icon && <item.icon className="mr-2 !h-8 !w-8" />}
+                            {item.title}
+                            <ChevronDown
+                              className="ml-auto !h-7 !w-7 transition-transform group-data-[state=open]/collapsible:rotate-180"
+                            />
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
                       </TooltipTrigger>
