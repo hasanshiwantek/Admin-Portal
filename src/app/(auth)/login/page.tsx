@@ -60,7 +60,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center ">
-      <h1 className="!text-4xl !font-semibold mb-4 ">The Well Management Portal</h1>
+      <h1 className="!text-4xl mb-4 ">The Well Management Portal</h1>
 
       <form
         onSubmit={handleLogin}
@@ -75,7 +75,7 @@ export default function LoginPage() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-[40rem] !text-2xl my-5 px-6 py-8 bg-blue-50 text-black placeholder:text-gray-500"
+            className="w-[40rem] !text-2xl !font-light my-5 px-6 py-8 bg-blue-50 text-black placeholder:text-gray-500"
           />
 
           <div className="relative">
@@ -86,7 +86,7 @@ export default function LoginPage() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-[40rem] !text-2xl my-5 px-6 py-8 bg-blue-50 text-black placeholder:text-gray-500"
+              className="w-[40rem] !text-2xl !font-light my-5 px-6 py-8 bg-blue-50 text-black placeholder:text-gray-500"
             />
             <button
               type="button"
@@ -101,7 +101,7 @@ export default function LoginPage() {
             variant="default"
             size="xxl"
             disabled={loading}
-            className="w-[25rem] cursor-pointer my-3 !h-[4rem] bg-[#008696] rounded-lg font-medium !text-2xl focus-within:ring-blue-200 focus-within:border-blue-200 border border-[#2c2c2c]  transition hover:border-blue-200 hover:bg-[#3A426E] "
+            className="w-[25rem] cursor-pointer my-3 !h-[4rem] bg-[#008696] rounded-lg font-medium !text-2xl focus-within:ring-blue-200 focus-within:border-blue-200 transition hover:border-blue-200 hover:bg-[#3A426E] "
           >
             {loading ? "Logging in..." : "Log In"}
           </Button>
