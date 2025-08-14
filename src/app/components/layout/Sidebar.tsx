@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -40,6 +40,16 @@ export const SideBar: React.FC<SideBarProps> = ({
   setIsCollapsed,
 }) => {
   const pathname = usePathname();
+  const [openMenus, setOpenMenus] = useState<boolean[]>(
+    sidebarData.map(() => false)
+  );
+
+  useEffect(() => {
+    const newOpenMenus = sidebarData.map(
+      (item) => item.children?.some((child) => child.url === pathname) || false
+    );
+    setOpenMenus(newOpenMenus);
+  }, [pathname]);
 
   return (
     <div
@@ -69,17 +79,26 @@ export const SideBar: React.FC<SideBarProps> = ({
           </button>
         </div>
 
-        <SidebarMenu className="w-full">
-          {sidebarData.map((item) =>
+        <SidebarMenu className="w-full ">
+          {sidebarData.map((item, index) =>
             item.children ? (
-              <Collapsible key={item.title} className="group/collapsible ">
+              <Collapsible
+                key={item.title}
+                className="group/collapsible"
+                open={openMenus[index]} // controlled
+                onOpenChange={(isOpen) => {
+                  const updated = [...openMenus];
+                  updated[index] = isOpen;
+                  setOpenMenus(updated);
+                }}
+              >
                 <SidebarMenuItem>
                   <TooltipProvider>
                     <Tooltip delayDuration={100}>
                       <TooltipTrigger asChild>
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton
-                            className={`group w-full flex items-center p-8 cursor-pointer text-xl my-4  whitespace-nowrap ${
+                            className={`group w-full flex items-center p-8 cursor-pointer text-xl my-4  whitespace-nowrap  ${
                               pathname === item.url
                                 ? "bg-[#008696] text-white"
                                 : ""
@@ -91,7 +110,11 @@ export const SideBar: React.FC<SideBarProps> = ({
                             {!isCollapsed && (
                               <>
                                 {item.title}
-                                <ChevronDown className="ml-auto !h-7 !w-7 transition-transform group-data-[state=open]:rotate-180" />
+                                <ChevronDown
+                                  className={`ml-auto !h-7 !w-7 transform transition-transform duration-300 ${
+                                    openMenus[index] ? "rotate-180" : "rotate-0"
+                                  }`}
+                                />
                               </>
                             )}
                           </SidebarMenuButton>
