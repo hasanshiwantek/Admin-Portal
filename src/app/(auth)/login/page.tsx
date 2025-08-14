@@ -60,11 +60,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center ">
-      <h1 className="!text-5xl mb-4 ">Login to your portal</h1>
+      <h1 className="!text-4xl !font-semibold mb-4 ">The Well Management Portal</h1>
 
       <form
         onSubmit={handleLogin}
-        className=" p-10 rounded shadow-md w-full border border-3 max-w-[40rem]"
+        className=" p-10 rounded shadow-lg w-full border border-2 max-w-[40rem]"
       >
         <div className="flex justify-center flex-col items-center">
           {error && <div className="text-red-400 text-xl mb-4">{error}</div>}
