@@ -21,22 +21,18 @@ export default function ViewWellersClass() {
   return (
     <div className="bg-white p-5 rounded-md shadow-sm w-[50%]">
       {/* Title + Action buttons */}
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <h2>Select Wellers By PG</h2>
+      <div className="flex items-start justify-between gap-3">
+        <h2>View Wellers By Class</h2>
 
-        <div className="flex flex-col justify-start items-center gap-5">
-          <div className="">
-            <Button variant="outline" className="gap-1 p-6 w-[18rem]    text-lg">
+        <div className="flex  justify-start items-center gap-5">
+          <div className="flex gap-2">
+            <Button variant="outline" className="gap-1 p-6 w-[10rem]    text-lg">
               <Printer className="!w-5 !h-5" />
-              Print PG
+              Print Roaster
             </Button>
-          </div>
-          <div className="flex justify-start items-center gap-5">
-            <Button variant="outline" className="p-6  text-lg">
-              Email PG
-            </Button>
-            <Button variant="outline" className="p-6  text-lg">
-              B/UP PGL
+            <Button variant="outline" className="gap-1 p-6 w-[10rem]    text-lg">
+              <Printer className="!w-5 !h-5" />
+              Email Class
             </Button>
           </div>
         </div>
@@ -47,16 +43,16 @@ export default function ViewWellersClass() {
         {/* PG Selector */}
         <div>
           <Label htmlFor="pg-select" className="block  mb-3">
-            Select PG
+            Select Class
           </Label>
-          <Select defaultValue="1">
-            <SelectTrigger id="pg-select" className="w-40">
+          <Select defaultValue="disunity">
+            <SelectTrigger id="pg-select" className="w-[20rem] rounded-md ">
               <SelectValue placeholder="Select PG" />
             </SelectTrigger>
             <SelectContent>
-              {[1, 2, 3, 4, 5].map((num) => (
-                <SelectItem key={num} value={num.toString()}>
-                  {num}
+              {["Unity", "Disunity"].map((item) => (
+                <SelectItem key={item} value={item.toLowerCase()}>
+                  {item}
                 </SelectItem>
               ))}
             </SelectContent>
