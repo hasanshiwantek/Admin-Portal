@@ -40,6 +40,7 @@ export const sidebarData = [
       { title: "Quick View", url: "/wellers/quick-view" },
       { title: "Current Group", url: "/wellers/current-groups" },
 
+      { title: "Studies", url: "/wellers/studies" },
 
     ],
   },
