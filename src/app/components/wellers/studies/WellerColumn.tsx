@@ -99,7 +99,7 @@ export default function WellerColumn() {
   const totalPages = 10;
   return (
     <div className="bg-white p-5 rounded-md shadow-sm">
-      <h2 className="p-2 mb-4">WAM PG: 1 (8 Total)</h2>
+      <h2 className="p-2 mb-4">(16 Total) WAM: Disunity</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
         {["Last Attended", "Name", "Email", "Phone address", "Address"].map(
