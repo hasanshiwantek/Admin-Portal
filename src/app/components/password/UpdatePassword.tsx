@@ -117,7 +117,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             variant="default"
             size="xxl"
             disabled={loading}
-            className="!w-full cursor-pointer my-3 !h-[4.5rem] bg-[#008696] rounded-[2rem] font-medium !text-2xl focus-within:ring-blue-200 focus-within:border-blue-200 transition hover:border-blue-200 hover:bg-[#3A426E] "
+            className="!w-full cursor-pointer my-3 !h-[4.5rem] bg-[#008696] rounded-4xl font-medium !text-2xl focus-within:ring-blue-200 focus-within:border-blue-200 transition hover:border-blue-200 hover:bg-[#3A426E] "
           >
             {loading ? "Updating..." : "Change Password"}
           </Button>
