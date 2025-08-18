@@ -19,9 +19,9 @@ const LEGEND_ITEMS: LegendItem[] = [
     type: "dot",
     color: "darkBlue",
   },
-  { label: "BOLD", note: "PG Leader", type: "bold", color: "black" },
+  { label: "GRAY BG", note: "Teacher", color: "black" },
   { label: "YELLOW BACKGROUND", note: "Has Notes", type: "yellow" },
-  { label: "Bible Study Teacher" },
+  // { label: "Bible Study Teacher" },
 ];
 
 export default function StudiesStats() {
