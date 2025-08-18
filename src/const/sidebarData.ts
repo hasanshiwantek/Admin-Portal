@@ -26,7 +26,8 @@ export const sidebarData = [
   {
     title: "Prayers groups",
     icon: Users,
-    children: [],
+    children: [
+    ],
   },
   {
     title: "View Wellers by day",
@@ -37,6 +38,8 @@ export const sidebarData = [
       { title: "Wam Backup", url: "/wellers/wam-backup" },
       { title: "Volunteer Info", url: "/wellers/volunteer-info" },
       { title: "Quick View", url: "/wellers/quick-view" },
+      { title: "Current Group", url: "/wellers/current-groups" },
+
       { title: "Studies", url: "/wellers/studies" },
 
     ],

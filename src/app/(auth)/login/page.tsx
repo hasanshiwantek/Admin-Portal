@@ -60,7 +60,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center ">
-      <h1 className="!text-4xl mb-4 ">The Well Management Portal</h1>
+      <h1 className="!text-4xl mb-4  !font-semibold">The Well Management Portal</h1>
 
       <form
         onSubmit={handleLogin}
