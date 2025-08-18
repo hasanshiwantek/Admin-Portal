@@ -39,9 +39,8 @@ export const sidebarData = [
       { title: "Volunteer Info", url: "/wellers/volunteer-info" },
       { title: "Quick View", url: "/wellers/quick-view" },
       { title: "Current Group", url: "/wellers/current-groups" },
-
       { title: "Studies", url: "/wellers/studies" },
-
+      { title: "New Wellers", url: "/wellers/new-wellers" },
     ],
   },
   { title: "Weekly Reports", icon: BarChart3, url: "/marketing" },
