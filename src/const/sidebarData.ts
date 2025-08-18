@@ -37,6 +37,7 @@ export const sidebarData = [
       { title: "Wam Backup", url: "/wellers/wam-backup" },
       { title: "Volunteer Info", url: "/wellers/volunteer-info" },
       { title: "Quick View", url: "/wellers/quick-view" },
+      { title: "Studies", url: "/wellers/studies" },
 
     ],
   },
