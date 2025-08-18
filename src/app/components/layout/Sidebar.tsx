@@ -98,7 +98,7 @@ export const SideBar: React.FC<SideBarProps> = ({
                       <TooltipTrigger asChild>
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton
-                            className={`group w-full flex items-center p-8 cursor-pointer text-xl my-4  whitespace-nowrap  ${
+                            className={`group w-full flex items-center p-8 cursor-pointer text-xl   whitespace-nowrap  ${
                               pathname === item.url
                                 ? "bg-[#008696] text-white"
                                 : ""

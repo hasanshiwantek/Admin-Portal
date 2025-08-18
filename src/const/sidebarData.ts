@@ -6,13 +6,13 @@ import {
   Users,
   User,
   BarChart3,
+  Settings
 } from "lucide-react";
 export const sidebarData = [
   {
     title: "Home",
     url: "/dashboard",
     icon: Home,
-     children: [{ title: "Update My Password", url: "/update-password" }],
   },
   {
     title: "Administrative Functions",
@@ -45,4 +45,5 @@ export const sidebarData = [
     ],
   },
   { title: "Weekly Reports", icon: BarChart3, url: "/marketing" },
+  { title: "Account Settings", url: "/update-password", icon: Settings, },
 ];
