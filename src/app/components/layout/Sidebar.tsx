@@ -53,7 +53,7 @@ export const SideBar: React.FC<SideBarProps> = ({
 
   return (
     <div
-      className={`shrink-0 h-auto z-20 fixed top-29 max-h-full  overflow-hidden bg-white text-gray-700 shadow-lg  custom-scroll transition-all duration-300
+      className={`shrink-0 h-auto z-20 fixed top-29 max-h-full overflow-y-auto bg-white text-gray-700 shadow-lg  custom-scroll transition-all duration-300
         ${isCollapsed ? "w-[7rem] overflow-hidden" : "w-[26rem]"}`}
     >
       <SidebarProvider>
