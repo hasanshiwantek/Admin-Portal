@@ -25,6 +25,8 @@ export const sidebarData = [
        { title: "Session Overview", url: "/administrative/session-overview" },
        { title: "Add New Weller Manually", url: "/administrative/add-new-weller" },
        { title: "View Teachers /PGLs", url: "/administrative/view-leaders" },
+       { title: "Add/Edit Current Groups", url: "/administrative/add-edit-currentgroups" },
+
     ],
   },
   {
