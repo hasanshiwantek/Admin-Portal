@@ -13,7 +13,7 @@ export const sidebarData = [
     title: "Home",
     url: "/dashboard",
     icon: Home,
-     children: [],
+    //  children: [],
   },
   {
     title: "Administrative Functions",
