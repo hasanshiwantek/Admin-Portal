@@ -7,11 +7,14 @@ import Image from "next/image";
 import { logout } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/hooks/useReduxHooks";
-
+import Cookies from "js-cookie";
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
+  console.log("Logged in user Data: ", user);
+  
   const handleLogout = () => {
     const confirm = window.confirm("Are you sure want to logout?");
     if (!confirm) {
@@ -41,10 +44,10 @@ const Header: React.FC = () => {
           <div className="flex justify-start items-center gap-5">
             <div className="flex justify-start items-center gap-2">
               <div className=" rounded-full bg-green-700 ">
-                <span className="!text-white !text-3xl p-4 !font-light">J</span>
+                <span className="!text-white !text-3xl p-4 !font-light">{user.firstName.charAt(0)}</span>
               </div>
               <div>
-                <h2 className="!font-bold">John Doe</h2>
+                <h2 className="!font-bold">{user.firstName} {user.lastName}</h2>
                 <span>Saturday-August 9,2025</span>
               </div>
             </div>

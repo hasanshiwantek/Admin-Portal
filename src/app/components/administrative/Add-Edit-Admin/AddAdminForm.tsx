@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 const AddAdminForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
-  const [userRole, setUserRole] = useState<any>();
+  const [userRole, setUserRole] = useState<number | null>();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -26,10 +26,7 @@ const AddAdminForm = () => {
   );
   const wellersData = wellers?.data;
   const [selectedWellerId, setSelectedWellerId] = useState<any | null>();
-  console.log("....", selectedWellerId);
 
-  console.log("Wellers Data:",wellersData);
-  
   //  FETCH ALL WELLERS
   useEffect(() => {
     dispatch(getAllWellers());
@@ -43,17 +40,19 @@ const AddAdminForm = () => {
       password: password,
       passwordConfirmation: confirmPassword,
     };
-    const wellerId=Number(selectedWellerId?.id)
+    console.log("Payload: ", payload);
+
+    const wellerId = Number(selectedWellerId?.id);
     try {
       const resultAction = await dispatch(
         assignRole({ data: payload, wellerId: wellerId })
       );
       if (assignRole.fulfilled.match(resultAction)) {
         console.log("Role assign successfully", resultAction?.payload);
-        setConfirmPassword("")
-        setPassword("")
-        setUserRole("")
-        setSelectedWellerId("")
+        setConfirmPassword("");
+        setPassword("");
+        setUserRole(0);
+        setSelectedWellerId("");
       } else {
         console.log("Error Assigning role: ", resultAction?.payload);
       }
@@ -89,12 +88,16 @@ const AddAdminForm = () => {
                 (w: any) => w.id === Number(value)
               );
               setSelectedWellerId(found);
-              console.log("Selected Weller Id: ", found);
             }}
           >
             <SelectTrigger className="w-full" id="select-weller">
-              <SelectValue placeholder="Select Weller" />
+              <span>
+                {selectedWellerId
+                  ? `${selectedWellerId.firstName} ${selectedWellerId.lastName}`
+                  : "Select Weller"}
+              </span>
             </SelectTrigger>
+
             <SelectContent>
               {wellersData?.map((weller: any) => (
                 <SelectItem key={weller.id} value={String(weller.id)}>
@@ -102,7 +105,7 @@ const AddAdminForm = () => {
                     <span className="font-medium">
                       {weller.firstName} {weller.lastName}
                     </span>
-                    <span className="!text-base !text-muted-foreground">
+                    <span className="text-sm text-muted-foreground">
                       {weller.email}
                     </span>
                   </div>
@@ -111,18 +114,18 @@ const AddAdminForm = () => {
             </SelectContent>
           </Select>
         </div>
-
         <div>
-          <Label className="block  mb-2">Select Level of Access</Label>
+          <Label className="block mb-2">Select Level of Access</Label>
           <Select
-            value={userRole}
+            value={userRole !== null ? String(userRole) : ""}
             onValueChange={(value) => {
-              setUserRole(value);
-              console.log("Selected Role:", value);
+              const numericValue = Number(value); // convert string -> number
+              setUserRole(numericValue);
+              console.log("Selected Role ID:", numericValue);
             }}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select" />
+              <SelectValue placeholder="Select User Role" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="6">Root</SelectItem>

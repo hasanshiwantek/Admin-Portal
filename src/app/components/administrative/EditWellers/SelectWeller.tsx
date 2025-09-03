@@ -13,21 +13,25 @@ import {
 } from "@/components/ui/select";
 import { getAllWellers } from "@/redux/slices/wellerSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
-const SelectWeller = () => {
+const SelectWeller = ({
+  selectedWeller,
+  setSelectedWeller,
+}: {
+  selectedWeller: any;
+  setSelectedWeller: (weller: any) => void;
+}) => {
   const dispatch = useAppDispatch();
   const { wellers, error, loading } = useAppSelector(
     (state: any) => state.wellers
   );
   const wellersData = wellers?.data;
   console.log("Wellers data from frontend: ", wellersData);
-  const [selectedWellerId, setSelectedWellerId] = useState<any | null>();
-  console.log("....",selectedWellerId);
-  
-  //  FETCH ALL WELLERS 
+  console.log("....", selectedWeller);
+
+  //  FETCH ALL WELLERS
   useEffect(() => {
     dispatch(getAllWellers());
   }, [dispatch]);
-
 
   return (
     <div className="p-5 bg-white rounded-md shadow-sm  flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -38,18 +42,22 @@ const SelectWeller = () => {
           <div className="mt-2 space-y-2 ">
             <Label htmlFor="select-weller">Select weller</Label>
             <Select
-              value={selectedWellerId ? String(selectedWellerId.id) : ""}
+              value={selectedWeller ? String(selectedWeller.id) : ""}
               onValueChange={(value) => {
                 const found = wellersData.find(
                   (w: any) => w.id === Number(value)
                 );
-                setSelectedWellerId(found);
-                 console.log("Selected Weller Id: ", found);
+                setSelectedWeller(found);
               }}
             >
               <SelectTrigger className="w-full" id="select-weller">
-                <SelectValue placeholder="Select Weller" />
+                <span>
+                  {selectedWeller
+                    ? `${selectedWeller.firstName} ${selectedWeller.lastName}`
+                    : "Select Weller"}
+                </span>
               </SelectTrigger>
+
               <SelectContent>
                 {wellersData?.map((weller: any) => (
                   <SelectItem key={weller.id} value={String(weller.id)}>
@@ -57,7 +65,7 @@ const SelectWeller = () => {
                       <span className="font-medium">
                         {weller.firstName} {weller.lastName}
                       </span>
-                      <span className="!text-base !text-muted-foreground">
+                      <span className="text-sm text-muted-foreground">
                         {weller.email}
                       </span>
                     </div>
