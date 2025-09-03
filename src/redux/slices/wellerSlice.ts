@@ -73,11 +73,28 @@ export const assignRole = createAsyncThunk(
   }
 );
 
+export const adminRoles = createAsyncThunk(
+  "wellers/adminRoles",
+  async (_, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(`admin/administrators`);
+      console.log("✅ Get Admins Response Data:", res.data);
+      return res.data;
+    } catch (err: any) {
+      console.error("❌ Error in Fetching wellers:", err);
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to fetch wellers"
+      );
+    }
+  }
+);
+
 // 2. Initial State
 const initialState = {
   wellers: [],
   loading: false,
   error: null as string | null,
+  admins: [],
 };
 
 // 3. Slice
@@ -99,8 +116,20 @@ const wellerSlice = createSlice({
         state.loading = false;
         state.error =
           (action.payload as string) || action.error.message || "Failed";
+      })
+      .addCase(adminRoles.pending, (state) => {
+        state.loading = true;
+        state.error = null; // reset error
+      })
+      .addCase(adminRoles.fulfilled, (state, action) => {
+        state.loading = false;
+        state.admins = action.payload.data;
+      })
+      .addCase(adminRoles.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || "Failed";
       });
   },
 });
-export const {} = wellerSlice.actions;
+// export const {} = wellerSlice.actions;
 export default wellerSlice.reducer;

@@ -1,35 +1,39 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { adminRoles } from "@/redux/slices/wellerSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
+import { Admin } from "@/types/types";
 
-const initialAdmins = [
-  { name: "Lorri Warf", username: "jerry73@aol.com", access: "Root" },
-  { name: "Jerry Helfer", username: "dennis416@gmail.com", access: "Root" },
-  { name: "Rodger Struck", username: "c.a.glasser@outlook.com", access: "Root" },
-  { name: "Ricky Smith", username: "eddie_lake@gmail.com", access: "Root" },
-  { name: "Autumn Phillips", username: "r.g.rhodes@aol.com", access: "Root" },
-  { name: "Paula Mora", username: "patricia651@outlook.com", access: "Root" },
-  { name: "Frances Swann", username: "j.e.dukes@aol.com", access: "Root" },
-  { name: "Daniel Hamilton", username: "iva838@outlook.com", access: "Root" },
-  { name: "Kurt Bates", username: "k.p.allen@aol.com", access: "Root" },
-  { name: "Mary Freund", username: "lorri73@gmail.com", access: "Root" },
+const roles = [
+  "Root",
+  "Admin",
+  "Volunteer",
+  "Administrator",
+  "Child Watch",
+  "Prayer Group Leader",
+  "Bible Study Teacher",
 ];
 
 const AdminTable = () => {
-  const [admins, setAdmins] = useState(initialAdmins);
 
-  const handleAccessChange = (index: number, newAccess: string) => {
-    const updated = [...admins];
-    updated[index].access = newAccess;
-    setAdmins(updated);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(adminRoles())
+  }, [])
+
+  const admins = useAppSelector((state): Admin[] => state.wellers.admins) || [];
+
+  const handleAccessChange = (id: number, newRole: string) => {
+    // dispatch(updateAdminRole({ id, role: newRole }));
   };
 
-  const handleRemove = (index: number) => {
-    const updated = admins.filter((_, i) => i !== index);
-    setAdmins(updated);
+  const handleRemove = (id: number) => {
+    // dispatch(removeAdmin(id));
   };
 
   return (
@@ -48,19 +52,21 @@ const AdminTable = () => {
           {admins.map((admin, index) => (
             <TableRow key={index}>
               <TableCell>{admin.name}</TableCell>
-              <TableCell>{admin.username}</TableCell>
+              <TableCell>{admin.email}</TableCell>
               <TableCell>
                 <Select
-                  value={admin.access}
-                  onValueChange={(value) => handleAccessChange(index, value)}
+                  value={admin.role.name}
+                  onValueChange={(value) => handleAccessChange(admin.id, value)}
                 >
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue placeholder="Access" />
+                  <SelectTrigger className="w-[160px]">
+                    <SelectValue placeholder="role" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Root">Root</SelectItem>
-                    <SelectItem value="Admin">Admin</SelectItem>
-                    <SelectItem value="Viewer">Viewer</SelectItem>
+                    {roles.map((role) => (
+                      <SelectItem key={role} value={role}>
+                        {role}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </TableCell>
