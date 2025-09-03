@@ -52,7 +52,7 @@ export const sidebarData = [
     children: [
       { title: "View Wellers", url: "/wellers" },
       { title: "Screen name", url: "/wellers/screen-name" },
-      { title: "Wam Backup", url: "/wellers/wam-backup" },
+      // { title: "Wam Backup", url: "/wellers/wam-backup" },
       { title: "Studies", url: "/wellers/studies" },
       { title: "New Wellers", url: "/wellers/new-wellers" },
     ],

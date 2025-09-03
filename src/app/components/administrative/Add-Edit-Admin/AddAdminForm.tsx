@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,9 +11,52 @@ import {
 } from "@/components/ui/select";
 import { Eye, EyeOff } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { getAllWellers, assignRole } from "@/redux/slices/wellerSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 const AddAdminForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
+  const [userRole, setUserRole] = useState<any>();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const dispatch = useAppDispatch();
+  const { wellers, error, loading } = useAppSelector(
+    (state: any) => state.wellers
+  );
+  const wellersData = wellers?.data;
+  const [selectedWellerId, setSelectedWellerId] = useState<any | null>();
+  console.log("....", selectedWellerId);
+
+  console.log("Wellers Data:",wellersData);
+  
+  //  FETCH ALL WELLERS
+  useEffect(() => {
+    dispatch(getAllWellers());
+  }, [dispatch]);
+
+  // HANDLE SUBMIT
+
+  const handleSubmit = async () => {
+    const payload = {
+      roleId: userRole,
+      password: password,
+      passwordConfirmation: confirmPassword,
+    };
+    const wellerId=Number(selectedWellerId?.id)
+    try {
+      const resultAction = await dispatch(
+        assignRole({ data: payload, wellerId: wellerId })
+      );
+      if (assignRole.fulfilled.match(resultAction)) {
+        console.log("Role assign successfully", resultAction?.payload);
+      } else {
+        console.log("Error Assigning role: ", resultAction?.payload);
+      }
+    } catch (err) {
+      console.error("Something went wrong:", err);
+    }
+  };
 
   return (
     <div className="w-[40%] bg-white rounded-md p-6 shadow-sm">
@@ -35,29 +78,55 @@ const AddAdminForm = () => {
       <div className="space-y-7">
         <div>
           <Label className="block  mb-2">Select Admin</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Adrianna Davis (atcolema@gmail.com)" />
+          <Select
+            value={selectedWellerId ? String(selectedWellerId.id) : ""}
+            onValueChange={(value) => {
+              const found = wellersData.find(
+                (w: any) => w.id === Number(value)
+              );
+              setSelectedWellerId(found);
+              console.log("Selected Weller Id: ", found);
+            }}
+          >
+            <SelectTrigger className="w-full" id="select-weller">
+              <SelectValue placeholder="Select Weller" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">
-                Adrianna Davis (atcolema@gmail.com)
-              </SelectItem>
-              <SelectItem value="2">John Smith (jsmith@example.com)</SelectItem>
+              {wellersData?.map((weller: any) => (
+                <SelectItem key={weller.id} value={String(weller.id)}>
+                  <div className="flex flex-col">
+                    <span className="font-medium">
+                      {weller.firstName} {weller.lastName}
+                    </span>
+                    <span className="!text-base !text-muted-foreground">
+                      {weller.email}
+                    </span>
+                  </div>
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
 
         <div>
           <Label className="block  mb-2">Select Level of Access</Label>
-          <Select>
+          <Select
+            value={userRole}
+            onValueChange={(value) => {
+              setUserRole(value);
+              console.log("Selected Role:", value);
+            }}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Root">Root</SelectItem>
-              <SelectItem value="Admin">Admin</SelectItem>
-              <SelectItem value="Viewer">Viewer</SelectItem>
+              <SelectItem value="6">Root</SelectItem>
+              <SelectItem value="5">Admin</SelectItem>
+              <SelectItem value="1">Volunteer</SelectItem>
+              <SelectItem value="4">Bible Study Teacher</SelectItem>
+              <SelectItem value="3">Prayer Group Leader</SelectItem>
+              <SelectItem value="2">Child Watch</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -69,6 +138,8 @@ const AddAdminForm = () => {
               type={showPassword ? "text" : "password"}
               placeholder="Write here"
               className="pr-5 !border-none"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <span
               className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
@@ -90,6 +161,8 @@ const AddAdminForm = () => {
               type={showVerify ? "text" : "password"}
               placeholder="Write here"
               className="pr-5 !border-none"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <span
               className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
@@ -104,7 +177,10 @@ const AddAdminForm = () => {
           </div>
         </div>
 
-        <Button className="btn-primary !w-full !max-w-2xl !rounded-full !p-7">
+        <Button
+          className="btn-primary !w-full !max-w-2xl !rounded-full !p-7"
+          onClick={handleSubmit}
+        >
           Save
         </Button>
       </div>
