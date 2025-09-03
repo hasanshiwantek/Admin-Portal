@@ -67,4 +67,11 @@ export interface MappingField  {
   options?: string[]; // For radio
 };
 
+export type Admin = {
+  id: number;
+  name: string;
+  email: string;
+  role: { id: number; name: string };
+};
+
 
