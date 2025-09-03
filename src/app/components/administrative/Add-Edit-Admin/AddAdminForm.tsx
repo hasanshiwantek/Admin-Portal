@@ -50,6 +50,10 @@ const AddAdminForm = () => {
       );
       if (assignRole.fulfilled.match(resultAction)) {
         console.log("Role assign successfully", resultAction?.payload);
+        setConfirmPassword("")
+        setPassword("")
+        setUserRole("")
+        setSelectedWellerId("")
       } else {
         console.log("Error Assigning role: ", resultAction?.payload);
       }
