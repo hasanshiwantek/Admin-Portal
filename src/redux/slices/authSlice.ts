@@ -33,13 +33,13 @@ const initialState: AuthState = {
 
 // Login thunk
 export const loginUser = createAsyncThunk(
-  "auth/loginUser",
+  "auth/login",
   async (
     { email, password }: { email: string; password: string },
     thunkAPI
   ) => {
     try {
-      const res = await axiosInstance.post("user/login", { email, password });
+      const res = await axiosInstance.post("auth/login", { email, password });
       return res.data;
     } // eslint-disable-next-line @typescript-eslint/no-explicit-any
       catch (err: any) {
