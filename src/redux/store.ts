@@ -5,7 +5,9 @@ import configReducer from './slices/configSlice'
 import productReducer from "./slices/productSlice"
 import orderReducer from "./slices/orderSlice"
 import categoryReducer from "./slices/categorySlice"
+import wellersReducer from "./slices/wellerSlice"
 
+ 
 export const store = configureStore({
   reducer: {
     home: homeReducer,
@@ -13,7 +15,8 @@ export const store = configureStore({
     config: configReducer,
     product:productReducer,
     order:orderReducer,
-    category:categoryReducer
+    category:categoryReducer,
+    wellers:wellersReducer
   },
 });
 

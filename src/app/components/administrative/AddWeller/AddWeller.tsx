@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { useAppDispatch } from "@/hooks/useReduxHooks";
+import { addWellers } from "@/redux/slices/wellerSlice";
 
 const AddWeller = () => {
   const {
@@ -13,8 +15,32 @@ const AddWeller = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => {
+  const dispatch = useAppDispatch();
+  const onSubmit = async (data: any) => {
     console.log("Submitted Data:", data);
+
+    const payload = {
+      firstName: data?.firstName,
+      lastName: data?.lastName,
+      email:data?.email,
+      homeChurch: data?.homeChurch,
+      phone: data?.phone,
+      addressCity: data?.city,
+      addressState: data?.state,
+      addressStreet: data?.street,
+    };
+
+    try {
+      const resultAction = await dispatch(addWellers({ data: payload }));
+      if (addWellers.fulfilled.match(resultAction)) {
+        console.log("Weller added successfully: ", resultAction?.payload);
+        reset()
+      } else {
+        console.log("Error adding weller: ", resultAction?.payload);
+      }
+    } catch (err) {
+      console.error("Something went wrong: ", err);
+    }
   };
 
   return (
@@ -90,9 +116,14 @@ const AddWeller = () => {
       {/* Buttons */}
       <div className=" mt-6">
         <div>
-        <Button type="button" variant="outline" onClick={() => reset()} className="p-4 text-lg">
-          Clear fields
-        </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => reset()}
+            className="p-4 text-lg"
+          >
+            Clear fields
+          </Button>
         </div>
         <div className="mr-[10rem] flex justify-center">
           <Button
