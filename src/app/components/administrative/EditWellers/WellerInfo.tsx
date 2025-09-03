@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,10 +13,113 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { updateWeller } from "@/redux/slices/wellerSlice";
+import { useAppDispatch } from "@/hooks/useReduxHooks";
+const WellerInfo = ({ selectedWeller }: { selectedWeller: any }) => {
+  const { register, handleSubmit, reset, control } = useForm();
+  const dispatch = useAppDispatch();
+  const days = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
+  const sessions = ["TUPM", "WAM", "TAM", "TPM"];
 
-const WellerInfo = () => {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  useEffect(() => {
+    if (selectedWeller) {
+      reset({
+        firstName: selectedWeller.firstName || "",
+        lastName: selectedWeller.lastName || "",
+        email: selectedWeller.email || "",
+        phone: selectedWeller.phone || "",
+        invitedBy: selectedWeller.invitedBy || "",
+        homeChurchName: selectedWeller.homeChurch || "",
+        street: selectedWeller.addressStreet || "",
+        city: selectedWeller.addressCity || "",
+        state: selectedWeller.addressState || "",
+        zip: selectedWeller.addressZip || "",
+        notes: selectedWeller.notes || "",
+        // handle checkboxes and groups if needed
+      });
+    }
+  }, [selectedWeller, reset]);
+
+  const transformPayload = (formData: any) => {
+    const {
+      teacher = {},
+      days = {},
+      pgLeader = {},
+      firstTimeLeader = {},
+      secondTimeLeader = {},
+      pgNumber = {},
+      mentorLead,
+      mentorRelationship,
+      newWeller,
+      returningWeller,
+      ...rest
+    } = formData;
+
+    // 1. Convert checkboxes to attendance strings
+    const attendances = Object.entries(days)
+      .filter(([_, value]) => value === true)
+      .map(([day]) => day.toLowerCase());
+
+    // 2. Convert teacher selection to bible studies
+    const bibleStudies = Object.entries(teacher).map(([session, value]) => ({
+      session: session.toLowerCase(),
+      name: `${session} Study`,
+      is_teacher: !!value, // ✅ works with true/false
+    }));
+
+    // 3. Build prayer groups array
+    const sessions = ["TUPM", "WAM", "TAM", "TPM"];
+    const prayerGroups = sessions.map((session) => ({
+      session: session.toLowerCase(),
+      pg_number: pgNumber[session] || "",
+      is_leader: !!pgLeader[session],
+      is_first_time_leader: !!firstTimeLeader[session],
+      is_second_time_leader: !!secondTimeLeader[session],
+    }));
+
+    return {
+      ...rest,
+      homeChurch: rest.homeChurchName,
+      addressStreet: rest.street,
+      addressCity: rest.city,
+      addressState: rest.state,
+      addressZip: rest.zip,
+      status: rest.status,
+      notes: rest.notes,
+      isNewMember: newWeller === "on",
+      isReturningMember: returningWeller === "on",
+      startDate: rest.nwStartDate || null,
+      returnDate: rest.returnDate || null,
+      dropDate: rest.dropDate || null,
+      lastAttended: rest.lastAttended || null,
+      mentorLead: mentorLead === "on",
+      mentorRelationship: mentorRelationship === "on",
+      attendances,
+      bibleStudies,
+      prayerGroups,
+    };
+  };
+
+  const onSubmit = async (data: any) => {
+    const payload = transformPayload(data);
+    const wellerId = selectedWeller?.id;
+    console.log("📤 Transformed Payload:", payload);
+    try {
+      const resultAction = await dispatch(
+        updateWeller({ data: payload, wellerId: wellerId })
+      );
+      if (updateWeller.fulfilled.match(resultAction)) {
+        console.log("✅Weller updated successfully: ", resultAction?.payload);
+        setTimeout(()=>{
+          reset();
+        },2000)
+      } else {
+        console.log("❌Error updating weller: ", resultAction?.payload);
+      }
+    } catch (err) {
+      console.error("Something went wrong: ", err);
+    }
+  };
 
   return (
     <div>
@@ -96,10 +199,10 @@ const WellerInfo = () => {
             </div>
           </div>
 
-          <div className="space-y-5 bg-white p-5  shadow-sm rounded-md">
-            <h2 className=" mb-4">Studies</h2>
-            {["TUPM", "WAM", "TAM", "TPM"].map((study) => (
-              <div key={study} className="flex flex-col  gap-2">
+          <div className="space-y-5 bg-white p-5 shadow-sm rounded-md">
+            <h2 className="mb-4">Studies</h2>
+            {sessions.map((study) => (
+              <div key={study} className="flex flex-col gap-2">
                 <div>
                   <Label htmlFor={`teacher-${study}`}>Study {study}</Label>
                 </div>
@@ -110,13 +213,27 @@ const WellerInfo = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="none">None selected</SelectItem>
+                      <SelectItem
+                        value={`Study ${study}`}
+                      >{`Study ${study}`}</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Checkbox
-                    id={`teacher-${study}`}
-                    {...register(`teacher.${study}`)}
+
+                  <Controller
+                    name={`teacher.${study}`}
+                    control={control}
+                    defaultValue={false}
+                    render={({ field }) => (
+                      <>
+                        <Checkbox
+                          id={`teacher-${study}`}
+                          checked={!!field.value}
+                          onCheckedChange={(val) => field.onChange(!!val)}
+                        />
+                        <Label htmlFor={`teacher-${study}`}>Teacher</Label>
+                      </>
+                    )}
                   />
-                  <Label htmlFor={`teacher-${study}`}>Teacher</Label>
                 </div>
               </div>
             ))}
@@ -127,11 +244,28 @@ const WellerInfo = () => {
         <div className="space-y-6 ">
           <div className="space-y-6 p-5 bg-white  shadow-sm rounded-md">
             <h2 className="mb-4">Attendance</h2>
-            <Input
-              value="Active"
-              disabled
-              className="text-green-600 font-semibold"
+            <Controller
+              control={control}
+              name="status"
+              defaultValue=""
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Attendance Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {["Active", "Inactive", "Guest", "Staff", "Archeive"].map(
+                      (status) => (
+                        <SelectItem key={status} value={status}>
+                          {status}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectContent>
+                </Select>
+              )}
             />
+
             <div className="flex items-center gap-6 mt-4">
               <Checkbox {...register("newWeller")} /> <span>New Weller</span>
               <Checkbox {...register("returningWeller")} />{" "}
@@ -159,9 +293,20 @@ const WellerInfo = () => {
             <div className="mt-8">
               <span className="block mt-4">Days Attending</span>
               <div className="flex flex-wrap gap-4 mt-2">
-                {["TU_PM", "WED_AM", "THU_AM", "THU_PM"].map((day) => (
+                {days.map((day) => (
                   <div key={day} className="flex items-center gap-2">
-                    <Checkbox {...register(`days.${day}`)} /> <span>{day}</span>
+                    <Controller
+                      control={control}
+                      name={`days.${day}`}
+                      defaultValue={false}
+                      render={({ field }) => (
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={(val) => field.onChange(!!val)}
+                        />
+                      )}
+                    />
+                    <span>{day}</span>
                   </div>
                 ))}
               </div>
@@ -178,13 +323,13 @@ const WellerInfo = () => {
                 <Label className="block">PG #</Label>
               </div>
               <div className="grid grid-cols-4 gap-4 w-full">
-                {["TUPM", "WAM", "TAM", "TPM"].map((group) => (
-                  <div key={group} className="flex flex-col items-center">
-                    <Label className=" mb-1">{group}</Label>
+                {sessions.map((session) => (
+                  <div key={session} className="flex flex-col items-center">
+                    <Label className="mb-1">{session}</Label>
                     <Input
-                      type="number"
+                      type="text" // keep as text so you can send "02", "PG-02", etc.
                       className="w-full"
-                      {...register(`pgNumber.${group}`)}
+                      {...register(`pgNumber.${session}`)}
                     />
                   </div>
                 ))}
@@ -197,9 +342,19 @@ const WellerInfo = () => {
                 <Label className="block">PG Leader</Label>
               </div>
               <div className="grid grid-cols-4 gap-4 w-full">
-                {["TUPM", "WAM", "TAM", "TPM"].map((group) => (
-                  <div key={group} className="flex justify-center">
-                    <Checkbox {...register(`pgLeader.${group}`)} />
+                {sessions.map((session) => (
+                  <div key={session} className="flex justify-center">
+                    <Controller
+                      name={`pgLeader.${session}`}
+                      control={control}
+                      defaultValue={false}
+                      render={({ field }) => (
+                        <Checkbox
+                          checked={!!field.value}
+                          onCheckedChange={(val) => field.onChange(!!val)}
+                        />
+                      )}
+                    />
                   </div>
                 ))}
               </div>
@@ -211,9 +366,19 @@ const WellerInfo = () => {
                 <Label className="block">First Time PG Leader</Label>
               </div>
               <div className="grid grid-cols-4 gap-4 w-full">
-                {["TUPM", "WAM", "TAM", "TPM"].map((group) => (
-                  <div key={group} className="flex justify-center">
-                    <Checkbox {...register(`firstTimeLeader.${group}`)} />
+                {sessions.map((session) => (
+                  <div key={session} className="flex justify-center">
+                    <Controller
+                      name={`firstTimeLeader.${session}`}
+                      control={control}
+                      defaultValue={false}
+                      render={({ field }) => (
+                        <Checkbox
+                          checked={!!field.value}
+                          onCheckedChange={(val) => field.onChange(!!val)}
+                        />
+                      )}
+                    />
                   </div>
                 ))}
               </div>
@@ -225,9 +390,19 @@ const WellerInfo = () => {
                 <Label className="block">Second Time PG Leader</Label>
               </div>
               <div className="grid grid-cols-4 gap-4 w-full">
-                {["TUPM", "WAM", "TAM", "TPM"].map((group) => (
-                  <div key={group} className="flex justify-center">
-                    <Checkbox {...register(`secondTimeLeader.${group}`)} />
+                {sessions.map((session) => (
+                  <div key={session} className="flex justify-center">
+                    <Controller
+                      name={`secondTimeLeader.${session}`}
+                      control={control}
+                      defaultValue={false}
+                      render={({ field }) => (
+                        <Checkbox
+                          checked={!!field.value}
+                          onCheckedChange={(val) => field.onChange(!!val)}
+                        />
+                      )}
+                    />
                   </div>
                 ))}
               </div>
@@ -267,13 +442,6 @@ const WellerInfo = () => {
               {...register("notes")}
               className="h-[100px]"
             />
-            <div className="mt-4">
-              <img
-                src="https://www.barcodesinc.com/generator/image.php?code=Test+Label+Data+1&style=197&type=C128B&width=300&height=100&xres=1&font=3"
-                alt="Barcode"
-                className="w-full max-w-xs mx-auto"
-              />
-            </div>
           </div>
         </div>
       </form>

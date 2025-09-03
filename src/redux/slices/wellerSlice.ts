@@ -36,6 +36,31 @@ export const getAllWellers = createAsyncThunk(
   }
 );
 
+
+
+// UPDATE WELLER THUNK
+export const updateWeller = createAsyncThunk(
+  "wellers/updateWeller",
+  async ({ wellerId, data }: { wellerId: any; data: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.put(
+        `admin/update-wellers/${wellerId}`,
+        data
+      );
+      console.log("✅ Update Weller Response:", res.data);
+      return res.data;
+    } catch (err: any) {
+      console.error("❌ Error in Updating Weller:", err);
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to update weller"
+      );
+    }
+  }
+);
+
+
+
+
 // GET ALL WELLERS THUNK
 export const getWellerById = createAsyncThunk(
   "wellers/getWellerById",

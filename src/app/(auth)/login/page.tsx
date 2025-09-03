@@ -16,21 +16,29 @@ export default function LoginPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
   const [formData, setFormData] = useState({
-  email: "",
-  password: "",
-  showPassword: false,
+    email: "",
+    password: "",
+    showPassword: false,
   });
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await dispatch(loginUser({ email: formData.email, password: formData.password }));
+    const result = await dispatch(
+      loginUser({ email: formData.email, password: formData.password })
+    );
 
     if (loginUser.fulfilled.match(result)) {
-      const { token, expireAt } = result.payload;
+      const { token, expireAt, data } = result.payload;
       Cookies.set("token", token, { expires: 7 });
       localStorage.setItem("token", token);
-      localStorage.setItem("tokenExpiry", new Date(expireAt).getTime().toString());
-      router.push("/dashboard")
+      localStorage.setItem(
+        "tokenExpiry",
+        new Date(expireAt).getTime().toString()
+      );
+      const user=data?.user
+      // ✅ Store user object in localStorage
+      localStorage.setItem("user", JSON.stringify(user));
+      router.push("/dashboard");
       // if (stores.length === 1) {
       //   localStorage.setItem("storeId", stores[0].id.toString());
       //   dispatch(setStoreId(stores[0].id));
@@ -51,16 +59,18 @@ export default function LoginPage() {
   const toggleShowPassword = () =>
     setFormData((prev) => ({ ...prev, showPassword: !prev.showPassword }));
 
-  useEffect (() => {
-    const token = localStorage.getItem("token")
+  useEffect(() => {
+    const token = localStorage.getItem("token");
     if (token) {
-      router.replace('/dashboard')
+      router.replace("/dashboard");
     }
-  }, [])
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center ">
-      <h1 className="!text-4xl mb-4  !font-semibold">The Well Management Portal</h1>
+      <h1 className="!text-4xl mb-4  !font-semibold">
+        The Well Management Portal
+      </h1>
 
       <form
         onSubmit={handleLogin}
@@ -107,7 +117,6 @@ export default function LoginPage() {
           </Button>
 
           <div className="flex justify-between text-base text-black-100 mt-2 whitespace-nowrap">
-    
             <div className="space-x-3 ">
               <a href="#" className="hover:underline !text-xl">
                 Forgot?

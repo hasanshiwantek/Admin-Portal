@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { fetchStoreStatistics } from "@/redux/slices/homeSlice";
+import { getWellerStats } from "@/redux/slices/homeSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks/useReduxHooks";
 import { Users, User, User2 } from "lucide-react";
 
@@ -15,23 +15,23 @@ const Stats = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchStoreStatistics());
+    dispatch(getWellerStats());
   }, [dispatch]);
 
   const stats = [
     {
       label: "Total Prayer Groups",
-      value: numberFmt(data?.totalOrders),
+      value: numberFmt(data?.totalPrayerGroups),
       icon: Users,
     },
     {
       label: "Total Wellers",
-      value: numberFmt(data?.totalCustomers),
+      value: numberFmt(data?.totalWellers),
       icon: User,
     },
     {
       label: "Total Group Leaders",
-      value: numberFmt(data?.totalProducts),
+      value: numberFmt(data?.totalGroupLeaders),
       icon: User2,
     },
   ];
