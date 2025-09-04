@@ -30,7 +30,7 @@ export function DataTable<T>({
           </TableRow>
         </TableHeader>
         <TableBody >
-          {rows.map((row, index) => renderRow(row, index))}
+          {rows?.map((row, index) => renderRow(row, index))}
         </TableBody>
       </Table>
     </div>

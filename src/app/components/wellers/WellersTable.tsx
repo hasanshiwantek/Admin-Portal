@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Columns, Table2 } from "lucide-react";
 import Pagination from "@/components/ui/pagination";
+import Spinner from "../loader/Spinner";
 const headers = [
   "Name",
   "PG",
@@ -17,121 +18,40 @@ const headers = [
   "Class",
 ];
 
-const rows = [
-  {
-    name: "Adrianne Branham",
-    nameStyle: "link",
-    nameHighlight: "none",
-    pg: 24,
-    lastAttended: "05-17-2017",
-    email: "adrianne.f.branham@gmail.com",
-    phone: "(813) 731-6077",
-    address: "2205 Tail Feather Ct. Lutz, Fl 33549",
-    klass: "Boundaries",
-  },
-  {
-    name: "Ella Martinez",
-    nameStyle: "normal",
-    nameHighlight: "yellow",
-    pg: 22,
-    lastAttended: "01-15-2022",
-    email: "ella.martinez@email.com",
-    phone: "(212) 555-0167",
-    address: "4321 Cedar Ave. New York, NY 10001",
-    klass: "Research",
-  },
-  {
-    name: "Marcus Holloway",
-    nameStyle: "link",
-    nameHighlight: "none",
-    pg: 30,
-    lastAttended: "11-02-2015",
-    email: "marcus.holloway@example.com",
-    phone: "(415) 555-0198",
-    address: "1344 Oakwood Ave. San Francisco, CA 94107",
-    klass: "Development",
-  },
-  {
-    name: "Sofia Patel",
-    nameStyle: "bold",
-    nameHighlight: "none",
-    pg: 28,
-    lastAttended: "03-12-2020",
-    email: "sofia.patel23@gmail.com",
-    phone: "(619) 555-0141",
-    address: "2504 Maple St. San Diego, CA 92101",
-    klass: "Design",
-  },
-  {
-    name: "Noah Kim",
-    nameStyle: "normal",
-    nameHighlight: "gray",
-    pg: 27,
-    lastAttended: "09-28-2019",
-    email: "noah.kim@gmail.com",
-    phone: "(503) 555-0189",
-    address: "9876 Elm St. Portland, OR 97205",
-    klass: "Product",
-  },
-  {
-    name: "Liam Carter",
-    nameStyle: "mutedItalic",
-    nameHighlight: "none",
-    pg: 35,
-    lastAttended: "07-21-2018",
-    email: "liam.carter@email.com",
-    phone: "(303) 555-0123",
-    address: "6789 Pine Dr. Denver, CO 80205",
-    klass: "Marketing",
-  },
-  {
-    name: "Chloe Nguyen",
-    nameStyle: "link",
-    nameHighlight: "none",
-    pg: 26,
-    lastAttended: "04-10-2021",
-    email: "chloe.nguyen@example.com",
-    phone: "(202) 555-0177",
-    address: "1234 Birch Blvd. Washington, DC 20001",
-    klass: "Analytics",
-  },
-  {
-    name: "Ethan Chen",
-    nameStyle: "normal",
-    nameHighlight: "yellow",
-    pg: 31,
-    lastAttended: "10-29-2016",
-    email: "ethan.chen@hotmail.com",
-    phone: "(415) 555-0225",
-    address: "4567 Spruce Ct. Seattle, WA 98101",
-    klass: "Sales",
-  },
-  {
-    name: "Mia Roberts",
-    nameStyle: "link",
-    nameHighlight: "none",
-    pg: 29,
-    lastAttended: "02-14-2023",
-    email: "mia.roberts@mail.com",
-    phone: "(312) 555-0111",
-    address: "8910 Ash Ln. Chicago, IL 60601",
-    klass: "Customer Support",
-  },
-];
-
-export default function Page() {
+export default function Page({
+  wellersByDay,
+  error,
+  loading,
+  selectedDay,
+  setSelectedDay,
+  selectedPeriod,
+  setSelectedPeriod,
+}: {
+  wellersByDay: any;
+  error: any;
+  loading: boolean;
+  selectedDay: "tue" | "wed" | "thu";
+  setSelectedDay: (day: "tue" | "wed" | "thu") => void;
+  selectedPeriod: "am" | "pm";
+  setSelectedPeriod: (period: "am" | "pm") => void;
+}) {
   const [view, setView] = useState<"table" | "columns">("table");
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState("20");
   const totalPages = 10;
+
+  const rows = wellersByDay?.wellers;
+
   return (
     <div className="p-6 space-y-8 shadow-sm rounded-md bg-white ">
       {/* HEADER */}
       <div className="flex justify-between items-center ">
         <div>
           <DayTabs
-            onDayChange={(day) => console.log("Selected day:", day)}
-            onPeriodChange={(period) => console.log("Selected period:", period)}
+            onDayChange={setSelectedDay}
+            onPeriodChange={setSelectedPeriod}
+            defaultDay={selectedDay}
+            defaultPeriod={selectedPeriod}
           />
         </div>
 
@@ -158,144 +78,147 @@ export default function Page() {
         </div>
       </div>
 
-      <h2 className="">Wed-AM Wellers: 106 Active | 59 Dropped</h2>
+      <h2>
+        {`${selectedDay.toUpperCase()}-${selectedPeriod.toUpperCase()} Wellers: ${
+          wellersByDay?.statistics?.totalActiveAllDays
+        } Active | ${wellersByDay?.statistics?.totalDropped} Dropped`}
+      </h2>
+
       <div>
-        {view === "table" ? (
+        {loading ? (
+          // 🔄 Loading Spinner
+          <div className="flex justify-center items-center h-40">
+            <Spinner />
+          </div>
+        ) : error ? (
+          // ❌ Error Message
+          <div className="text-center text-red-500 font-medium py-10 text-lg">
+            Error loading wellers. {error}
+          </div>
+        ) : rows?.length === 0 ? (
+          // 📭 No Data Message
+          <div className="text-center text-gray-500 font-medium py-10">
+            No wellers found for this day/time.
+          </div>
+        ) : view === "table" ? (
+          // ✅ Table View
           <DataTable
             headers={headers}
             rows={rows}
-            renderRow={(row, i) => (
+            renderRow={(row: any, i: number) => (
               <TableRow key={i}>
-                <TableCell>
-                  <div
-                    className={`inline-block px-2 py-1 rounded-sm ${
-                      row.nameHighlight === "yellow" ? "bg-yellow-100" : ""
-                    }`}
-                  >
-                    {row.name}
-                  </div>
-                </TableCell>
-                <TableCell>{row.pg}</TableCell>
-                <TableCell>{row.lastAttended}</TableCell>
-                <TableCell>{row.email}</TableCell>
-                <TableCell>{row.phone}</TableCell>
-                <TableCell>{row.address}</TableCell>
-                <TableCell>{row.klass}</TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.pg || "N/A"} </TableCell>
+                <TableCell>{row.lastAttended || "N/A"}</TableCell>
+                <TableCell>{row.email || "N/A"}</TableCell>
+                <TableCell>{row.phone || "N/A"}</TableCell>
+                <TableCell>{row.address || "N/A"}</TableCell>
+                <TableCell>{row.class || "N/A"}</TableCell>
               </TableRow>
             )}
           />
         ) : (
-          <div className="grid grid-cols-5 gap-2 rounded-md overflow-y-auto ">
-            {/* Column: Name */}
+          // ✅ Columns View
+          <div className="grid grid-cols-5 gap-2 rounded-md overflow-y-auto">
+            {/* Name */}
             <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
               <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
                 Name
               </div>
-              {rows.map((row, i) => (
+              {rows.map((row: any, i: number) => (
                 <div
                   key={i}
-                  className={`p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  ${
-                    row.nameHighlight === "yellow" ? "bg-yellow-100" : ""
-                  } ${
-                    row.nameStyle === "bold"
-                      ? "font-bold"
-                      : row.nameStyle === "mutedItalic"
-                      ? "italic text-gray-500"
-                      : ""
-                  }`}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]"
                 >
-                  {row.nameStyle === "link" ? (
-                    <a href="#" className="text-blue-600 underline">
-                      {row.name}
-                    </a>
-                  ) : (
-                    row.name
-                  )}
-                </div>
-              ))}
-            </div>
-            {/* Column: Last Attended */}
-            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
-              <div className="font-semibold p-2  border-b !bg-[#F5F5F5]">
-                PG
-              </div>
-              {rows.map((row, i) => (
-                <div
-                  key={i}
-                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
-                >
-                  {row.pg}
-                </div>
-              ))}
-            </div>
-            {/* Column: Last Attended */}
-            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
-              <div className="font-semibold p-2  border-b !bg-[#F5F5F5]">
-                Last Attended
-              </div>
-              {rows.map((row, i) => (
-                <div
-                  key={i}
-                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
-                >
-                  {row.lastAttended}
-                </div>
-              ))}
-            </div>
-            {/* Column: Email */}
-            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
-              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
-                Email
-              </div>
-              {rows.map((row, i) => (
-                <div
-                  key={i}
-                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
-                >
-                  {row.email}
-                </div>
-              ))}
-            </div>
-            {/* Column: Phone */}
-            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
-              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
-                Phone
-              </div>
-              {rows.map((row, i) => (
-                <div
-                  key={i}
-                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
-                >
-                  {row.phone}
-                </div>
-              ))}
-            </div>
-            {/* Column: Address */}
-            <div className="flex flex-col border w-[300px]  rounded-md shadow-xs space-y-2  ">
-              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]  ">
-                Address
-              </div>
-              {rows.map((row, i) => (
-                <div
-                  key={i}
-                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]  "
-                >
-                  {row.address}
+                  {row.name}
                 </div>
               ))}
             </div>
 
-            {/* Column: Class*/}
-            <div className="flex flex-col w-full border rounded-md  shadow-xs space-y-2 ml-[11rem]">
+            {/* PG */}
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">PG</div>
+              {rows.map((row: any, i: number) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]"
+                >
+                  {row.pg || "N/A"}
+                </div>
+              ))}
+            </div>
+
+            {/* Last Attended */}
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
+                Last Attended
+              </div>
+              {rows.map((row: any, i: number) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]"
+                >
+                  {row.lastAttended || "N/A"}
+                </div>
+              ))}
+            </div>
+
+            {/* Email */}
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2 ">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
+                Email
+              </div>
+              {rows.map((row: any, i: number) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A] "
+                >
+                  {row.email || "N/A"}
+                </div>
+              ))}
+            </div>
+
+            {/* Phone */}
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
+                Phone
+              </div>
+              {rows.map((row: any, i: number) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]"
+                >
+                  {row.phone || "N/A"}
+                </div>
+              ))}
+            </div>
+
+            {/* Address */}
+            <div className="flex flex-col border w-[300px] rounded-md shadow-xs space-y-2">
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
+                Address
+              </div>
+              {rows.map((row: any, i: number) => (
+                <div
+                  key={i}
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]"
+                >
+                  {row.address || "N/A"}
+                </div>
+              ))}
+            </div>
+
+            {/* Class */}
+            <div className="flex flex-col w-full border rounded-md shadow-xs space-y-2 ml-[11rem]">
               <div className="font-semibold p-2 border-b !bg-[#F5F5F5] w-full">
                 Class
               </div>
-              {rows.map((row, i) => (
+              {rows.map((row: any, i: number) => (
                 <div
                   key={i}
-                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]   "
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]"
                 >
-                  {row.klass}
+                  {row.class || "N/A"}
                 </div>
               ))}
             </div>

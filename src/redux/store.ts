@@ -6,7 +6,7 @@ import productReducer from "./slices/productSlice"
 import orderReducer from "./slices/orderSlice"
 import categoryReducer from "./slices/categorySlice"
 import wellersReducer from "./slices/wellerSlice"
-
+import groupReducer from "./slices/groupSlice"
  
 export const store = configureStore({
   reducer: {
@@ -16,7 +16,8 @@ export const store = configureStore({
     product:productReducer,
     order:orderReducer,
     category:categoryReducer,
-    wellers:wellersReducer
+    wellers:wellersReducer,
+    groups:groupReducer
   },
 });
 
