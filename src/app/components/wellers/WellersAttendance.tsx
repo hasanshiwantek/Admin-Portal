@@ -22,7 +22,7 @@ const DATA: AttendanceItem[] = [
   { date: "06/12/2017", label: "Smiths:", value: 80, cw: 35 },
 ];
 
-export default function WellersAttendance() {
+export default function WellersAttendance({wellersByDay}:{wellersByDay:any}) {
   return (
     <section className=" rounded-md bg-white p-5 shadow-sm w-[50%]">
       {/* Title row */}

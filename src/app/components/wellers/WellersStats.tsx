@@ -21,7 +21,7 @@ const PILLS: Pill[] = [
   { label: "Bible Study Teacher" },
 ];
 
-export default function WellersStats() {
+export default function WellersStats({wellersByDay}:{wellersByDay:any}) {
   return (
     <section className="rounded-md bg-white p-5 shadow-sm w-[50%]">
       {/* Header */}

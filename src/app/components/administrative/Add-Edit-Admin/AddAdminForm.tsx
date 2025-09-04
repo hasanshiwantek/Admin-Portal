@@ -13,10 +13,11 @@ import { Eye, EyeOff } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { getAllWellers, assignRole } from "@/redux/slices/wellerSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
+import { refetchWellers } from "@/lib/wellerUtils";
 const AddAdminForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
-  const [userRole, setUserRole] = useState<number | null>();
+  const [userRole, setUserRole] = useState<number | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -53,6 +54,10 @@ const AddAdminForm = () => {
         setPassword("");
         setUserRole(0);
         setSelectedWellerId("");
+        // Refetch after a short delay
+        setTimeout(() => {
+          refetchWellers(dispatch);
+        }, 5000);
       } else {
         console.log("Error Assigning role: ", resultAction?.payload);
       }
@@ -117,9 +122,9 @@ const AddAdminForm = () => {
         <div>
           <Label className="block mb-2">Select Level of Access</Label>
           <Select
-            value={userRole !== null ? String(userRole) : ""}
+            value={userRole !== null ? String(userRole) : undefined}
             onValueChange={(value) => {
-              const numericValue = Number(value); // convert string -> number
+              const numericValue = Number(value);
               setUserRole(numericValue);
               console.log("Selected Role ID:", numericValue);
             }}

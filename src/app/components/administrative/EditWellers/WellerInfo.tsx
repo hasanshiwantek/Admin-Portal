@@ -15,14 +15,61 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { updateWeller } from "@/redux/slices/wellerSlice";
 import { useAppDispatch } from "@/hooks/useReduxHooks";
-const WellerInfo = ({ selectedWeller }: { selectedWeller: any }) => {
+const WellerInfo = ({
+  selectedWeller,
+  setSelectedWeller,
+}: {
+  selectedWeller: any;
+  setSelectedWeller: any;
+}) => {
   const { register, handleSubmit, reset, control } = useForm();
   const dispatch = useAppDispatch();
   const days = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
-  const sessions = ["TUPM", "WAM", "TAM", "TPM"];
+  const sessions = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
 
   useEffect(() => {
     if (selectedWeller) {
+      const {
+        attendances = [],
+        bibleStudies = [],
+        prayerGroups = [],
+        isNewMember,
+        isReturningMember,
+        mentorLead,
+        mentorRelationship,
+        startDate,
+        returnDate,
+        dropDate,
+        lastAttended,
+      } = selectedWeller;
+
+      // Map attendances array into checkbox format
+      const days = attendances.reduce((acc: any, day: string) => {
+        acc[day.toUpperCase()] = true;
+        return acc;
+      }, {});
+
+      // Map bibleStudies into teacher.{session}: boolean
+      const teacher = bibleStudies.reduce((acc: any, study: any) => {
+        const key = study.session?.toUpperCase();
+        acc[key] = study.is_teacher;
+        return acc;
+      }, {});
+
+      // Map prayerGroups into pgNumber, pgLeader, firstTimeLeader, secondTimeLeader
+      const pgNumber: any = {};
+      const pgLeader: any = {};
+      const firstTimeLeader: any = {};
+      const secondTimeLeader: any = {};
+
+      prayerGroups.forEach((pg: any) => {
+        const key = pg.session?.toUpperCase();
+        pgNumber[key] = pg.pg_number || "";
+        pgLeader[key] = !!pg.is_leader;
+        firstTimeLeader[key] = !!pg.is_first_time_leader;
+        secondTimeLeader[key] = !!pg.is_second_time_leader;
+      });
+
       reset({
         firstName: selectedWeller.firstName || "",
         lastName: selectedWeller.lastName || "",
@@ -35,7 +82,21 @@ const WellerInfo = ({ selectedWeller }: { selectedWeller: any }) => {
         state: selectedWeller.addressState || "",
         zip: selectedWeller.addressZip || "",
         notes: selectedWeller.notes || "",
-        // handle checkboxes and groups if needed
+        status: selectedWeller.status || "",
+        newWeller: isNewMember ? true : false,
+        returningWeller: isReturningMember ? true : false,
+        nwStartDate: startDate ? startDate.substring(0, 10) : "",
+        returnDate: returnDate ? returnDate.substring(0, 10) : "",
+        dropDate: dropDate ? dropDate.substring(0, 10) : "",
+        lastAttended: lastAttended ? lastAttended.substring(0, 10) : "",
+        mentorLead: mentorLead || false,
+        mentorRelationship: mentorRelationship || false,
+        days,
+        teacher,
+        pgNumber,
+        pgLeader,
+        firstTimeLeader,
+        secondTimeLeader,
       });
     }
   }, [selectedWeller, reset]);
@@ -61,14 +122,16 @@ const WellerInfo = ({ selectedWeller }: { selectedWeller: any }) => {
       .map(([day]) => day.toLowerCase());
 
     // 2. Convert teacher selection to bible studies
-    const bibleStudies = Object.entries(teacher).map(([session, value]) => ({
-      session: session.toLowerCase(),
-      name: `${session} Study`,
-      is_teacher: !!value, // ✅ works with true/false
-    }));
+    const bibleStudies = Object.entries(teacher)
+      .filter(([_, value]) => value) // only include truthy (checked) values
+      .map(([session, value]) => ({
+        session: session.toLowerCase(),
+        name: `${session} Study`,
+        is_teacher: true,
+      }));
 
     // 3. Build prayer groups array
-    const sessions = ["TUPM", "WAM", "TAM", "TPM"];
+    const sessions = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
     const prayerGroups = sessions.map((session) => ({
       session: session.toLowerCase(),
       pg_number: pgNumber[session] || "",
@@ -92,8 +155,8 @@ const WellerInfo = ({ selectedWeller }: { selectedWeller: any }) => {
       returnDate: rest.returnDate || null,
       dropDate: rest.dropDate || null,
       lastAttended: rest.lastAttended || null,
-      mentorLead: mentorLead === "on",
-      mentorRelationship: mentorRelationship === "on",
+      mentorLead: !!mentorLead,
+      mentorRelationship: !!mentorRelationship,
       attendances,
       bibleStudies,
       prayerGroups,
@@ -110,9 +173,9 @@ const WellerInfo = ({ selectedWeller }: { selectedWeller: any }) => {
       );
       if (updateWeller.fulfilled.match(resultAction)) {
         console.log("✅Weller updated successfully: ", resultAction?.payload);
-        setTimeout(()=>{
+        setTimeout(() => {
           reset();
-        },2000)
+        }, 2000);
       } else {
         console.log("❌Error updating weller: ", resultAction?.payload);
       }
@@ -411,21 +474,41 @@ const WellerInfo = ({ selectedWeller }: { selectedWeller: any }) => {
             {/* Mentor checkboxes and Save Button */}
             <div className="flex justify-between items-end pt-4">
               <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Checkbox id="mentorLead" {...register("mentorLead")} />
-                  <Label htmlFor="mentorLead">
-                    Mentor or Leading Acct Group
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="mentorRelationship"
-                    {...register("mentorRelationship")}
-                  />
-                  <Label htmlFor="mentorRelationship">
-                    In Acct Group or Mentoring Relationship
-                  </Label>
-                </div>
+                <Controller
+                  name="mentorLead"
+                  control={control}
+                  defaultValue={false}
+                  render={({ field }) => (
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="mentorLead"
+                        checked={!!field.value}
+                        onCheckedChange={(val) => field.onChange(!!val)}
+                      />
+                      <Label htmlFor="mentorLead">
+                        Mentor or Leading Acct Group
+                      </Label>
+                    </div>
+                  )}
+                />
+
+                <Controller
+                  name="mentorRelationship"
+                  control={control}
+                  defaultValue={false}
+                  render={({ field }) => (
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="mentorRelationship"
+                        checked={!!field.value}
+                        onCheckedChange={(val) => field.onChange(!!val)}
+                      />
+                      <Label htmlFor="mentorRelationship">
+                        In Acct Group or Mentoring Relationship
+                      </Label>
+                    </div>
+                  )}
+                />
               </div>
 
               <Button type="submit" className="btn-primary !rounded-full !p-7">

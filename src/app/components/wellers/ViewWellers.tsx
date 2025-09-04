@@ -1,9 +1,24 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import WellersAttendance from "./WellersAttendance";
 import WellersStats from "./WellersStats";
 import WellersTable from "./WellersTable";
 import { ChevronRight } from "lucide-react";
+import { getWellersByDay } from "@/redux/slices/wellerSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 const ViewWellers = () => {
+  const dispatch = useAppDispatch();
+  const { wellersByDay, loading, error } = useAppSelector(
+    (state: any) => state.wellers
+  );
+  console.log("Wellers By Day: ", wellersByDay);
+  // 👉 Lifted state for day and period
+  const [selectedDay, setSelectedDay] = useState<"tue" | "wed" | "thu">("tue");
+  const [selectedPeriod, setSelectedPeriod] = useState<"am" | "pm">("pm");
+  useEffect(() => {
+    dispatch(getWellersByDay({ day: selectedDay, time: selectedPeriod }));
+  }, [dispatch, selectedDay, selectedPeriod]);
+
   return (
     <>
       <div>
@@ -15,11 +30,20 @@ const ViewWellers = () => {
         </div>
 
         <div className="flex justify-between gap-10 mt-5">
-          <WellersAttendance />
-          <WellersStats />
+          <WellersAttendance wellersByDay={wellersByDay} />
+          <WellersStats wellersByDay={wellersByDay} />
         </div>
         <div className="my-5">
-          <WellersTable />
+          {/* 👉 pass selectedDay & setSelectedDay down to WellersTable */}
+          <WellersTable
+            wellersByDay={wellersByDay}
+            error={error}
+            loading={loading}
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+            selectedPeriod={selectedPeriod}
+            setSelectedPeriod={setSelectedPeriod}
+          />
         </div>
       </div>
     </>

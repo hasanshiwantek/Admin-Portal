@@ -58,9 +58,9 @@ const Stats = () => {
         ))}
       </div>
 
-      {loading && (
+      {/* {loading && (
         <div className="mt-3 text-sm text-gray-500">Loading statistics…</div>
-      )}
+      )} */}
     </div>
   );
 };

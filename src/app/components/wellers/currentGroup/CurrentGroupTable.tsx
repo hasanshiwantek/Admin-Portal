@@ -1,266 +1,120 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 import { DataTable } from "@/components/ui/DataTable";
-// Legend styling logic
-const getCellStyle = (name: string) => {
-  const styleMap: { [key: string]: string } = {
-    "Joshua Jones": "font-bold",
-    "Stephanie Sharkey": "text-orange-500",
-    "Judith Rodriguez": "text-green-600",
-    "Chris Glasser": "text-orange-500",
-    "Rodger Struck": "text-red-500",
-    "Stephanie Nicol": "font-bold",
-    "James Hall": "text-green-600",
-    "Kurt Bates": "text-blue-500",
-    "Daniel Hamilton": "text-blue-500",
-    "Mary Freund": "text-blue-500",
-    "Patricia Sanders (Notes)": "bg-yellow-100",
-    "Kurt Bates (Notes)": "bg-yellow-100",
-    "Megan Clark": "font-bold",
-    "Olivia Graham": "text-red-500",
-    "Samuel Ortiz": "text-green-600",
-    "Larry Fisher": "font-bold",
-    "Marlene Hayes": "text-orange-500",
-    "Evelyn Rivera": "text-red-500",
-    "Gregory Taylor": "font-bold",
-    "Heather Long": "text-green-600",
-    "Kimberly Mastrangelo": "font-bold",
-    "Katie Sims": "text-blue-500",
-    "Quentin Young": "text-red-500",
-    "Justin Carter": "text-green-600",
-  };
-
-  return styleMap[name] || "";
-};
-
-// Table headers
+import { getCurrentGroups } from "@/redux/slices/groupSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
+import Spinner from "../../loader/Spinner";
 const headers = ["#", "TUPM", "WAM", "TAM", "TPM"];
-
-// Table data
-const rows = [
-  {
-    id: 1,
-    tupm: "Joshua Jones",
-    wam: "Dennis Callis",
-    tam: "Alex Buckmaster",
-    tpm: "Patricia Sanders",
-    where: "Upstairs, 1st Room on Right",
-  },
-  {
-    id: 2,
-    tupm: "Stephanie Sharkey",
-    wam: "Ricky Smith",
-    tam: "David Elson",
-    tpm: "Paula Mora",
-    where: "",
-  },
-  {
-    id: 3,
-    tupm: "Judith Rodriguez",
-    wam: "Chris Glasser",
-    tam: "Rodger Struck",
-    tpm: "Lorri Wolf",
-    where: "",
-  },
-  {
-    id: 4,
-    tupm: "Corinne McCoy",
-    wam: "Kenneth Allen",
-    tam: "Stephanie Nicol",
-    tpm: "Rhonda Rhodes",
-    where: "",
-  },
-  {
-    id: 5,
-    tupm: "Jerry Heffer",
-    wam: "Iva Ryan",
-    tam: "James Hall",
-    tpm: "Bradley Lawlor",
-    where: "",
-  },
-  {
-    id: 6,
-    tupm: "Kurt Bates",
-    wam: "Kathy Pacheco",
-    tam: "Autumn Phillips",
-    tpm: "Kimberly Mastrangelo",
-    where: "",
-  },
-  {
-    id: 7,
-    tupm: "John Dukes",
-    wam: "Eddie Lake",
-    tam: "Kathy Pacheco",
-    tpm: "Katie Sims",
-    where: "",
-  },
-  {
-    id: 8,
-    tupm: "Daniel Hamilton",
-    wam: "Mary Freund",
-    tam: "Corinne McCoy",
-    tpm: "Chris Glasser",
-    where: "",
-  },
-  {
-    id: 9,
-    tupm: "Katie Sims",
-    wam: "Frances Swann",
-    tam: "Daniel Hamilton",
-    tpm: "Mary Freund",
-    where: "",
-  },
-  {
-    id: 10,
-    tupm: "Alex Buckmaster",
-    wam: "Frances Swann",
-    tam: "Patricia Sanders (Notes)",
-    tpm: "Kurt Bates (Notes)",
-    where: "",
-  },
-  {
-    id: 11,
-    tupm: "Megan Clark",
-    wam: "Howard Reed",
-    tam: "Angelo Price",
-    tpm: "Victor Horne",
-    where: "",
-  },
-  {
-    id: 12,
-    tupm: "Olivia Graham",
-    wam: "Larry Fisher",
-    tam: "Jasmine Lee",
-    tpm: "Tommy Bond",
-    where: "",
-  },
-  {
-    id: 13,
-    tupm: "Samuel Ortiz",
-    wam: "Marlene Hayes",
-    tam: "Evelyn Rivera",
-    tpm: "Quentin Young",
-    where: "",
-  },
-  {
-    id: 14,
-    tupm: "Nathaniel Brooks",
-    wam: "Wanda Wright",
-    tam: "Gregory Taylor",
-    tpm: "Natalie Stone",
-    where: "",
-  },
-  {
-    id: 15,
-    tupm: "Samantha Green",
-    wam: "Eugene Walker",
-    tam: "Heather Long",
-    tpm: "Justin Carter",
-    where: "",
-  },
-];
+const sessionKeys = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
 
 const CurrentGroupTable = () => {
+  const { groups, loading, error } = useAppSelector(
+    (state: any) => state.groups
+  );
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrentGroups());
+  }, [dispatch]);
+
+  // Loading spinner
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-40">
+        <Spinner />
+      </div>
+    );
+  }
+
+  // Error message
+  if (error) {
+    return (
+      <div className="text-center text-red-500 font-medium py-10">
+        Error fetching groups. Please try again later.
+      </div>
+    );
+  }
+
+  // Empty state
+  if (!groups || groups.length === 0) {
+    return (
+      <div className="text-center py-10 text-gray-500">
+        No group data found.
+      </div>
+    );
+  }
+
   return (
-    <>
-    
-    <div className="flex rounded-md border bg-white p-5 shadow-sm">
-      {/* Left Container */}
-      <div className="flex flex-col relative items-center justify-start  rounded-md border">
-        <span className="text-sm font-medium text-gray-500 mb-2 bg-[#F5F5F5] h-15 py-2 px-4">
-          Team
-        </span>
-        <span className="!text-5xl absolute top-80 !font-semibold text-gray-800 p-5">1</span>
-      </div>
+    <div className="space-y-10">
+      {groups.map((group: any, index: number) => {
+        const teamLabel = group.team || `N/A`;
+        const location = group.location || "No location set";
 
-      {/* Center Table */}
-      <div className="flex-1 pl-6">
-        <DataTable
-          headers={headers}
-          rows={rows}
-          renderRow={(row, i) => (
-            <TableRow key={i}>
-              <TableCell className="text-muted-foreground font-medium">
-                {row.id}
-              </TableCell>
-              <TableCell className={cn(getCellStyle(row.tupm))}>
-                {row.tupm}
-              </TableCell>
-              <TableCell className={cn(getCellStyle(row.wam))}>
-                {row.wam}
-              </TableCell>
-              <TableCell className={cn(getCellStyle(row.tam))}>
-                {row.tam}
-              </TableCell>
-              <TableCell className={cn(getCellStyle(row.tpm))}>
-                {row.tpm}
-              </TableCell>
-            </TableRow>
-          )}
-        />
-      </div>
-      {/* Right Container */}
-      <div className="flex flex-col ml-5  rounded-md justify-start   border">
-        <span className="text-sm font-medium text-gray-500 mb-2 bg-[#F5F5F5] h-15 py-2 px-4">
-          Where
-        </span>
-        <span className="text-5xl font-semibold text-gray-800 p-5">
-          Upstairs, 1st Room on Right
-        </span>
-      </div>
+        // Determine max number of rows across the 4 sessions
+        const maxRows = Math.max(
+          group.sessions.TUE_PM?.length || 0,
+          group.sessions.WED_AM?.length || 0,
+          group.sessions.THU_AM?.length || 0,
+          group.sessions.THU_PM?.length || 0
+        );
+
+        // Build rows
+        const rows = Array.from({ length: maxRows }).map((_, i) => ({
+          id: i + 1,
+          tupm: group.sessions.TUE_PM?.[i]?.name || "",
+          wam: group.sessions.WED_AM?.[i]?.name || "",
+          tam: group.sessions.THU_AM?.[i]?.name || "",
+          tpm: group.sessions.THU_PM?.[i]?.name || "",
+        }));
+
+        return (
+          <div
+            key={`team-${index}`}
+            className="flex rounded-md border bg-white p-5 shadow-sm"
+          >
+            {/* Left: Team label */}
+            <div className="flex flex-col relative items-center justify-start rounded-md border min-w-[100px]">
+              <span className="text-sm font-medium text-gray-500 mb-2 bg-[#F5F5F5] w-full py-2 px-4 text-center">
+                Team
+              </span>
+              <span className="text-5xl font-semibold text-gray-800 p-5 absolute top-24">
+                {teamLabel}
+              </span>
+            </div>
+
+            {/* Center: Data Table */}
+            <div className="flex-1 pl-6">
+              <DataTable
+                headers={headers}
+                rows={rows}
+                renderRow={(row: any, i: number) => (
+                  <TableRow key={i}>
+                    <TableCell>{row.id}</TableCell>
+                    <TableCell>{row.tupm || "—"}</TableCell>
+                    <TableCell>{row.wam || "—"}</TableCell>
+                    <TableCell>{row.tam || "—"}</TableCell>
+                    <TableCell>{row.tpm || "—"}</TableCell>
+                  </TableRow>
+                )}
+              />
+            </div>
+
+            {/* Right: Location */}
+            <div className="flex flex-col ml-5 rounded-md justify-start border min-w-[250px] max-w-[300px]">
+              <span className="text-sm font-medium text-gray-500 mb-2 bg-[#F5F5F5] py-2 px-4">
+                Where
+              </span>
+              <span className="text-md text-gray-800 p-5 leading-relaxed">
+                {location}
+              </span>
+            </div>
+          </div>
+        );
+      })}
     </div>
-
-
-    <div className="flex rounded-md border bg-white p-5 shadow-sm">
-      {/* Left Container */}
-      <div className="flex flex-col relative items-center justify-start  rounded-md border">
-        <span className="text-sm font-medium text-gray-500 mb-2 bg-[#F5F5F5] h-15 py-2 px-4">
-          Team
-        </span>
-        <span className="!text-5xl absolute top-80 !font-semibold text-gray-800 p-5">2</span>
-      </div>
-
-      {/* Center Table */}
-      <div className="flex-1 pl-6">
-        <DataTable
-          headers={headers}
-          rows={rows}
-          renderRow={(row, i) => (
-            <TableRow key={i}>
-              <TableCell className="text-muted-foreground font-medium">
-                {row.id}
-              </TableCell>
-              <TableCell className={cn(getCellStyle(row.tupm))}>
-                {row.tupm}
-              </TableCell>
-              <TableCell className={cn(getCellStyle(row.wam))}>
-                {row.wam}
-              </TableCell>
-              <TableCell className={cn(getCellStyle(row.tam))}>
-                {row.tam}
-              </TableCell>
-              <TableCell className={cn(getCellStyle(row.tpm))}>
-                {row.tpm}
-              </TableCell>
-            </TableRow>
-          )}
-        />
-      </div>
-      {/* Right Container */}
-      <div className="flex flex-col ml-5  rounded-md justify-start   border">
-        <span className="text-sm font-medium text-gray-500 mb-2 bg-[#F5F5F5] h-15 py-2 px-4">
-          Where
-        </span>
-        <span className="text-5xl font-semibold text-gray-800 p-5">
-          Upstairs, 1st Room on Right
-        </span>
-      </div>
-    </div>
-    </>
-    
   );
 };
 
