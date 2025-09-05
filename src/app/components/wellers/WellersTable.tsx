@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Columns, Table2 } from "lucide-react";
 import Pagination from "@/components/ui/pagination";
 import Spinner from "../loader/Spinner";
+import { cn } from "@/lib/utils";
 const headers = [
   "Name",
   "PG",
@@ -107,7 +108,28 @@ export default function Page({
             rows={rows}
             renderRow={(row: any, i: number) => (
               <TableRow key={i}>
-                <TableCell>{row.name}</TableCell>
+                <TableCell
+                  className={cn(
+                    row.hasNotes && "bg-yellow-100 rounded",
+                    "flex items-center gap-2"
+                  )}
+                >
+                  {/* Pink dot for Backup Leader */}
+                  {row.isBackupLeader && (
+                    <span className="inline-block w-2 h-2 rounded-full bg-pink-500" />
+                  )}
+
+                  {/* Blue dot for First Time (if not also backup leader) */}
+                  {row.isFirstTime && !row.isBackupLeader && (
+                    <span className="inline-block w-2 h-2 rounded-full bg-blue-800" />
+                  )}
+
+                  {/* Weller Name */}
+                  <span className={row.isLeader ? "font-bold" : ""}>
+                    {row.name}
+                  </span>
+                </TableCell>
+
                 <TableCell>{row.pg || "N/A"} </TableCell>
                 <TableCell>{row.lastAttended || "N/A"}</TableCell>
                 <TableCell>{row.email || "N/A"}</TableCell>
@@ -125,12 +147,24 @@ export default function Page({
               <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
                 Name
               </div>
+
               {rows.map((row: any, i: number) => (
                 <div
                   key={i}
-                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]"
+                  className={cn(
+                    "p-2 border-b text-[11.5px] font-medium text-[#3A3A3A]",
+                    row.hasNotes && "bg-yellow-100 rounded"
+                  )}
                 >
-                  {row.name}
+                  {row.isBackupLeader && (
+                    <span className="inline-block w-2 h-2 rounded-full bg-pink-500 mr-1" />
+                  )}
+                  {row.isFirstTime && !row.isBackupLeader && (
+                    <span className="inline-block w-2 h-2 rounded-full bg-blue-800 mr-1" />
+                  )}
+                  <span className={cn(row.isLeader && "font-bold")}>
+                    {row.name}
+                  </span>
                 </div>
               ))}
             </div>
