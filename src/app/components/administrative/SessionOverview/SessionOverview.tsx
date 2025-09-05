@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { DataTable } from "@/components/ui/DataTable";
 import {
@@ -28,13 +28,8 @@ const labelMap = [
   { key: "projectedGrowth", label: "Projected Growth" },
 ];
 
-const sessionKeys = ["All Days", "TUPM", "WAM", "TAM", "TPM"];
 const churchKeys = ["allDays", "tupm", "wam", "tam", "tpm"];
-// CHURCHES DATA
-const churchesHeaders = [
-  "Session: FEB 2017 – JUN 2017",
-  ...sessionKeys.map((s) => s.toUpperCase()),
-];
+const churchSessionKeys = ["All Days", "TUPM", "WAM", "TAM", "TPM"];
 
 const SessionOverview = () => {
   // SESSION SUMMARY DATA
@@ -42,12 +37,19 @@ const SessionOverview = () => {
     (state: any) => state.wellers
   );
   console.log("Session Summary: ", sessionSummary);
-  const headers = ["Session: FEB 2017 – JUN 2017", ...sessionKeys];
+
+  const yearSum = Object.keys(sessionSummary || {})[0]; // e.g. "2025"
+
+  const yearSummary = sessionSummary?.[yearSum] || {};
+  const sessionKeys = [
+    "All Days",
+    ...Object.keys(yearSummary).filter((key) => key !== "All Days"),
+  ];
+  const headers = [`Session ${yearSum}`, ...sessionKeys];
   const data = labelMap.map(({ key, label }) => {
     const values = sessionKeys.map((session) => {
-      const sessionData = sessionSummary?.[session] || {};
+      const sessionData = yearSummary?.[session] || {};
       const val = sessionData[key];
-
       return val === undefined || val === null || val === "" ? "-" : val;
     });
 
@@ -56,13 +58,26 @@ const SessionOverview = () => {
 
   // CHURCH SUMMARY DATA
   const { churchSummary } = useAppSelector((state: any) => state.wellers);
-  console.log("Session Summary: ", sessionSummary);
-  const churchData = churchSummary?.map((church: any) => ({
-    church: church.church,
-    values: churchKeys.map((key) =>
-      church[key] !== null && church[key] !== undefined ? church[key] : "-"
-    ),
-  }));
+  console.log("Church Summary: ", churchSummary);
+
+  const year = Object.keys(churchSummary || {})[0];
+  const churchesHeaders = [
+    `Session ${year}`,
+    ...churchSessionKeys.map((s) => s.toUpperCase()),
+  ];
+  const churchData: { church: any; values: any[] }[] = Array.isArray(
+    churchSummary?.[year]
+  )
+    ? churchSummary[year].map((church: any) => ({
+        church: church.church,
+        values: churchKeys.map((key) =>
+          church[key] !== null && church[key] !== undefined ? church[key] : "-"
+        ),
+      }))
+    : [];
+
+  // SHOW HIDE CHURCH LOGIC
+  const [showChurch, setShowChurch] = useState(false);
 
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -104,31 +119,40 @@ const SessionOverview = () => {
         {/* // CHURCHES TABLE */}
 
         <div className="bg-white p-6 rounded-md shadow-sm overflow-x-auto">
-          <p className="text-base !text-[var(--primary-color)] cursor-pointer underline mb-3">
+          <p
+            className="text-base !text-[var(--primary-color)] cursor-pointer underline mb-3"
+            onClick={() => setShowChurch((prev) => !prev)}
+          >
             Show / Hide Churches
           </p>
 
-          {loading ? (
-            <div className="py-8 text-center">
-              <Spinner />
-            </div>
-          ) : error ? (
-            <div className="py-6 text-center text-red-500">
-              ⚠️ {String(error)}
-            </div>
-          ) : (
-            <DataTable
-              headers={churchesHeaders}
-              rows={churchData}
-              renderRow={(row: any, i) => (
-                <TableRow key={i}>
-                  <TableCell className="font-medium">{row.church}</TableCell>
-                  {row.values.map((val: any, idx: number) => (
-                    <TableCell key={idx}>{val}</TableCell>
-                  ))}
-                </TableRow>
+          {showChurch && (
+            <>
+              {loading ? (
+                <div className="py-8 text-center">
+                  <Spinner />
+                </div>
+              ) : error ? (
+                <div className="py-6 text-center text-red-500">
+                  ⚠️ {String(error)}
+                </div>
+              ) : (
+                <DataTable
+                  headers={churchesHeaders}
+                  rows={churchData}
+                  renderRow={(row: any, i) => (
+                    <TableRow key={i}>
+                      <TableCell className="font-medium">
+                        {row.church}
+                      </TableCell>
+                      {row.values.map((val: any, idx: number) => (
+                        <TableCell key={idx}>{val}</TableCell>
+                      ))}
+                    </TableRow>
+                  )}
+                />
               )}
-            />
+            </>
           )}
         </div>
       </div>

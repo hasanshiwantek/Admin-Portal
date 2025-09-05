@@ -19,7 +19,7 @@ interface AuthState {
   loading: boolean;
   error: string | null;
   isAuthenticated: boolean;
-  stores: {storeId: number; name?: string}[];
+  stores: { storeId: number; name?: string }[];
 }
 
 const initialState: AuthState = {
@@ -41,8 +41,8 @@ export const loginUser = createAsyncThunk(
     try {
       const res = await axiosInstance.post("auth/login", { email, password });
       return res.data;
-    } // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      catch (err: any) {
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Login failed"
       );
@@ -57,10 +57,26 @@ export const registerUser = createAsyncThunk(
     try {
       const res = await axiosInstance.post("/auth/register", formData);
       return res.data;
-    } // eslint-disable-next-line @typescript-eslint/no-explicit-any 
-    catch (err: any) {
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Registration failed"
+      );
+    }
+  }
+);
+
+// Update Password thunk
+export const updatePassword = createAsyncThunk(
+  "auth/updatePassword",
+  async ({ data }: { data: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.post("auth/change-password", data);
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Password Updation failed"
       );
     }
   }

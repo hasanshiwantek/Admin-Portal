@@ -92,7 +92,7 @@ export default function Page({
           </div>
         ) : error ? (
           // ❌ Error Message
-          <div className="text-center text-red-500 font-medium py-10 text-lg">
+          <div className="text-center text-red-500 font-medium py-10 text-xl">
             Error loading wellers. {error}
           </div>
         ) : rows?.length === 0 ? (
