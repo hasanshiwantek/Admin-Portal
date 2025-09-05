@@ -33,7 +33,7 @@ export const sidebarData = [
     title: "Info for Leaders",
     icon: IdCard,
       children: [
-      { title: "Volunteer Info", url: "/info-leaders/volunteer-info" },
+      // { title: "Volunteer Info", url: "/info-leaders/volunteer-info" },
        { title: "Weller Quick View", url: "/info-leaders/quick-view" },
        { title: "Current Groups", url: "/info-leaders/current-groups" },
        { title: "Teacher Roster", url: "/info-leaders/teacher-roster" },

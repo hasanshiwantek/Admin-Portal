@@ -73,25 +73,30 @@ const AdminTable = () => {
   };
 
   const handleRemove = async (id: number) => {
-    try {
-      const resultAction = await dispatch(
-        removeRole({
-          adminId: id,
-        })
-      );
+    const confirm = window.confirm("Delete selected role?");
+    if (!confirm) {
+      return;
+    } else {
+      try {
+        const resultAction = await dispatch(
+          removeRole({
+            adminId: id,
+          })
+        );
 
-      if (removeRole.fulfilled.match(resultAction)) {
-        console.log("✅ Role updated successfully:", resultAction.payload);
+        if (removeRole.fulfilled.match(resultAction)) {
+          console.log("✅ Role updated successfully:", resultAction.payload);
 
-        // Refetch after a short delay
-        setTimeout(()=>{
-          window.location.reload()
-        },2000)
-      } else {
-        console.error("❌ Failed to update role:", resultAction.payload);
+          // Refetch after a short delay
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          console.error("❌ Failed to update role:", resultAction.payload);
+        }
+      } catch (err) {
+        console.error("❌ Error updating role:", err);
       }
-    } catch (err) {
-      console.error("❌ Error updating role:", err);
     }
   };
 

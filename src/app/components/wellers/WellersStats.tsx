@@ -1,4 +1,3 @@
-// app/components/WellersStats.tsx
 "use client";
 
 import * as React from "react";
@@ -16,20 +15,24 @@ const PILLS: Pill[] = [
   { label: "BLUE", note: "New This Session", dot: "blue" },
   { label: "DARK BLUE", note: "First Time Weller", dot: "darkBlue" },
   { label: "BOLD", note: "PG Leader", variant: "bold" },
-  { label: "PINK", note: "Backup PG Leade", dot: "pink" },
+  { label: "PINK", note: "Backup PG Leader", dot: "pink" },
   { label: "YELLOW BACKGROUND", note: "Has Notes", variant: "yellow" },
   { label: "Bible Study Teacher" },
 ];
 
-export default function WellersStats({wellersByDay}:{wellersByDay:any}) {
+export default function WellersStats({ wellersByDay }: { wellersByDay: any }) {
+  const stats = wellersByDay?.statistics || {};
+
   return (
     <section className="rounded-md bg-white p-5 shadow-sm w-[50%]">
       {/* Header */}
       <div className="flex flex-col space-y-4">
-      <h2 className="">
-        Total Active All Days:405 | DD: | TD:
-      </h2>
-      <span >Total Dropped:211, of which 108 were new.</span>
+        <h2 className="">
+          Total Active All Days: {stats.totalActiveAllDays ?? 0} | DD: {stats.dayDropped ?? 0} | TD: {stats.dayActive ?? 0}
+        </h2>
+        <span>
+          Total Dropped: {stats.totalDropped ?? 0}, of which {stats.totalDroppedNew ?? 0} were new.
+        </span>
       </div>
 
       {/* Legend pills */}
@@ -45,7 +48,6 @@ export default function WellersStats({wellersByDay}:{wellersByDay:any}) {
               p.variant === "bold" && "font-semibold"
             )}
           >
-            {/* Colored dot (if any) */}
             {p.dot && (
               <span
                 className={cn(
@@ -56,8 +58,6 @@ export default function WellersStats({wellersByDay}:{wellersByDay:any}) {
                 )}
               />
             )}
-
-            {/* Label and optional note */}
             <span className="whitespace-nowrap">
               {p.label}
               {p.variant === "bold" && ":"}
@@ -82,7 +82,7 @@ export default function WellersStats({wellersByDay}:{wellersByDay:any}) {
           variant="outline"
           className="h-11 !rounded-full !p-6 btn-outline-primary"
         >
-          See my pg only
+          See my PG only
         </Button>
       </div>
     </section>

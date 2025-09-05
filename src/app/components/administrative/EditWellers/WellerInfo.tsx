@@ -48,8 +48,6 @@ const WellerInfo = ({
     "Raising Kids",
   ];
 
-
-
   // ✅ Set up default values for all fields
   const defaultValues: WellerFormValues = {
     firstName: "",
@@ -184,7 +182,6 @@ const WellerInfo = ({
       .filter(([_, value]) => value === true)
       .map(([day]) => day.toLowerCase());
 
-      
     // 3. Build prayer groups array
     const sessions = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
     const prayerGroups = sessions.map((session) => ({
