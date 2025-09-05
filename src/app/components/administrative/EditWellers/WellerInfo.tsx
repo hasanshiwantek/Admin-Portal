@@ -312,7 +312,10 @@ const WellerInfo = ({
               name="status"
               defaultValue=""
               render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || ""}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Attendance Status" />
                   </SelectTrigger>
