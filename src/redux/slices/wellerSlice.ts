@@ -80,7 +80,7 @@ export const getWellerById = createAsyncThunk(
   "wellers/getWellerById",
   async (wellerId, thunkAPI) => {
     try {
-      const res = await axiosInstance.get(`admin/get-wellers${wellerId}`);
+      const res = await axiosInstance.get(`admin/wellers/${wellerId}`);
       console.log("✅ Get Weller Response Data By Id:", res.data);
       return res.data;
     } catch (err: any) {

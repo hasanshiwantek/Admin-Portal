@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { updateWeller } from "@/redux/slices/wellerSlice";
-import { useAppDispatch } from "@/hooks/useReduxHooks";
+import { updateWeller, getWellerById } from "@/redux/slices/wellerSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
+import { WellerFormValues } from "@/types/types";
 const WellerInfo = ({
   selectedWeller,
   setSelectedWeller,
@@ -22,13 +23,72 @@ const WellerInfo = ({
   selectedWeller: any;
   setSelectedWeller: any;
 }) => {
-  const { register, handleSubmit, reset, control } = useForm();
   const dispatch = useAppDispatch();
+  const { weller } = useAppSelector((state: any) => state.wellers);
+  const wellerData = weller?.data;
+  console.log("Selected Weller data thru ID: ", wellerData);
+
+  const wellerId = selectedWeller?.id;
+
+  // 👇 Fetch weller data on first mount
+  useEffect(() => {
+    if (wellerId) dispatch(getWellerById(wellerId));
+  }, [dispatch, wellerId]);
+
   const days = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
   const sessions = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
+  const studies = [
+    "Floater",
+    "Boundaries",
+    "Disciples Are Made",
+    "Disunity",
+    "God is Enough",
+    "Johns Letters",
+    "Overcoming",
+    "Raising Kids",
+  ];
 
+
+
+  // ✅ Set up default values for all fields
+  const defaultValues: WellerFormValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    invitedBy: "",
+    homeChurchName: "",
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    notes: "",
+    status: "",
+    newWeller: false,
+    returningWeller: false,
+    nwStartDate: "",
+    returnDate: "",
+    dropDate: "",
+    lastAttended: "",
+    mentorLead: false,
+    mentorRelationship: false,
+    days: Object.fromEntries(sessions.map((s) => [s, false])),
+    teacher: Object.fromEntries(sessions.map((s) => [s, false])),
+    studyName: Object.fromEntries(sessions.map((s) => [s, "none"])),
+    pgNumber: Object.fromEntries(sessions.map((s) => [s, ""])),
+    pgLeader: Object.fromEntries(sessions.map((s) => [s, false])),
+    firstTimeLeader: Object.fromEntries(sessions.map((s) => [s, false])),
+    secondTimeLeader: Object.fromEntries(sessions.map((s) => [s, false])),
+  };
+
+  // ✅ useForm now has defaultValues
+  const { register, handleSubmit, reset, control, getValues } = useForm({
+    defaultValues,
+  });
+
+  // 👇 Reset form when weller data loads
   useEffect(() => {
-    if (selectedWeller) {
+    if (wellerData) {
       const {
         attendances = [],
         bibleStudies = [],
@@ -41,22 +101,25 @@ const WellerInfo = ({
         returnDate,
         dropDate,
         lastAttended,
-      } = selectedWeller;
+      } = wellerData;
 
-      // Map attendances array into checkbox format
       const days = attendances.reduce((acc: any, day: string) => {
         acc[day.toUpperCase()] = true;
         return acc;
       }, {});
 
-      // Map bibleStudies into teacher.{session}: boolean
       const teacher = bibleStudies.reduce((acc: any, study: any) => {
         const key = study.session?.toUpperCase();
-        acc[key] = study.is_teacher;
+        acc[key] = study.is_teacher ?? false;
         return acc;
       }, {});
 
-      // Map prayerGroups into pgNumber, pgLeader, firstTimeLeader, secondTimeLeader
+      const studyName = bibleStudies.reduce((acc: any, study: any) => {
+        const key = study.session?.toUpperCase();
+        acc[key] = study.name;
+        return acc;
+      }, {});
+
       const pgNumber: any = {};
       const pgLeader: any = {};
       const firstTimeLeader: any = {};
@@ -71,36 +134,36 @@ const WellerInfo = ({
       });
 
       reset({
-        firstName: selectedWeller.firstName || "",
-        lastName: selectedWeller.lastName || "",
-        email: selectedWeller.email || "",
-        phone: selectedWeller.phone || "",
-        invitedBy: selectedWeller.invitedBy || "",
-        homeChurchName: selectedWeller.homeChurch || "",
-        street: selectedWeller.addressStreet || "",
-        city: selectedWeller.addressCity || "",
-        state: selectedWeller.addressState || "",
-        zip: selectedWeller.addressZip || "",
-        notes: selectedWeller.notes || "",
-        status: selectedWeller.status || "",
-        newWeller: isNewMember ? true : false,
-        returningWeller: isReturningMember ? true : false,
-        nwStartDate: startDate ? startDate.substring(0, 10) : "",
-        returnDate: returnDate ? returnDate.substring(0, 10) : "",
-        dropDate: dropDate ? dropDate.substring(0, 10) : "",
-        lastAttended: lastAttended ? lastAttended.substring(0, 10) : "",
+        firstName: wellerData.firstName || "",
+        lastName: wellerData.lastName || "",
+        email: wellerData.email || "",
+        phone: wellerData.phone || "",
+        invitedBy: wellerData.invitedBy || "",
+        homeChurchName: wellerData.homeChurch || "",
+        street: wellerData.addressStreet || "",
+        city: wellerData.addressCity || "",
+        state: wellerData.addressState || "",
+        zip: wellerData.addressZip || "",
+        notes: wellerData.notes || "",
+        status: wellerData.status || "",
+        newWeller: isNewMember || false,
+        returningWeller: isReturningMember || false,
+        nwStartDate: startDate?.substring(0, 10) || "",
+        returnDate: returnDate?.substring(0, 10) || "",
+        dropDate: dropDate?.substring(0, 10) || "",
+        lastAttended: lastAttended?.substring(0, 10) || "",
         mentorLead: mentorLead || false,
         mentorRelationship: mentorRelationship || false,
         days,
         teacher,
+        studyName,
         pgNumber,
         pgLeader,
         firstTimeLeader,
         secondTimeLeader,
       });
     }
-  }, [selectedWeller, reset]);
-
+  }, [wellerData, reset]);
   const transformPayload = (formData: any) => {
     const {
       teacher = {},
@@ -121,15 +184,7 @@ const WellerInfo = ({
       .filter(([_, value]) => value === true)
       .map(([day]) => day.toLowerCase());
 
-    // 2. Convert teacher selection to bible studies
-    const bibleStudies = Object.entries(teacher)
-      .filter(([_, value]) => value) // only include truthy (checked) values
-      .map(([session, value]) => ({
-        session: session.toLowerCase(),
-        name: `${session} Study`,
-        is_teacher: true,
-      }));
-
+      
     // 3. Build prayer groups array
     const sessions = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
     const prayerGroups = sessions.map((session) => ({
@@ -140,6 +195,14 @@ const WellerInfo = ({
       is_second_time_leader: !!secondTimeLeader[session],
     }));
 
+    const bibleStudies = sessions
+      .map((session) => ({
+        session: session.toLowerCase(),
+        name: formData.studyName?.[session],
+        is_teacher: !!formData.teacher?.[session],
+      }))
+      .filter((study) => study.name && study.name !== "none");
+
     return {
       ...rest,
       homeChurch: rest.homeChurchName,
@@ -149,8 +212,9 @@ const WellerInfo = ({
       addressZip: rest.zip,
       status: rest.status,
       notes: rest.notes,
-      isNewMember: newWeller === "on",
-      isReturningMember: returningWeller === "on",
+      isNewMember: !!newWeller,
+      isReturningMember: !!returningWeller,
+
       startDate: rest.nwStartDate || null,
       returnDate: rest.returnDate || null,
       dropDate: rest.dropDate || null,
@@ -165,7 +229,7 @@ const WellerInfo = ({
 
   const onSubmit = async (data: any) => {
     const payload = transformPayload(data);
-    const wellerId = selectedWeller?.id;
+    const wellerId = wellerData?.id;
     console.log("📤 Transformed Payload:", payload);
     try {
       const resultAction = await dispatch(
@@ -264,36 +328,55 @@ const WellerInfo = ({
 
           <div className="space-y-5 bg-white p-5 shadow-sm rounded-md">
             <h2 className="mb-4">Studies</h2>
-            {sessions.map((study) => (
-              <div key={study} className="flex flex-col gap-2">
-                <div>
-                  <Label htmlFor={`teacher-${study}`}>Study {study}</Label>
-                </div>
-                <div className="flex justify-start gap-2 items-center">
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder={`Study ${study}`} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">None selected</SelectItem>
-                      <SelectItem
-                        value={`Study ${study}`}
-                      >{`Study ${study}`}</SelectItem>
-                    </SelectContent>
-                  </Select>
 
+            {sessions.map((session) => (
+              <div key={session} className="flex flex-col gap-2">
+                <Label className="font-medium">{session}</Label>
+
+                <div className="flex justify-start gap-4 items-center">
+                  {/* Select for study name */}
                   <Controller
-                    name={`teacher.${study}`}
+                    name={`studyName.${session}`}
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value || "none"} // value MUST match SelectItem
+                        onValueChange={(val) => field.onChange(val)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder="Select Study"
+                            // 👇 Ensure controlled value is passed!
+                            defaultValue={field.value || "none"}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none" disabled>
+                            -- None selected --
+                          </SelectItem>
+                          {studies.map((study) => (
+                            <SelectItem key={study} value={study}>
+                              {study}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+
+                  {/* Checkbox for is_teacher */}
+                  <Controller
+                    name={`teacher.${session}`}
                     control={control}
                     defaultValue={false}
                     render={({ field }) => (
                       <>
                         <Checkbox
-                          id={`teacher-${study}`}
+                          id={`teacher-${session}`}
                           checked={!!field.value}
                           onCheckedChange={(val) => field.onChange(!!val)}
                         />
-                        <Label htmlFor={`teacher-${study}`}>Teacher</Label>
+                        <Label htmlFor={`teacher-${session}`}>Teacher</Label>
                       </>
                     )}
                   />
@@ -333,9 +416,37 @@ const WellerInfo = ({
             />
 
             <div className="flex items-center gap-6 mt-4">
-              <Checkbox {...register("newWeller")} /> <span>New Weller</span>
-              <Checkbox {...register("returningWeller")} />{" "}
-              <span>Returning Weller</span>
+              <Controller
+                name="newWeller"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                  <>
+                    <Checkbox
+                      id="newWeller"
+                      checked={!!field.value}
+                      onCheckedChange={(val) => field.onChange(!!val)}
+                    />
+                    <span>New Weller</span>
+                  </>
+                )}
+              />
+
+              <Controller
+                name="returningWeller"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                  <>
+                    <Checkbox
+                      id="returningWeller"
+                      checked={!!field.value}
+                      onCheckedChange={(val) => field.onChange(!!val)}
+                    />
+                    <span>Returning Weller</span>
+                  </>
+                )}
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-4 mt-4">
