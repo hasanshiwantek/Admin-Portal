@@ -40,10 +40,30 @@ export const getWellersByClass = createAsyncThunk(
   }
 );
 
+export const viewWellersByGroupsOrStudies = createAsyncThunk(
+  "groups/viewWellersByGroupsOrStudies",
+  async ({ tab, day, time }: { tab: any; day: any; time: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(
+        `admin/leaders-and-teachers?day=${day}&time=${time}&tab=${tab}`
+      );
+      console.log("Wellers by Tab Response : ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to get wellers "
+      );
+    }
+  }
+);
+
 // 2. Initial State
 const initialState = {
   groups: [],
   wellersByClass: [],
+  leaderData: [],
   loading: false,
   error: null as string | null,
 };
@@ -77,6 +97,18 @@ const groupSlice = createSlice({
         state.wellersByClass = action.payload;
       })
       .addCase(getWellersByClass.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(viewWellersByGroupsOrStudies.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(viewWellersByGroupsOrStudies.fulfilled, (state, action) => {
+        state.loading = false;
+        state.leaderData = action.payload;
+      })
+      .addCase(viewWellersByGroupsOrStudies.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
