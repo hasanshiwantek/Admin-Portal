@@ -27,6 +27,10 @@ export default function Page({
   setSelectedDay,
   selectedPeriod,
   setSelectedPeriod,
+  currentPage,
+  setCurrentPage,
+  perPage,
+  setPerPage,
 }: {
   wellersByDay: any;
   error: any;
@@ -35,11 +39,13 @@ export default function Page({
   setSelectedDay: (day: "tue" | "wed" | "thu") => void;
   selectedPeriod: "am" | "pm";
   setSelectedPeriod: (period: "am" | "pm") => void;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  perPage: string;
+  setPerPage: (perPage: string) => void;
 }) {
   const [view, setView] = useState<"table" | "columns">("table");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState("20");
-  const totalPages = 10;
+  const totalPages = wellersByDay?.pagination?.lastPage || 1;
 
   const rows = wellersByDay?.wellers;
 
@@ -130,7 +136,7 @@ export default function Page({
                   </span>
                 </TableCell>
 
-                <TableCell>{row.pg || "N/A"} </TableCell>
+                <TableCell>{row.pgNumber || "N/A"} </TableCell>
                 <TableCell>{row.lastAttended || "N/A"}</TableCell>
                 <TableCell>{row.email || "N/A"}</TableCell>
                 <TableCell>{row.phone || "N/A"}</TableCell>

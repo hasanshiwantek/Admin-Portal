@@ -21,12 +21,18 @@ export const getCurrentGroups = createAsyncThunk(
 export const getWellersByClass = createAsyncThunk(
   "groups/getWellersByClass",
   async (
-    { className, day, time }: { className: any; day: any; time: any },
+    {
+      className,
+      day,
+      time,
+      page,
+      perPage,
+    }: { className: any; day: any; time: any; page: any; perPage: any },
     thunkAPI
   ) => {
     try {
       const res = await axiosInstance.get(
-        `admin/teacher-roster?class=${className}&day=${day}_${time}`
+        `admin/teacher-roster?class=${className}&day=${day}_${time}&page=${page}&perPage=${perPage}`
       );
       console.log("Wellers by class Response : ", res.data);
 
@@ -87,6 +93,82 @@ export const getWellersByPG = createAsyncThunk(
   }
 );
 
+export const getNewWellers = createAsyncThunk(
+  "groups/getNewWellers",
+  async ({ from, to }: { from: any; to: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(
+        `admin/new-wellers?from=${from}&to=${to}`
+      );
+      console.log("New Wellers Response: ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to get new wellers "
+      );
+    }
+  }
+);
+
+export const getGuestWellers = createAsyncThunk(
+  "groups/getGuestWellers",
+  async ({ from, to }: { from: any; to: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(
+        `admin/guest-wellers?from=${from}&to=${to}`
+      );
+      console.log("Guest Wellers Response: ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to get Guest wellers "
+      );
+    }
+  }
+);
+
+export const getReturneeWellers = createAsyncThunk(
+  "groups/getReturneeWellers",
+  async ({ from, to }: { from: any; to: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(
+        `admin/returnee-wellers?from=${from}&to=${to}`
+      );
+      console.log("Returnee Wellers Response: ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to get Returnee wellers "
+      );
+    }
+  }
+);
+
+export const getDroppedWellers = createAsyncThunk(
+  "groups/getDroppedWellers",
+  async ({ from, to }: { from: any; to: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(
+        `admin/drop-wellers?from=${from}&to=${to}`
+      );
+      console.log("Drop Wellers Response: ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to get Drop wellers "
+      );
+    }
+  }
+);
+
 // 2. Initial State
 const initialState = {
   groups: [],
@@ -94,8 +176,9 @@ const initialState = {
   leaderData: [],
   loading: false,
   wellersByPG: [],
+  newWellers: [],
   error: null as string | null,
-  pagination:null
+  pagination: null,
 };
 
 // 3. Slice
@@ -149,11 +232,35 @@ const groupSlice = createSlice({
       .addCase(getWellersByPG.fulfilled, (state, action) => {
         state.loading = false;
         state.wellersByPG = action.payload;
-        state.pagination=action.payload.pagination
+        state.pagination = action.payload.pagination;
       })
       .addCase(getWellersByPG.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(getNewWellers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getNewWellers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.newWellers = action.payload;
+      })
+      .addCase(getNewWellers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(getGuestWellers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.newWellers = action.payload;
+      })
+      .addCase(getReturneeWellers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.newWellers = action.payload;
+      })
+      .addCase(getDroppedWellers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.newWellers = action.payload;
       });
   },
 });

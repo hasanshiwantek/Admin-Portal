@@ -17,9 +17,9 @@ export default function WellersAttendance({
 }: {
   wellersByDay: any;
 }) {
-  // Extracted and formatted summaryByTime data
+  // ✅ Extracted and formatted attendanceSummary data
   const summaryData: AttendanceItem[] =
-    wellersByDay?.summaryByTime?.map((item: any) => {
+    wellersByDay?.attendanceSummary?.map((item: any) => {
       const dateObj = new Date(item.createdAt);
       const formattedDate = `${(dateObj.getMonth() + 1)
         .toString()
