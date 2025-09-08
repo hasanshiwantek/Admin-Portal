@@ -1,135 +1,65 @@
-// app/NewWellers.tsx
-"use client"
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import DataColumn from "@/components/ui/DataColumn";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-const newWellersData = [
-  {
-    date: "05-17-2017",
-    tupm: "X",
-    wam: "X",
-    tam: "X",
-    tpm: "X",
-    name: "Kurt Bates",
-    email: "lorri13@gmail.com",
-    phone: "(301) 580-7410",
-    invitedBy: "Katie Sims",
-    pg: { tupm: 5, wam: 8, tam: 0, tpm: 5 },
-  },
-  {
-    date: "05-17-2017",
-    tupm: "X",
-    wam: "X",
-    tam: "",
-    tpm: "X",
-    name: "David Elson",
-    email: "k.r.mastrangelo@outlook.com",
-    phone: "(785) 712-6532",
-    invitedBy: "Bradley Lawlor",
-    pg: { tupm: 0, wam: 2, tam: 0, tpm: 2 },
-  },
-  {
-    date: "05-17-2017",
-    tupm: "X",
-    wam: "",
-    tam: "",
-    tpm: "X",
-    name: "Stephanie Nicol",
-    email: "stephanienicol@outlook.com",
-    phone: "(813) 752-5811",
-    invitedBy: "Judith Rodriguez",
-    pg: { tupm: 5, wam: 0, tam: 0, tpm: 5 },
-  },
-  {
-    date: "05-17-2017",
-    tupm: "X",
-    wam: "",
-    tam: "X",
-    tpm: "",
-    name: "Dennis Callis",
-    email: "dennis416@gmail.com",
-    phone: "(814) 403-9181",
-    invitedBy: "Patricia Sanders",
-    pg: { tupm: 0, wam: 0, tam: 0, tpm: 0 },
-  },
-  {
-    date: "05-17-2017",
-    tupm: "",
-    wam: "",
-    tam: "X",
-    tpm: "",
-    name: "Judith Rodriguez",
-    email: "r.g.rhodes@aol.com",
-    phone: "(904) 335-2403",
-    invitedBy: "Kimberly James",
-    pg: { tupm: 6, wam: 0, tam: 0, tpm: 5 },
-  },
-  {
-    date: "05-17-2017",
-    tupm: "X",
-    wam: "X",
-    tam: "X",
-    tpm: "X",
-    name: "Kurt Bates",
-    email: "lorri13@gmail.com",
-    phone: "(301) 580-7410",
-    invitedBy: "Katie Sims",
-    pg: { tupm: 5, wam: 8, tam: 0, tpm: 5 },
-  },
-  {
-    date: "05-17-2017",
-    tupm: "X",
-    wam: "X",
-    tam: "",
-    tpm: "X",
-    name: "David Elson",
-    email: "k.r.mastrangelo@outlook.com",
-    phone: "(785) 712-6532",
-    invitedBy: "Bradley Lawlor",
-    pg: { tupm: 0, wam: 2, tam: 0, tpm: 2 },
-  },
-  {
-    date: "05-17-2017",
-    tupm: "X",
-    wam: "",
-    tam: "",
-    tpm: "X",
-    name: "Stephanie Nicol",
-    email: "stephanienicol@outlook.com",
-    phone: "(813) 752-5811",
-    invitedBy: "Judith Rodriguez",
-    pg: { tupm: 5, wam: 0, tam: 0, tpm: 5 },
-  },
-  {
-    date: "05-17-2017",
-    tupm: "X",
-    wam: "",
-    tam: "X",
-    tpm: "",
-    name: "Dennis Callis",
-    email: "dennis416@gmail.com",
-    phone: "(814) 403-9181",
-    invitedBy: "Patricia Sanders",
-    pg: { tupm: 0, wam: 0, tam: 0, tpm: 0 },
-  },
-  {
-    date: "05-17-2017",
-    tupm: "",
-    wam: "",
-    tam: "X",
-    tpm: "",
-    name: "Judith Rodriguez",
-    email: "r.g.rhodes@aol.com",
-    phone: "(904) 335-2403",
-    invitedBy: "Kimberly James",
-    pg: { tupm: 6, wam: 0, tam: 0, tpm: 5 },
-  },
-];
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
+import {
+  getNewWellers,
+  getGuestWellers,
+  getReturneeWellers,
+  getDroppedWellers,
+} from "@/redux/slices/groupSlice";
+import Spinner from "../../loader/Spinner";
 
 const NewWellers = () => {
   const tabOptions = ["New", "Guests", "Returnees", "Dropped"];
   const [activeTab, setActiveTab] = useState("New");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const dispatch = useAppDispatch();
+  const { newWellers, loading, error } = useAppSelector((state: any) => state.groups);
+  const data = newWellers?.data || [];
+
+  const fetchWellersByTab = async (tab: string) => {
+    if (!fromDate || !toDate) return;
+
+    const payload = { from: fromDate, to: toDate };
+
+    switch (tab) {
+      case "New":
+        await dispatch(getNewWellers(payload));
+        break;
+      case "Guests":
+        await dispatch(getGuestWellers(payload));
+        break;
+      case "Returnees":
+        await dispatch(getReturneeWellers(payload));
+        break;
+      case "Dropped":
+        await dispatch(getDroppedWellers(payload));
+        break;
+      default:
+        break;
+    }
+  };
+
+  // 🚀 On tab change or date range update
+  useEffect(() => {
+    fetchWellersByTab(activeTab);
+  }, [activeTab, fromDate, toDate]);
+
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return "—";
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   return (
     <div className="flex flex-col gap-5">
       {/* Tabs */}
@@ -138,10 +68,8 @@ const NewWellers = () => {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={` transition-all duration-200 ${
-              activeTab === tab
-                ? "btn-primary "
-                : "btn-outline-primary"
+            className={`transition-all duration-200 ${
+              activeTab === tab ? "btn-primary" : "btn-outline-primary"
             }`}
           >
             {tab}
@@ -149,68 +77,99 @@ const NewWellers = () => {
         ))}
       </div>
 
+      {/* Filter + Summary */}
       <div className="p-5 space-y-7 bg-white rounded-md shadow-sm">
-        {/* Date Range */}
         <div className="flex items-center gap-3 text-sm">
           <Label>From</Label>
-          <Input type="date" defaultValue="2025-02-09" className="" />
-          <Label>TO</Label>
-          <Input type="date" defaultValue="2025-10-08" className="" />
-          <button className="btn-outline-primary">Select</button>
+          <Input
+            type="date"
+            value={fromDate}
+            onChange={(e) => setFromDate(e.target.value)}
+          />
+          <Label>To</Label>
+          <Input
+            type="date"
+            value={toDate}
+            onChange={(e) => setToDate(e.target.value)}
+          />
         </div>
-        {/* Summary Header */}
+
         <div>
-          <h2>New Wellers – (40 Total)</h2>
-          <p>Showing Dates: 02/09/2025 to 02/15/2017</p>
+          <h2>{activeTab} Wellers – ({data.length} Total)</h2>
+          {fromDate && toDate && (
+            <p>
+              Showing Dates: {formatDate(fromDate)} to {formatDate(toDate)}
+            </p>
+          )}
         </div>
       </div>
 
+      {/* Results */}
       <div className="p-6 space-y-6 bg-white rounded-md shadow-sm">
-        {/* Total Breakdown */}
-        <h2>
-          Total New Wellers: TUPM: 2 | WAM: 6 | TAM: 16 | TPM: 15 | 40 Total
-        </h2>
-
-        {/* Scrollable Columns */}
-        <div className="flex overflow-x-auto gap-3">
-          <DataColumn
-            title="Start date"
-            items={newWellersData.map((d) => d.date)}
-          />
-          <DataColumn title="TUPM" items={newWellersData.map((d) => d.tupm)} />
-          <DataColumn title="WAM" items={newWellersData.map((d) => d.wam)} />
-          <DataColumn title="TAM" items={newWellersData.map((d) => d.tam)} />
-          <DataColumn title="TPM" items={newWellersData.map((d) => d.tpm)} />
-          <DataColumn title="Name" items={newWellersData.map((d) => d.name)} />
-          <DataColumn
-            title="Email"
-            items={newWellersData.map((d) => d.email)}
-          />
-          <DataColumn
-            title="Phone address"
-            items={newWellersData.map((d) => d.phone)}
-          />
-          <DataColumn
-            title="Invited by"
-            items={newWellersData.map((d) => d.invitedBy)}
-          />
-          <DataColumn
-            title="PG TUPM"
-            items={newWellersData.map((d) => d.pg.tupm.toString())}
-          />
-          <DataColumn
-            title="PG WAM"
-            items={newWellersData.map((d) => d.pg.wam.toString())}
-          />
-          <DataColumn
-            title="PG TAM"
-            items={newWellersData.map((d) => d.pg.tam.toString())}
-          />
-          <DataColumn
-            title="PG TPM"
-            items={newWellersData.map((d) => d.pg.tpm.toString())}
-          />
-        </div>
+        {loading ? (
+          <div className="text-center">
+            <Spinner />
+          </div>
+        ) : error ? (
+          <p className="text-center !text-red-500">{error}</p>
+        ) : data.length === 0 ? (
+          <p className="text-center text-gray-500">No data available</p>
+        ) : (
+          <div className="flex overflow-x-auto gap-3">
+            <DataColumn
+              title="Start Date"
+              items={data.map((d: any) => formatDate(d.startDate))}
+            />
+            <DataColumn
+              title="TUPM"
+              items={data.map((d: any) => (d.attendances.includes("tue_pm") ? "X" : ""))}
+            />
+            <DataColumn
+              title="WAM"
+              items={data.map((d: any) => (d.attendances.includes("wed_am") ? "X" : ""))}
+            />
+            <DataColumn
+              title="TAM"
+              items={data.map((d: any) => (d.attendances.includes("thu_am") ? "X" : ""))}
+            />
+            <DataColumn
+              title="TPM"
+              items={data.map((d: any) => (d.attendances.includes("thu_pm") ? "X" : ""))}
+            />
+            <DataColumn title="Name" items={data.map((d: any) => `${d.firstName} ${d.lastName}`)} />
+            <DataColumn title="Email" items={data.map((d: any) => d.email || "—")} />
+            <DataColumn title="Phone" items={data.map((d: any) => d.phone || "—")} />
+            <DataColumn title="Invited By" items={data.map((d: any) => d.invitedBy || "—")} />
+            <DataColumn
+              title="PG TUPM"
+              items={data.map(
+                (d: any) =>
+                  d.prayerGroups.find((pg: any) => pg.session === "tue_pm")?.pg_number || "—"
+              )}
+            />
+            <DataColumn
+              title="PG WAM"
+              items={data.map(
+                (d: any) =>
+                  d.prayerGroups.find((pg: any) => pg.session === "wed_am")?.pg_number || "—"
+              )}
+            />
+            <DataColumn
+              title="PG TAM"
+              items={data.map(
+                (d: any) =>
+                  d.prayerGroups.find((pg: any) => pg.session === "thu_am")?.pg_number || "—"
+              )}
+            />
+            <DataColumn
+              title="PG TPM"
+              items={data.map(
+                (d: any) =>
+                  d.prayerGroups.find((pg: any) => pg.session === "thu_pm")?.pg_number || "—"
+              )}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

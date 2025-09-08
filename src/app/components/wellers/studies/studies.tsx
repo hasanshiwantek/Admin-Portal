@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import WellerColumn from "./WellerColumn";
 import { ChevronRight } from "lucide-react";
 import StudiesStats from "./StudiesStats";
@@ -15,23 +15,20 @@ const Studies = () => {
   );
 
   const wellers = wellersByClass?.data;
+  const pagination = wellersByClass?.pagination || {};
 
-  // ✅ Initialize default values
   const [className, setClassName] = useState("");
-  const [day, setDay] = useState("tue"); // default "tue"
-  const [time, setTime] = useState("pm"); // default "pm"
+  const [day, setDay] = useState("tue");
+  const [time, setTime] = useState("pm");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState("20");
 
-  const handleClassChange = (val: string) => setClassName(val);
-  const handleDayChange = (val: string) => setDay(val);
-  const handleTimeChange = (val: string) => setTime(val);
-
-  const handleSubmit = () => {
+  // Fetch on filter or pagination change
+  useEffect(() => {
     if (className && day && time) {
-      dispatch(getWellersByClass({ className, day, time }));
-    } else {
-      alert("Please select class, day and time");
+      dispatch(getWellersByClass({ className, day, time, page: currentPage, perPage }));
     }
-  };
+  }, [className, day, time, currentPage, perPage]);
 
   return (
     <>
@@ -46,16 +43,39 @@ const Studies = () => {
         <div className="flex justify-between gap-10 mt-5">
           <ViewWellersClass
             currentClass={className}
-            onClassChange={handleClassChange}
-            onDayChange={handleDayChange}
-            onPeriodChange={handleTimeChange}
-            onSubmit={handleSubmit}
+            onClassChange={(val) => {
+              setClassName(val);
+              setCurrentPage(1);
+            }}
+            onDayChange={(val) => {
+              setDay(val);
+              setCurrentPage(1);
+            }}
+            onPeriodChange={(val) => {
+              setTime(val);
+              setCurrentPage(1);
+            }}
+            onSubmit={() => {
+              dispatch(getWellersByClass({ className, day, time, page: currentPage, perPage }));
+            }}
           />
           <StudiesStats />
         </div>
 
         <div className="my-5">
-          <WellerColumn wellers={wellers} loading={loading} error={error} day={day} currentClass={className} period={time} />
+          <WellerColumn
+            wellers={wellers}
+            loading={loading}
+            error={error}
+            currentClass={className}
+            day={day}
+            period={time}
+            currentPage={currentPage}
+            perPage={perPage}
+            totalPages={pagination?.lastPage || 1}
+            onPageChange={setCurrentPage}
+            onPerPageChange={setPerPage}
+          />
         </div>
       </div>
     </>
