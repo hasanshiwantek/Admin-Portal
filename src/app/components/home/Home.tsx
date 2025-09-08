@@ -11,7 +11,7 @@ const Home = () => {
           <Stats />
         </div>
         <div className="flex justify-between  mt-10 gap-5">
-          <UsersBreakdown active={1830} inactive={600} />
+          <UsersBreakdown />
           <PrayersGroup />
         </div>
       </div>

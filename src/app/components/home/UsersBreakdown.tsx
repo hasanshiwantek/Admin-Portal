@@ -1,17 +1,27 @@
-import React from "react";
+"use client";
 
-type Props = {
-  active?: number;
-  inactive?: number;
-};
-
-const UsersBreakdown: React.FC<Props> = ({ active = 1830, inactive = 600 }) => {
-  const total = active + inactive;
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
+import { getWellerStatus } from "@/redux/slices/homeSlice";
+import Link from "next/link";
+const UsersBreakdown = () => {
+  const dispatch = useAppDispatch();
+  const { wellerStatus } = useAppSelector((state: any) => state.home);
+  const data = wellerStatus?.data;
+  const active = data?.activeUsers;
+  const inactive = data?.inactiveUsers;
+  const total = data?.totalUsers;
   const activePct = total ? Math.round((active / total) * 100) : 0;
 
   // Colors chosen to match the SS (teal + pink)
-  const teal = "#008696";   // active
-  const pink = "#f9a8d4";   // inactive
+  const teal = "#008696"; // active
+  const pink = "#f9a8d4"; // inactive
+
+  // FETCH STATS
+
+  useEffect(() => {
+    dispatch(getWellerStatus());
+  }, [dispatch]);
 
   return (
     <div className="w-[33%] rounded-md bg-white p-5 shadow-sm ring-1 ring-gray-100">
@@ -31,7 +41,7 @@ const UsersBreakdown: React.FC<Props> = ({ active = 1830, inactive = 600 }) => {
           {/* Center text */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center ">
             <div className="text-3xl font-extrabold text-gray-800">
-              {total.toLocaleString()}
+              {total?.toLocaleString()}
             </div>
             <div className="text-lg text-gray-400 -mt-1 ">Total users</div>
           </div>
@@ -49,7 +59,7 @@ const UsersBreakdown: React.FC<Props> = ({ active = 1830, inactive = 600 }) => {
             <span className="!text-black">Active Wellers</span>
           </div>
           <span className="!font-bold !text-black">
-            {active.toLocaleString()}
+            {active?.toLocaleString()}
           </span>
         </div>
 
@@ -62,18 +72,20 @@ const UsersBreakdown: React.FC<Props> = ({ active = 1830, inactive = 600 }) => {
             <span className="!text-black">Inactive Wellers</span>
           </div>
           <span className="!font-bold !text-black">
-            {inactive.toLocaleString()}
+            {inactive?.toLocaleString()}
           </span>
         </div>
       </div>
 
       {/* CTA button */}
+      <Link href={"/wellers"}>
       <button
         type="button"
         className="!mt-6 w-full !rounded-full !p-6 !font-semibold btn-outline-primary"
-      >
+        >
         View Wellers by day
       </button>
+        </Link>
     </div>
   );
 };

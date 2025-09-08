@@ -36,10 +36,28 @@ export const getPrayersGroup = createAsyncThunk(
   }
 );
 
+export const getWellerStatus = createAsyncThunk(
+  "home/getWellerStatus",
+  async (_, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(`admin/wellers-status`);
+      console.log("Weller status data: ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to fetch count"
+      );
+    }
+  }
+);
+
 // 2. Initial State
 const initialState = {
   statistics: null,
   groups: [],
+  wellerStatus: [],
   loading: false,
   error: null as string | null,
 };
@@ -67,6 +85,10 @@ const homeSlice = createSlice({
       .addCase(getPrayersGroup.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(getWellerStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        state.wellerStatus = action.payload;
       });
   },
 });
