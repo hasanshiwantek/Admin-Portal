@@ -70,7 +70,7 @@ const UpdatePassword = () => {
 
       <form
         // onSubmit={""}
-        className=" p-6 rounded-lg shadow-lg w-full border border-2 max-w-[50rem]"
+        className=" p-6 rounded-lg shadow-lg w-full  border-2 max-w-[50rem]"
       >
         <div className="flex flex-col ">
           <h1 className="!text-4xl mb-4 ">Change My Password (User Email)</h1>
