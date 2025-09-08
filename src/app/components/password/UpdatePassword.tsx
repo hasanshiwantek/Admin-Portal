@@ -41,7 +41,6 @@ const UpdatePassword = () => {
       newPassword_confirmation: formData.confirmPassword,
     };
     console.log(payload);
-    
 
     try {
       const resultAction = await dispatch(updatePassword({ data: payload }));
@@ -86,7 +85,7 @@ const UpdatePassword = () => {
               value={formData.oldPassword}
               onChange={handleChange}
               required
-              className="!max-w-full !text-xl !font-light px-4 py-2 bg-blue-50 text-black placeholder:text-gray-500"
+              className="!max-w-full !text-xl !font-light px-4 py-2  text-black placeholder:text-gray-500"
             />
             <button
               type="button"
@@ -106,7 +105,7 @@ const UpdatePassword = () => {
               value={formData.newPassword}
               onChange={handleChange}
               required
-              className="!max-w-full !text-xl !font-light px-4 py-2 bg-blue-50 text-black placeholder:text-gray-500"
+              className="!max-w-full !text-xl !font-light px-4 py-2  text-black placeholder:text-gray-500"
             />
             <button
               type="button"
@@ -126,7 +125,7 @@ const UpdatePassword = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              className="!max-w-full !text-xl !font-light px-4 py-2 bg-blue-50 text-black placeholder:text-gray-500"
+              className="!max-w-full !text-xl !font-light px-4 py-2  text-black placeholder:text-gray-500"
             />
             <button
               type="button"
@@ -143,7 +142,7 @@ const UpdatePassword = () => {
             size="xxl"
             disabled={loading}
             onClick={handleSubmit}
-            className="!w-full cursor-pointer my-3 !h-[4.5rem] bg-[#008696] rounded-4xl font-medium !text-2xl focus-within:ring-blue-200 focus-within:border-blue-200 transition hover:border-blue-200 hover:bg-[#3A426E] "
+            className="!w-full cursor-pointer my-3 !h-[4.5rem] btn-primary "
           >
             {loading ? "Updating..." : "Change Password"}
           </Button>
