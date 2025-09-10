@@ -6,7 +6,10 @@ import { ChevronRight } from "lucide-react";
 import StudiesStats from "./StudiesStats";
 import ViewWellersClass from "./ViewWellersClass";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
-import { getWellersByClass } from "@/redux/slices/groupSlice";
+import {
+  getWellersByClass,
+  clearWellersByClass,
+} from "@/redux/slices/groupSlice";
 
 const Studies = () => {
   const dispatch = useAppDispatch();
@@ -26,9 +29,20 @@ const Studies = () => {
   // Fetch on filter or pagination change
   useEffect(() => {
     if (className && day && time) {
-      dispatch(getWellersByClass({ className, day, time, page: currentPage, perPage }));
+      dispatch(
+        getWellersByClass({ className, day, time, page: currentPage, perPage })
+      );
     }
   }, [className, day, time, currentPage, perPage]);
+
+  useEffect(() => {
+    return () => {
+      // 👇 dispatch an action to clear data
+      console.log("Unmount! Cleared Data ");
+
+      dispatch(clearWellersByClass());
+    };
+  }, [dispatch]);
 
   return (
     <>
@@ -56,10 +70,18 @@ const Studies = () => {
               setCurrentPage(1);
             }}
             onSubmit={() => {
-              dispatch(getWellersByClass({ className, day, time, page: currentPage, perPage }));
+              dispatch(
+                getWellersByClass({
+                  className,
+                  day,
+                  time,
+                  page: currentPage,
+                  perPage,
+                })
+              );
             }}
             wellers={wellers}
-                day={day}
+            day={day}
             period={time}
           />
           <StudiesStats />

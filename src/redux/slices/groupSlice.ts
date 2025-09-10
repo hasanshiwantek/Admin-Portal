@@ -260,14 +260,32 @@ export const printPgMembers = createAsyncThunk(
   }
 );
 
+export const getPgNumbers = createAsyncThunk(
+  "groups/getPgNumbers",
+  async (_, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(`admin/pg-numbers`);
+      console.log("Pg Numbers Response: ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to get Pg Numbers "
+      );
+    }
+  }
+);
+
 // 2. Initial State
 const initialState = {
   groups: [],
   wellersByClass: [],
   leaderData: [],
-  loading: false,
   wellersByPG: [],
   newWellers: [],
+  pgNumbers: [],
+  loading: false,
   error: null as string | null,
   pagination: null,
 };
@@ -276,7 +294,11 @@ const initialState = {
 const groupSlice = createSlice({
   name: "groups",
   initialState,
-  reducers: {},
+  reducers: {
+    clearWellersByClass: (state: any) => {
+      state.wellersByClass = { data: [], pagination: {} };
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -352,8 +374,12 @@ const groupSlice = createSlice({
       .addCase(getDroppedWellers.fulfilled, (state, action) => {
         state.loading = false;
         state.newWellers = action.payload;
+      })
+      .addCase(getPgNumbers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.pgNumbers = action.payload.data;
       });
   },
 });
-
+export const { clearWellersByClass } = groupSlice.actions;
 export default groupSlice.reducer;
