@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/select";
 import { DayTabs } from "@/components/ui/DayTabs";
 import { Printer } from "lucide-react";
-import { useAppDispatch } from "@/hooks/useReduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 import { printPgMembers } from "@/redux/slices/groupSlice";
+import { getPgNumbers } from "@/redux/slices/groupSlice";
 type Props = {
   onDayChange: (day: string) => void;
   onPeriodChange: (period: string) => void;
@@ -36,6 +37,12 @@ export default function SelectWeller({
   onSubmit,
 }: Props) {
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getPgNumbers());
+  }, [dispatch]);
+
+  const { pgNumbers } = useAppSelector((state) => state.groups);
 
   return (
     <div className="bg-white p-5 rounded-md shadow-sm w-[50%]">
@@ -93,13 +100,14 @@ export default function SelectWeller({
           <Label htmlFor="pg-select" className="block mb-3">
             Select PG
           </Label>
+
           <Select onValueChange={onPgChange}>
             <SelectTrigger id="pg-select" className="w-40">
               <SelectValue placeholder="Select PG" />
             </SelectTrigger>
             <SelectContent>
-              {[1, 2, 3, 4, 5].map((num) => (
-                <SelectItem key={num} value={num.toString()}>
+              {pgNumbers?.map((num: any) => (
+                <SelectItem key={num} value={num?.toString()}>
                   {num}
                 </SelectItem>
               ))}
