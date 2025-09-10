@@ -159,11 +159,11 @@ const CurrentGroupTable = () => {
             className="flex rounded-md border bg-white p-5 shadow-sm"
           >
             {/* Left: Team label */}
-            <div className="flex flex-col relative items-center justify-start rounded-md border min-w-[100px]">
-              <span className="text-sm font-medium text-gray-500 mb-2 bg-[#F5F5F5] w-full py-2 px-4 text-center">
+            <div className="flex flex-col relative items-center justify-start rounded-md border min-w-[100px] h-[150px]">
+              <span className="text-sm font-medium text-gray-500 bg-[#F5F5F5] w-full py-2 px-4 text-center">
                 Team
               </span>
-              <span className="text-5xl font-semibold text-gray-800 p-5 absolute top-24">
+              <span className="text-5xl font-semibold text-gray-800 absolute inset-x-0 top-1/2 -translate-y-1/2 text-center">
                 {teamLabel}
               </span>
             </div>
