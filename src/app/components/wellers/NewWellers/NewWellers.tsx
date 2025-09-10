@@ -19,7 +19,9 @@ const NewWellers = () => {
   const [toDate, setToDate] = useState("");
 
   const dispatch = useAppDispatch();
-  const { newWellers, loading, error } = useAppSelector((state: any) => state.groups);
+  const { newWellers, loading, error } = useAppSelector(
+    (state: any) => state.groups
+  );
   const data = newWellers?.data || [];
 
   const fetchWellersByTab = async (tab: string) => {
@@ -95,7 +97,9 @@ const NewWellers = () => {
         </div>
 
         <div>
-          <h2>{activeTab} Wellers – ({data.length} Total)</h2>
+          <h2>
+            {activeTab} Wellers – ({data.length} Total)
+          </h2>
           {fromDate && toDate && (
             <p>
               Showing Dates: {formatDate(fromDate)} to {formatDate(toDate)}
@@ -122,50 +126,74 @@ const NewWellers = () => {
             />
             <DataColumn
               title="TUPM"
-              items={data.map((d: any) => (d.attendances.includes("tue_pm") ? "X" : ""))}
+              items={data.map((d: any) =>
+                d.attendances.includes("tue_pm") ? "X" : ""
+              )}
             />
             <DataColumn
               title="WAM"
-              items={data.map((d: any) => (d.attendances.includes("wed_am") ? "X" : ""))}
+              items={data.map((d: any) =>
+                d.attendances.includes("wed_am") ? "X" : ""
+              )}
             />
             <DataColumn
               title="TAM"
-              items={data.map((d: any) => (d.attendances.includes("thu_am") ? "X" : ""))}
+              items={data.map((d: any) =>
+                d.attendances.includes("thu_am") ? "X" : ""
+              )}
             />
             <DataColumn
               title="TPM"
-              items={data.map((d: any) => (d.attendances.includes("thu_pm") ? "X" : ""))}
+              items={data.map((d: any) =>
+                d.attendances.includes("thu_pm") ? "X" : ""
+              )}
             />
-            <DataColumn title="Name" items={data.map((d: any) => `${d.firstName} ${d.lastName}`)} />
-            <DataColumn title="Email" items={data.map((d: any) => d.email || "—")} />
-            <DataColumn title="Phone" items={data.map((d: any) => d.phone || "—")} />
-            <DataColumn title="Invited By" items={data.map((d: any) => d.invitedBy || "—")} />
+            <DataColumn
+              title="Name"
+              items={data.map((d: any) => `${d.firstName} ${d.lastName}`)}
+            />
+            <DataColumn
+              title="Email"
+              items={data.map((d: any) => d.email || "—")}
+            />
+            <DataColumn
+              title="Phone"
+              items={data.map((d: any) => d.phone || "—")}
+            />
+            <DataColumn
+              title="Invited By"
+              items={data.map((d: any) => d.invitedBy || "—")}
+            />
             <DataColumn
               title="PG TUPM"
               items={data.map(
                 (d: any) =>
-                  d.prayerGroups.find((pg: any) => pg.session === "tue_pm")?.pg_number || "—"
+                  d.prayerGroups.find((pg: any) => pg.session === "tue_pm")
+                    ?.pg_number || "—"
               )}
             />
             <DataColumn
               title="PG WAM"
               items={data.map(
                 (d: any) =>
-                  d.prayerGroups.find((pg: any) => pg.session === "wed_am")?.pg_number || "—"
+                  d.prayerGroups.find((pg: any) => pg.session === "wed_am")
+                    ?.pg_number || "—"
               )}
             />
             <DataColumn
               title="PG TAM"
               items={data.map(
                 (d: any) =>
-                  d.prayerGroups.find((pg: any) => pg.session === "thu_am")?.pg_number || "—"
+                  d.prayerGroups.find((pg: any) => pg.session === "thu_am")
+                    ?.pg_number || "—"
               )}
             />
             <DataColumn
               title="PG TPM"
               items={data.map(
                 (d: any) =>
-                  d.prayerGroups.find((pg: any) => pg.session === "thu_pm")?.pg_number || "—"
+                  d.prayerGroups.find((pg: any) => pg.session === "thu_pm")
+                    ?.pg_number || "—"
               )}
             />
           </div>

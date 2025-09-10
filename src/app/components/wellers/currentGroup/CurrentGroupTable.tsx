@@ -6,8 +6,8 @@ import { DataTable } from "@/components/ui/DataTable";
 import { getCurrentGroups } from "@/redux/slices/groupSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 import Spinner from "../../loader/Spinner";
+
 const headers = ["#", "TUPM", "WAM", "TAM", "TPM"];
-const sessionKeys = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
 
 const CurrentGroupTable = () => {
   const { groups, loading, error } = useAppSelector(
@@ -20,7 +20,65 @@ const CurrentGroupTable = () => {
     dispatch(getCurrentGroups());
   }, [dispatch]);
 
-  // Loading spinner
+  // Helper: Get styled name cell
+  const getNameWithStyles = (member: any) => {
+    if (!member) return "—";
+
+    const {
+      firstName,
+      lastName,
+      mentorLead,
+      mentorRelationship,
+      isNewMember,
+      isReturningMember,
+      notes,
+    } = member;
+
+    const classes: string[] = [];
+    const dotColor = [];
+
+    // Dot logic
+    if (mentorLead) {
+      dotColor.push("bg-black");
+    } else if (mentorRelationship && !mentorLead) {
+      dotColor.push("bg-orange-500");
+    } else if (isNewMember && !isReturningMember) {
+      dotColor.push("bg-blue-800");
+    } else if (isNewMember) {
+      dotColor.push("bg-blue-400");
+    } else if (mentorRelationship && isNewMember) {
+      dotColor.push("bg-green-500");
+    }
+
+    // Bold name if mentorLead
+    if (mentorLead) {
+      classes.push("font-bold");
+    }
+
+    // Yellow background if notes
+    if (notes) {
+      classes.push("bg-yellow-100");
+    }
+
+    return (
+      <div
+        className={`flex items-center gap-2 px-2 py-1 rounded ${classes.join(
+          " "
+        )}`}
+      >
+        {dotColor.length > 0 && (
+          <span
+            className={`inline-block h-2.5 w-2.5 rounded-full ${dotColor[0]}`}
+          />
+        )}
+        <span className="whitespace-nowrap">
+          {firstName} {lastName}
+        </span>
+      </div>
+    );
+  };
+
+  // Loading
   if (loading) {
     return (
       <div className="flex justify-center items-center h-40">
@@ -29,7 +87,7 @@ const CurrentGroupTable = () => {
     );
   }
 
-  // Error message
+  // Error
   if (error) {
     return (
       <div className="text-center text-red-500 font-medium py-10">
@@ -38,7 +96,7 @@ const CurrentGroupTable = () => {
     );
   }
 
-  // Empty state
+  // No data
   if (!groups || groups.length === 0) {
     return (
       <div className="text-center py-10 text-gray-500">
@@ -51,24 +109,49 @@ const CurrentGroupTable = () => {
     <div className="space-y-10">
       {groups.map((group: any, index: number) => {
         const teamLabel = group.team || `N/A`;
-        const location = group.location || "No location set";
+        const sessions = group.sessions || {};
 
-        // Determine max number of rows across the 4 sessions
         const maxRows = Math.max(
-          group.sessions.TUE_PM?.length || 0,
-          group.sessions.WED_AM?.length || 0,
-          group.sessions.THU_AM?.length || 0,
-          group.sessions.THU_PM?.length || 0
+          sessions.TUE_PM?.length || 0,
+          sessions.WED_AM?.length || 0,
+          sessions.THU_AM?.length || 0,
+          sessions.THU_PM?.length || 0
         );
 
-        // Build rows
         const rows = Array.from({ length: maxRows }).map((_, i) => ({
           id: i + 1,
-          tupm: group.sessions.TUE_PM?.[i]?.name || "",
-          wam: group.sessions.WED_AM?.[i]?.name || "",
-          tam: group.sessions.THU_AM?.[i]?.name || "",
-          tpm: group.sessions.THU_PM?.[i]?.name || "",
+          tupm: getNameWithStyles(sessions.TUE_PM?.[i]),
+          wam: getNameWithStyles(sessions.WED_AM?.[i]),
+          tam: getNameWithStyles(sessions.THU_AM?.[i]),
+          tpm: getNameWithStyles(sessions.THU_PM?.[i]),
         }));
+
+        // Extract location from first member with address
+        const allMembers = [
+          ...(sessions.TUE_PM || []),
+          ...(sessions.WED_AM || []),
+          ...(sessions.THU_AM || []),
+          ...(sessions.THU_PM || []),
+        ];
+
+        const memberWithAddress = allMembers.find(
+          (m) =>
+            m?.addressStreet ||
+            m?.addressCity ||
+            m?.addressState ||
+            m?.addressZip
+        );
+
+        const location = memberWithAddress
+          ? [
+              memberWithAddress.addressStreet,
+              memberWithAddress.addressCity,
+              memberWithAddress.addressState,
+              memberWithAddress.addressZip,
+            ]
+              .filter(Boolean)
+              .join(", ")
+          : "No address provided";
 
         return (
           <div
@@ -93,10 +176,10 @@ const CurrentGroupTable = () => {
                 renderRow={(row: any, i: number) => (
                   <TableRow key={i}>
                     <TableCell>{row.id}</TableCell>
-                    <TableCell>{row.tupm || "—"}</TableCell>
-                    <TableCell>{row.wam || "—"}</TableCell>
-                    <TableCell>{row.tam || "—"}</TableCell>
-                    <TableCell>{row.tpm || "—"}</TableCell>
+                    <TableCell>{row.tupm}</TableCell>
+                    <TableCell>{row.wam}</TableCell>
+                    <TableCell>{row.tam}</TableCell>
+                    <TableCell>{row.tpm}</TableCell>
                   </TableRow>
                 )}
               />
