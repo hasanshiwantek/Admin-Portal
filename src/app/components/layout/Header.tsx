@@ -9,12 +9,25 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/hooks/useReduxHooks";
 import Link from "next/link";
 import Cookies from "js-cookie";
+
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const userString = localStorage?.getItem("user");
-  const user = userString ? JSON.parse(userString) : null;
+  const [user, setUser] = useState<any>(null);
+
   console.log("Logged in user Data: ", user);
+  // ✅ Safe: only runs in browser
+  useEffect(() => {
+    const userString =
+      typeof window !== "undefined" ? localStorage.getItem("user") : null;
+    if (userString) {
+      try {
+        setUser(JSON.parse(userString));
+      } catch {
+        setUser(null);
+      }
+    }
+  }, []);
 
   const handleLogout = () => {
     const confirm = window.confirm("Are you sure want to logout?");
@@ -45,19 +58,23 @@ const Header: React.FC = () => {
 
         <div>
           <div className="flex justify-start items-center gap-5">
-            <div className="flex justify-start items-center gap-2">
-              <div className=" rounded-full bg-green-700 ">
-                <span className="!text-white !text-3xl p-4 !font-light">
-                  {user?.firstName?.charAt(0)}
-                </span>
+            {user && (
+              <div className="flex justify-start items-center gap-2">
+                <div className="rounded-full bg-green-700">
+                  <span className="!text-white !text-3xl p-4 !font-light">
+                    {user?.firstName?.charAt(0)}
+                  </span>
+                </div>
+                <div>
+                  <h2 className="!font-bold">
+                    {user?.firstName} {user?.lastName}
+                  </h2>
+                  <span>{new Date().toLocaleDateString()}</span>
+                </div>
               </div>
-              <div>
-                <h2 className="!font-bold">
-                  {user?.firstName} {user?.lastName}
-                </h2>
-                <span>Saturday-August 9,2025</span>
-              </div>
-            </div>
+            )}
+
+            {/* Logout */}
             <div
               className="cursor-pointer text-[#008696] hover:text-black"
               onClick={handleLogout}
