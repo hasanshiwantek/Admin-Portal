@@ -58,6 +58,9 @@ const Studies = () => {
             onSubmit={() => {
               dispatch(getWellersByClass({ className, day, time, page: currentPage, perPage }));
             }}
+            wellers={wellers}
+                day={day}
+            period={time}
           />
           <StudiesStats />
         </div>

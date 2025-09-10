@@ -12,13 +12,17 @@ import {
 } from "@/components/ui/select";
 import { DayTabs } from "@/components/ui/DayTabs";
 import { Printer } from "lucide-react";
-
+import { printBibleClassUsers } from "@/redux/slices/groupSlice";
+import { useAppDispatch } from "@/hooks/useReduxHooks";
 interface Props {
   currentClass: string;
   onClassChange: (val: string) => void;
   onDayChange: (day: string) => void;
   onPeriodChange: (period: string) => void;
-  onSubmit: () => void; 
+  onSubmit: () => void;
+  wellers: any;
+  day: any;
+  period: any;
 }
 
 const ViewWellersClass: React.FC<Props> = ({
@@ -27,6 +31,9 @@ const ViewWellersClass: React.FC<Props> = ({
   onDayChange,
   onPeriodChange,
   onSubmit,
+  wellers,
+  day,
+  period,
 }) => {
   const studies = [
     "Floater",
@@ -39,16 +46,48 @@ const ViewWellersClass: React.FC<Props> = ({
     "Raising Kids",
   ];
 
+  const dispatch = useAppDispatch();
+
   return (
     <div className="bg-white p-5 rounded-md shadow-sm w-[50%]">
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <h2>View Wellers By Class</h2>
         <div className="flex gap-2">
-          <Button variant="outline" className="gap-1 p-6 w-[10rem] text-lg">
+          <Button
+            variant="outline"
+            className="gap-1 p-6 w-[10rem] text-lg"
+            onClick={() => {
+              if (!currentClass) {
+                alert("Please select a class");
+                return;
+              }
+              if (!day) {
+                alert("Please select a day");
+                return;
+              }
+              if (!period) {
+                alert("Please select a period");
+                return;
+              }
+              if (!wellers || wellers.length === 0) {
+                alert("No wellers found to print");
+                return;
+              }
+
+              const payload = {
+                class_name: currentClass,
+                session: `${day}_${period}`,
+                users: wellers,
+              };
+
+              dispatch(printBibleClassUsers({ data: payload }));
+            }}
+          >
             <Printer className="!w-5 !h-5" />
             Print Roaster
           </Button>
+
           <Button variant="outline" className="gap-1 p-6 w-[10rem] text-lg">
             <Printer className="!w-5 !h-5" />
             Email Class
@@ -65,7 +104,7 @@ const ViewWellersClass: React.FC<Props> = ({
           </Label>
           <Select value={currentClass} onValueChange={onClassChange}>
             <SelectTrigger id="pg-select" className="w-[20rem] rounded-md">
-              <SelectValue placeholder="Select PG" />
+              <SelectValue placeholder="Select Class" />
             </SelectTrigger>
             <SelectContent>
               {studies.map((item) => (
@@ -86,11 +125,11 @@ const ViewWellersClass: React.FC<Props> = ({
               onPeriodChange={onPeriodChange}
             />
           </div>
-            <div>
-              <Button className="btn-primary !p-6 !w-full " onClick={onSubmit}>
-                View Wellers by class
-              </Button>
-            </div>
+          <div>
+            <Button className="btn-primary !p-6 !w-full " onClick={onSubmit}>
+              View Wellers by class
+            </Button>
+          </div>
         </div>
       </div>
     </div>

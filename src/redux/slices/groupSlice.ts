@@ -169,6 +169,97 @@ export const getDroppedWellers = createAsyncThunk(
   }
 );
 
+export const printPrayerGroups = createAsyncThunk(
+  "groups/printPrayerGroups",
+  async (_, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(`admin/print-prayer-groups`, {
+        responseType: "blob", // 👈 Important for files
+      });
+
+      // Create a downloadable link
+      const blob = new Blob([res.data], { type: res.headers["content-type"] });
+      const url = window.URL.createObjectURL(blob);
+
+      // Trigger download
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "prayer-groups.pdf"); // or .xlsx based on backend
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      return true; // success
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to print prayer groups"
+      );
+    }
+  }
+);
+
+export const printBibleClassUsers = createAsyncThunk(
+  "groups/printBibleClassUsers",
+  async ({ data }: { data: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.post(
+        `admin/print-bible-class-users`,
+        data, // 👈 send data directly, not nested under `data`
+        {
+          responseType: "blob", // 👈 this goes in the config
+        }
+      );
+
+      const blob = new Blob([res.data], { type: res.headers["content-type"] });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "bible-class.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      return true;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to print bible studies users"
+      );
+    }
+  }
+);
+
+export const printPgMembers = createAsyncThunk(
+  "groups/printPgMembers",
+  async ({ data }: { data: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.post(
+        `admin/print-pg-members`,
+        data, // 👈 send data directly, not nested under `data`
+        {
+          responseType: "blob", // 👈 this goes in the config
+        }
+      );
+
+      const blob = new Blob([res.data], { type: res.headers["content-type"] });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "pg-wellers.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      return true;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to print bible studies users"
+      );
+    }
+  }
+);
+
 // 2. Initial State
 const initialState = {
   groups: [],

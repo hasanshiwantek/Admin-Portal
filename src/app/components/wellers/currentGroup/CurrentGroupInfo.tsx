@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Printer } from "lucide-react";
+import { printPrayerGroups } from "@/redux/slices/groupSlice";
+import { useAppDispatch } from "@/hooks/useReduxHooks";
 type LegendItem = {
   label: string;
   note?: string;
@@ -28,6 +30,8 @@ const LEGEND_ITEMS: LegendItem[] = [
 ];
 
 const CurrentGroupInfo = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex justify-between items-center gap-5">
       <div className="bg-white p-5 rounded-md shadow-sm w-[50%] h-62">
@@ -40,6 +44,7 @@ const CurrentGroupInfo = () => {
               <Button
                 variant="outline"
                 className="gap-1 p-6 w-[18rem]    text-lg"
+                onClick={() => dispatch(printPrayerGroups())}
               >
                 <Printer className="!w-5 !h-5" />
                 Print PG

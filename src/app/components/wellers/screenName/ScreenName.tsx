@@ -62,6 +62,10 @@ const ScreenName = () => {
             setPg(val);
             setCurrentPage(1); // 👈 reset page
           }}
+          day={day}
+          time={time}
+          pgNumber={pg}
+          data={data}
           onSubmit={() => {
             dispatch(
               getWellersByPG({
