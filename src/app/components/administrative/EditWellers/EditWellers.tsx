@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import WellerInfo from "./WellerInfo";
 import SelectWeller from "./SelectWeller";
 import Spinner from "../../loader/Spinner";
-import { useAppSelector } from "@/hooks/useReduxHooks";
 const EditWellers = () => {
   const [selectedWeller, setSelectedWeller] = useState<any | null>(null);
   const [loadingWeller, setLoadingWeller] = useState(false);

@@ -147,7 +147,7 @@ export default function Page({
           />
         ) : (
           // ✅ Columns View
-          <div className="grid grid-cols-5 gap-2 rounded-md overflow-y-auto">
+          <div className="grid grid-cols-5 gap-2 rounded-md overflow-y-auto ">
             {/* Name */}
             <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
               <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">

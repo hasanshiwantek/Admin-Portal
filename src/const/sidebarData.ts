@@ -6,7 +6,7 @@ import {
   Users,
   User,
   BarChart3,
-  Settings
+  Settings,
 } from "lucide-react";
 export const sidebarData = [
   {
@@ -20,31 +20,38 @@ export const sidebarData = [
     icon: MessageSquareText,
     children: [
       { title: "Edit Wellers", url: "/administrative/edit-wellers" },
-       { title: "Add/Edit Administrator", url: "/administrative/add-edit-administrator" },
-       { title: "Edit PG Location", url: "/administrative/edit-pg-location" },
-       { title: "Session Overview", url: "/administrative/session-overview" },
-       { title: "Add New Weller Manually", url: "/administrative/add-new-weller" },
-       { title: "View Teachers /PGLs", url: "/administrative/view-leaders" },
-       { title: "Add/Edit Current Groups", url: "/administrative/add-edit-currentgroups" },
-
+      {
+        title: "Add/Edit Administrator",
+        url: "/administrative/add-edit-administrator",
+      },
+      { title: "Edit PG Location", url: "/administrative/edit-pg-location" },
+      { title: "Session Overview", url: "/administrative/session-overview" },
+      {
+        title: "Add New Weller Manually",
+        url: "/administrative/add-new-weller",
+      },
+      { title: "View Teachers /PGLs", url: "/administrative/view-leaders" },
+      {
+        title: "Add/Edit Current Groups",
+        url: "/administrative/add-edit-currentgroups",
+      },
     ],
   },
   {
     title: "Info for Leaders",
     icon: IdCard,
-      children: [
+    children: [
       // { title: "Volunteer Info", url: "/info-leaders/volunteer-info" },
-       { title: "Weller Quick View", url: "/info-leaders/quick-view" },
-       { title: "Current Groups", url: "/info-leaders/current-groups" },
-       { title: "Teacher Roster", url: "/info-leaders/teacher-roster" },
-       { title: "Change Password", url: "/update-password" },
+      { title: "Weller Quick View", url: "/info-leaders/quick-view" },
+      { title: "Current Groups", url: "/info-leaders/current-groups" },
+      //  { title: "Teacher Roster", url: "/info-leaders/teacher-roster" },
+      { title: "Change Password", url: "/update-password" },
     ],
   },
   {
     title: "Prayers groups",
     icon: Users,
-    children: [
-    ],
+    children: [],
   },
   {
     title: "View Wellers by day",
@@ -58,5 +65,5 @@ export const sidebarData = [
     ],
   },
   { title: "Weekly Reports", icon: BarChart3, url: "/marketing" },
-  { title: "Account Settings", url: "/update-password", icon: Settings, },
+  { title: "Account Settings", url: "/update-password", icon: Settings },
 ];
