@@ -78,7 +78,12 @@ const SelectWeller = ({
 
         <div>
           <Label htmlFor="id-tag">Add/Edit ID Tag</Label>
-          <Input id="id-tag" placeholder="35986" className="w-full mt-2" />
+          <Input
+            id="id-tag"
+            placeholder="35986"
+            className="w-full mt-2"
+            value={selectedWeller?.id || ""}
+          />
         </div>
       </div>
 
