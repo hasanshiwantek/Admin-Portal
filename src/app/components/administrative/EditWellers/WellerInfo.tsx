@@ -13,7 +13,11 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { updateWeller, getWellerById } from "@/redux/slices/wellerSlice";
+import {
+  updateWeller,
+  getWellerById,
+  getAllWellers,
+} from "@/redux/slices/wellerSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 import { WellerFormValues } from "@/types/types";
 const WellerInfo = ({
@@ -27,6 +31,18 @@ const WellerInfo = ({
   const { weller } = useAppSelector((state: any) => state.wellers);
   const wellerData = weller?.data;
   console.log("Selected Weller data thru ID: ", wellerData);
+
+  const { wellers, error, loading } = useAppSelector(
+    (state: any) => state.wellers
+  );
+  const wellersData = wellers?.data;
+  const [selectedInvitedByWeller, setSelectedInvitedByWeller] = useState<
+    any | null
+  >(null);
+  //  FETCH ALL WELLERS
+  useEffect(() => {
+    dispatch(getAllWellers());
+  }, [dispatch]);
 
   const wellerId = selectedWeller?.id;
 
@@ -211,7 +227,7 @@ const WellerInfo = ({
       notes: rest.notes,
       isNewMember: !!newWeller,
       isReturningMember: !!returningWeller,
-
+      invitedBy: selectedInvitedByWeller?.id || null,
       startDate: rest.nwStartDate || null,
       returnDate: rest.returnDate || null,
       dropDate: rest.dropDate || null,
@@ -273,9 +289,47 @@ const WellerInfo = ({
               <Label>Phone</Label>
               <Input placeholder="Phone" {...register("phone")} />
             </div>
+
             <div className="flex flex-col">
-              <Label className="">Invited By</Label>
-              <Input placeholder="Invited By" {...register("invitedBy")} />
+              <Label>Invited By</Label>
+              <Controller
+                name="invitedBy"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    value={field.value || ""}
+                    onValueChange={(value) => {
+                      field.onChange(value); // updates useForm state
+                      const found = wellersData.find(
+                        (w: any) => w.id === Number(value)
+                      );
+                      setSelectedInvitedByWeller(found);
+                    }}
+                  >
+                    <SelectTrigger className="w-full" id="select-weller">
+                      <span>
+                        {selectedInvitedByWeller
+                          ? `${selectedInvitedByWeller.firstName} ${selectedInvitedByWeller.lastName}`
+                          : "Select Weller"}
+                      </span>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {wellersData?.map((weller: any) => (
+                        <SelectItem key={weller.id} value={String(weller.id)}>
+                          <div className="flex flex-col">
+                            <span className="font-medium">
+                              {weller.firstName} {weller.lastName}
+                            </span>
+                            <span className="text-sm text-muted-foreground">
+                              {weller.email}
+                            </span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
             <div className="flex flex-col">
               <Label>Home Church</Label>

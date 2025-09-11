@@ -70,14 +70,18 @@ const UpdatePassword = () => {
 
       <form
         // onSubmit={""}
-        className=" p-6 rounded-lg shadow-lg w-full  border-2 max-w-[50rem]"
+        className=" p-6 rounded-lg shadow-lg w-full  bg-white border-2 max-w-[50rem]"
       >
         <div className="flex flex-col ">
-          <h1 className="!text-4xl mb-4 ">Change My Password (User Email)</h1>
+          <h1 className=" mb-4 !font-semibold">
+            Change My Password (User Email)
+          </h1>
 
           {error && <div className="text-red-400 text-xl mb-4">{error}</div>}
           <div className="my-4 relative">
-            <Label>Enter old password</Label>
+            <Label>
+              Enter old password <span className="!text-red-500">*</span>
+            </Label>
             <Input
               name="oldPassword"
               type={show.old ? "text" : "password"}
@@ -90,14 +94,16 @@ const UpdatePassword = () => {
             <button
               type="button"
               onClick={() => toggleShowPassword("old")}
-              className="absolute right-5 top-[3.7rem] -translate-y-1/2 text-gray-600"
+              className="absolute right-5 top-[4.2rem] -translate-y-1/2 text-gray-600"
             >
               {show.old ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
 
           <div className="my-4 relative">
-            <Label>Enter new password</Label>
+            <Label>
+              Enter new password<span className="!text-red-500">*</span>
+            </Label>
             <Input
               name="newPassword"
               type={show.new ? "text" : "password"}
@@ -110,14 +116,16 @@ const UpdatePassword = () => {
             <button
               type="button"
               onClick={() => toggleShowPassword("new")}
-              className="absolute right-5 top-[3.7rem] -translate-y-1/2 text-gray-600"
+              className="absolute right-5 top-[4.2rem] -translate-y-1/2 text-gray-600"
             >
               {show.new ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
 
           <div className="my-4 relative">
-            <Label>Confirm new password</Label>
+            <Label>
+              Confirm new password<span className="!text-red-500">*</span>
+            </Label>
             <Input
               name="confirmPassword"
               type={show.confirm ? "text" : "password"}
@@ -130,7 +138,7 @@ const UpdatePassword = () => {
             <button
               type="button"
               onClick={() => toggleShowPassword("confirm")}
-              className="absolute right-5 top-[3.7rem] -translate-y-1/2 text-gray-600"
+              className="absolute right-5 top-[4.2rem] -translate-y-1/2 text-gray-600"
             >
               {show.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
