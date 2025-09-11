@@ -12,7 +12,7 @@ const AddWeller = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ const AddWeller = () => {
     const payload = {
       firstName: data?.firstName,
       lastName: data?.lastName,
-      email:data?.email,
+      email: data?.email,
       homeChurch: data?.homeChurch,
       phone: data?.phone,
       addressCity: data?.city,
@@ -34,7 +34,7 @@ const AddWeller = () => {
       const resultAction = await dispatch(addWellers({ data: payload }));
       if (addWellers.fulfilled.match(resultAction)) {
         console.log("Weller added successfully: ", resultAction?.payload);
-        reset()
+        reset();
       } else {
         console.log("Error adding weller: ", resultAction?.payload);
       }
@@ -55,32 +55,45 @@ const AddWeller = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>First name</Label>
-              <Input placeholder="Write here" {...register("firstName")} />
+              <Label htmlFor="firstName">First name</Label>
+              <Input
+                id="firstName"
+                placeholder="Write here"
+                {...register("firstName")}
+                required
+              />
             </div>
             <div>
-              <Label>Last name</Label>
-              <Input placeholder="Write here" {...register("lastName")} />
+              <Label htmlFor="lastName">Last name</Label>
+              <Input
+                id="lastName"
+                placeholder="Write here"
+                {...register("lastName")}
+                required
+              />
             </div>
           </div>
 
           <div>
-            <Label>Email</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               placeholder="e.g. johndoe@gmail.com"
               type="email"
+              id="email"
               {...register("email")}
+              required
             />
           </div>
 
           <div>
-            <Label>Phone</Label>
-            <Input placeholder="Write here" {...register("phone")} />
+            <Label htmlFor="phone">Phone</Label>
+            <Input placeholder="Write here" id="phone" {...register("phone")} />
           </div>
 
           <div>
-            <Label>Home Church</Label>
+            <Label htmlFor="homeChurch">Home Church</Label>
             <Input
+              id="homeChurch"
               placeholder="e.g. Agape Fellowship"
               {...register("homeChurch")}
             />
@@ -92,23 +105,27 @@ const AddWeller = () => {
           <h2>Address</h2>
 
           <div>
-            <Label>Street</Label>
-            <Input placeholder="e.g. 123 elm st" {...register("street")} />
+            <Label htmlFor="street">Street</Label>
+            <Input
+              placeholder="e.g. 123 elm st"
+              id="street"
+              {...register("street")}
+            />
           </div>
 
           <div>
-            <Label>City</Label>
-            <Input placeholder="e.g. Tampa" {...register("city")} />
+            <Label htmlFor="city">City</Label>
+            <Input placeholder="e.g. Tampa" id="city" {...register("city")} />
           </div>
 
           <div>
-            <Label>State</Label>
-            <Input placeholder="e.g. FL" {...register("state")} />
+            <Label htmlFor="state">State</Label>
+            <Input placeholder="e.g. FL" id="state" {...register("state")} />
           </div>
 
           <div>
-            <Label>Zip</Label>
-            <Input placeholder="e.g. 123456" {...register("zip")} />
+            <Label htmlFor="zip">Zip</Label>
+            <Input placeholder="e.g. 123456" id="zip" {...register("zip")} />
           </div>
         </div>
       </div>
@@ -128,9 +145,10 @@ const AddWeller = () => {
         <div className="mr-[10rem] flex justify-center">
           <Button
             type="submit"
-            className="btn-primary !w-full !max-w-2xl !rounded-full !p-7 "
+            className="btn-primary !w-full !max-w-2xl !rounded-full !p-7"
+            disabled={isSubmitting}
           >
-            Create Weller
+            {isSubmitting ? "Creating..." : "Create Weller"}
           </Button>
         </div>
       </div>

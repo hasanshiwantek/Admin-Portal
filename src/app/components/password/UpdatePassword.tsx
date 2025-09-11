@@ -55,7 +55,7 @@ const UpdatePassword = () => {
         console.log("❌Error updating password: ", resultAction?.payload);
       }
     } catch (err) {
-      console.error("Somethin went wrong: ", err);
+      console.error("Something went wrong: ", err);
     }
   };
 
