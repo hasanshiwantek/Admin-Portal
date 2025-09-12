@@ -315,6 +315,9 @@ const groupSlice = createSlice({
     clearWellersByClass: (state: any) => {
       state.wellersByClass = { data: [], pagination: {} };
     },
+    clearNewWellers: (state: any) => {
+      state.newWellers = { data: [], pagination: {} };
+    },
   },
 
   extraReducers: (builder) => {
@@ -398,5 +401,5 @@ const groupSlice = createSlice({
       });
   },
 });
-export const { clearWellersByClass } = groupSlice.actions;
+export const { clearWellersByClass,clearNewWellers } = groupSlice.actions;
 export default groupSlice.reducer;

@@ -9,6 +9,7 @@ import {
   getGuestWellers,
   getReturneeWellers,
   getDroppedWellers,
+  clearNewWellers,
 } from "@/redux/slices/groupSlice";
 import Spinner from "../../loader/Spinner";
 
@@ -52,6 +53,14 @@ const NewWellers = () => {
     fetchWellersByTab(activeTab);
   }, [activeTab, fromDate, toDate]);
 
+  useEffect(() => {
+    return () => {
+      // 👇 dispatch an action to clear data
+      console.log("Unmount! Cleared Data ");
+
+      dispatch(clearNewWellers());
+    };
+  }, [dispatch]);
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return "—";
     const date = new Date(dateStr);
