@@ -250,9 +250,6 @@ const WellerInfo = ({
       );
       if (updateWeller.fulfilled.match(resultAction)) {
         console.log("✅Weller updated successfully: ", resultAction?.payload);
-        setTimeout(() => {
-          reset();
-        }, 2000);
       } else {
         console.log("❌Error updating weller: ", resultAction?.payload);
       }

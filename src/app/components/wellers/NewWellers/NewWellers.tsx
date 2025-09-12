@@ -122,51 +122,51 @@ const NewWellers = () => {
           <div className="flex overflow-x-auto gap-3">
             <DataColumn
               title="Start Date"
-              items={data.map((d: any) => formatDate(d.startDate))}
+              items={data?.map((d: any) => formatDate(d.startDate))}
             />
             <DataColumn
               title="TUPM"
-              items={data.map((d: any) =>
+              items={data?.map((d: any) =>
                 d.attendances.includes("tue_pm") ? "X" : ""
               )}
             />
             <DataColumn
               title="WAM"
-              items={data.map((d: any) =>
+              items={data?.map((d: any) =>
                 d.attendances.includes("wed_am") ? "X" : ""
               )}
             />
             <DataColumn
               title="TAM"
-              items={data.map((d: any) =>
+              items={data?.map((d: any) =>
                 d.attendances.includes("thu_am") ? "X" : ""
               )}
             />
             <DataColumn
               title="TPM"
-              items={data.map((d: any) =>
+              items={data?.map((d: any) =>
                 d.attendances.includes("thu_pm") ? "X" : ""
               )}
             />
             <DataColumn
               title="Name"
-              items={data.map((d: any) => `${d.firstName} ${d.lastName}`)}
+              items={data?.map((d: any) => `${d.firstName} ${d.lastName}`)}
             />
             <DataColumn
               title="Email"
-              items={data.map((d: any) => d.email || "—")}
+              items={data?.map((d: any) => d.email || "—")}
             />
             <DataColumn
               title="Phone"
-              items={data.map((d: any) => d.phone || "—")}
+              items={data?.map((d: any) => d.phone || "—")}
             />
             <DataColumn
               title="Invited By"
-              items={data.map((d: any) => d.invitedBy || "—")}
+              items={data?.map((d: any) => d.invitedByName || "N/A")}
             />
             <DataColumn
               title="PG TUPM"
-              items={data.map(
+              items={data?.map(
                 (d: any) =>
                   d.prayerGroups.find((pg: any) => pg.session === "tue_pm")
                     ?.pg_number || "—"
@@ -174,7 +174,7 @@ const NewWellers = () => {
             />
             <DataColumn
               title="PG WAM"
-              items={data.map(
+              items={data?.map(
                 (d: any) =>
                   d.prayerGroups.find((pg: any) => pg.session === "wed_am")
                     ?.pg_number || "—"
@@ -182,7 +182,7 @@ const NewWellers = () => {
             />
             <DataColumn
               title="PG TAM"
-              items={data.map(
+              items={data?.map(
                 (d: any) =>
                   d.prayerGroups.find((pg: any) => pg.session === "thu_am")
                     ?.pg_number || "—"
@@ -190,7 +190,7 @@ const NewWellers = () => {
             />
             <DataColumn
               title="PG TPM"
-              items={data.map(
+              items={data?.map(
                 (d: any) =>
                   d.prayerGroups.find((pg: any) => pg.session === "thu_pm")
                     ?.pg_number || "—"

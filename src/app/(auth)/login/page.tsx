@@ -74,7 +74,7 @@ export default function LoginPage() {
 
       <form
         onSubmit={handleLogin}
-        className=" p-10 rounded shadow-lg w-full border border-2 max-w-[40rem]"
+        className=" p-10 rounded shadow-lg w-full border-2 max-w-[40rem]"
       >
         <div className="flex justify-center flex-col items-center">
           {error && <div className="text-red-400 text-xl mb-4">{error}</div>}
