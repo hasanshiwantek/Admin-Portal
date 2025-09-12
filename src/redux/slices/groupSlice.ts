@@ -277,6 +277,23 @@ export const getPgNumbers = createAsyncThunk(
   }
 );
 
+export const saveNotesAndLocation = createAsyncThunk(
+  "groups/getDroppedWellers",
+  async ({ data }: { data: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.post(`admin/add-notes-location`, data);
+      console.log("Saved Notes and location response : ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to save Notes and location  "
+      );
+    }
+  }
+);
+
 // 2. Initial State
 const initialState = {
   groups: [],

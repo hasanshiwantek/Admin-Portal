@@ -1,6 +1,3 @@
-
-
-
 "use client";
 
 import { CalendarDays } from "lucide-react";
@@ -42,9 +39,7 @@ const WellerInfo = ({
         <div className="border rounded-md">
           <div className="bg-[#f8f9fb] p-3 rounded-md flex items-center gap-2 text-gray-800">
             <CalendarDays className="h-6 w-6 text-gray-600" />
-            <span className="!font-bold">
-              Last Attended: {lastAttended}
-            </span>
+            <span className="!font-bold">Last Attended: {lastAttended}</span>
           </div>
 
           {/* Start / Drop Dates */}

@@ -31,10 +31,10 @@ export const sidebarData = [
         url: "/administrative/add-new-weller",
       },
       { title: "View Teachers /PGLs", url: "/administrative/view-leaders" },
-      {
-        title: "Add/Edit Current Groups",
-        url: "/administrative/add-edit-currentgroups",
-      },
+      // {
+      //   title: "Add/Edit Current Groups",
+      //   url: "/administrative/add-edit-currentgroups",
+      // },
     ],
   },
   {
@@ -44,7 +44,7 @@ export const sidebarData = [
       // { title: "Volunteer Info", url: "/info-leaders/volunteer-info" },
       { title: "Weller Quick View", url: "/info-leaders/quick-view" },
       { title: "Current Groups", url: "/info-leaders/current-groups" },
-      //  { title: "Teacher Roster", url: "/info-leaders/teacher-roster" },
+       { title: "Teacher Roster", url: "/info-leaders/teacher-roster" },
       { title: "Change Password", url: "/update-password" },
     ],
   },
@@ -60,10 +60,10 @@ export const sidebarData = [
       { title: "View Wellers", url: "/wellers" },
       { title: "Screen name", url: "/wellers/screen-name" },
       // { title: "Wam Backup", url: "/wellers/wam-backup" },
-      { title: "Studies", url: "/wellers/studies" },
-      { title: "New Wellers", url: "/wellers/new-wellers" },
+      // { title: "Studies", url: "/wellers/studies" },
+      // { title: "New Wellers", url: "/wellers/new-wellers" },
     ],
   },
-  { title: "Weekly Reports", icon: BarChart3, url: "/marketing" },
+  { title: "Weekly Reports", icon: BarChart3, url: "/weekly-reports" },
   { title: "Account Settings", url: "/update-password", icon: Settings },
 ];

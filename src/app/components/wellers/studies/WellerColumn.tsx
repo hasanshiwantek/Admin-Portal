@@ -31,11 +31,29 @@ export default function WellerColumn({
   onPerPageChange: (value: string) => void;
 }) {
   const getWellerClass = (weller: any) => {
-    if (weller.notes && weller.notes.trim() !== "") return "bg-yellow-100";
-    if (weller.role_id === 1) return "bg-slate-100";
-    if (!weller.last_attended_at) return "bg-blue-800 text-white";
-    if (weller.is_new_member) return "bg-blue-400 text-white";
-    return "";
+    const classes: string[] = [];
+
+    if (weller.role_id === 1) {
+      classes.push("bg-slate-100"); // GRAY BG – Teacher
+    }
+
+    if (weller.notes && weller.notes.trim() !== "") {
+      classes.push("bg-yellow-100"); // YELLOW BG – Has Notes
+    }
+
+    return classes.join(" ");
+  };
+
+  const getWellerDotClass = (weller: any) => {
+    if (!weller.last_attended_at) {
+      return "bg-blue-800"; // DARK BLUE – First Time Weller
+    }
+
+    if (weller.is_new_member) {
+      return "bg-blue-400"; // BLUE – New This Session
+    }
+
+    return ""; // No dot
   };
 
   return (
@@ -59,7 +77,7 @@ export default function WellerColumn({
 
           {!wellers || wellers.length === 0 ? (
             <div className="text-center text-gray-500 py-10 text-lg font-medium">
-              No data available 
+              No data available
             </div>
           ) : (
             <>
@@ -101,10 +119,20 @@ export default function WellerColumn({
                             </>
                           )}
                           {heading === "Name" && (
-                            <>
-                              {weller.first_name} {weller.last_name}
-                            </>
+                            <div className="flex items-center gap-2">
+                              {getWellerDotClass(weller) && (
+                                <span
+                                  className={`inline-block h-2.5 w-2.5 rounded-full ${getWellerDotClass(
+                                    weller
+                                  )}`}
+                                />
+                              )}
+                              <span>
+                                {weller.first_name} {weller.last_name}
+                              </span>
+                            </div>
                           )}
+
                           {heading === "Email" && <>{weller.email}</>}
                           {heading === "Phone address" && <>{weller.phone}</>}
                           {heading === "Address" && (
