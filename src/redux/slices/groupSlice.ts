@@ -401,5 +401,5 @@ const groupSlice = createSlice({
       });
   },
 });
-export const { clearWellersByClass,clearNewWellers } = groupSlice.actions;
+export const { clearWellersByClass, clearNewWellers } = groupSlice.actions;
 export default groupSlice.reducer;

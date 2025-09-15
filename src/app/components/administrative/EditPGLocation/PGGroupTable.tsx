@@ -26,8 +26,8 @@ const PGGroupTable = () => {
 
   useEffect(() => {
     if (groups && groups.length > 0) {
-      setLocationInput(groups.map(() => ""));
-      setNotesInput(groups.map(() => ""));
+      setLocationInput(groups.map((group: any) => group.location || ""));
+      setNotesInput(groups.map((group: any) => group.notes || ""));
     }
   }, [groups]);
 
