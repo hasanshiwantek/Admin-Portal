@@ -25,12 +25,14 @@ export const getPrayersGroup = createAsyncThunk(
       const res = await axiosInstance.get(
         `admin/prayer-groups?day=${day}&time=${time}`
       );
-      console.log("Prayers Group Response: ", res.data);
+      console.log("Prayers Group Response: ", res);
       return res.data;
     } catch (err: any) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return thunkAPI.rejectWithValue(
-        err.response?.data?.message || "Failed to fetch count"
+        err?.response?.data?.error ||
+          err.response?.data?.message ||
+          "Failed to fetch count"
       );
     }
   }
