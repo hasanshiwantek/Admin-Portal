@@ -69,7 +69,7 @@ const UpdatePassword = () => {
       </div>
 
       <form
-        // onSubmit={""}
+        onSubmit={handleSubmit}
         className=" p-6 rounded-lg shadow-lg w-full  bg-white border-2 max-w-[50rem]"
       >
         <div className="flex flex-col ">
@@ -149,7 +149,6 @@ const UpdatePassword = () => {
             variant="default"
             size="xxl"
             disabled={loading}
-            onClick={handleSubmit}
             className="!w-full cursor-pointer my-3 !h-[4.5rem] btn-primary "
           >
             {loading ? "Updating..." : "Change Password"}

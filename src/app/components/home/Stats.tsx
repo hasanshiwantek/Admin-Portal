@@ -36,8 +36,8 @@ const Stats = () => {
     },
   ];
 
-  if (error)
-    return <div className="px-4 text-red-600">Failed to load stats.</div>;
+  // if (error)
+  //   return <div className="px-4 text-red-600">Failed to load stats.</div>;
 
   return (
     <div className="mt-5">

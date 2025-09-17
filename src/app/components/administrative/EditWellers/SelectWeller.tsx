@@ -16,9 +16,15 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 const SelectWeller = ({
   selectedWeller,
   setSelectedWeller,
+  handleSubmitFromOutside,
+  wellerId,
+  setWellerId,
 }: {
   selectedWeller: any;
   setSelectedWeller: (weller: any) => void;
+  handleSubmitFromOutside: () => void;
+  wellerId: any;
+  setWellerId: any;
 }) => {
   const dispatch = useAppDispatch();
   const { wellers, error, loading } = useAppSelector(
@@ -82,14 +88,18 @@ const SelectWeller = ({
             id="id-tag"
             placeholder="35986"
             className="w-full mt-2"
-            value={selectedWeller?.id || ""}
+            value={wellerId || ""}
+            onChange={(e) => setWellerId(e.target.value)}
           />
         </div>
       </div>
 
       {/* Right Section */}
       <div className="flex flex-col gap-4 w-full md:w-1/3 md:items-end">
-        <Button className="btn-primary !rounded-full !p-7">
+        <Button
+          className="btn-primary !rounded-full !p-7"
+          onClick={handleSubmitFromOutside}
+        >
           Update & Save weller
         </Button>
         <Button className="btn-outline-primary !rounded-full !p-7">
