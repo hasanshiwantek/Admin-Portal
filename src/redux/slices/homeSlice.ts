@@ -71,8 +71,17 @@ const homeSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Statistics
+
+      .addCase(getWellerStats.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(getWellerStats.fulfilled, (state, action) => {
         state.statistics = action.payload;
+      })
+      .addCase(getWellerStats.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       })
       .addCase(getPrayersGroup.pending, (state) => {
         state.loading = true;
@@ -83,6 +92,14 @@ const homeSlice = createSlice({
         state.groups = action.payload;
       })
       .addCase(getPrayersGroup.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(getWellerStatus.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getWellerStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })

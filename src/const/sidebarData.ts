@@ -31,10 +31,10 @@ export const sidebarData = [
         url: "/administrative/add-new-weller",
       },
       { title: "View Teachers /PGLs", url: "/administrative/view-leaders" },
-      // {
-      //   title: "Add/Edit Current Groups",
-      //   url: "/administrative/add-edit-currentgroups",
-      // },
+      {
+        title: "Add/Edit Current Groups",
+        url: "/administrative/add-edit-currentgroups",
+      },
     ],
   },
   {

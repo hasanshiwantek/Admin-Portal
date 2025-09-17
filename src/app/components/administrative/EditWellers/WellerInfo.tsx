@@ -23,9 +23,13 @@ import { WellerFormValues } from "@/types/types";
 const WellerInfo = ({
   selectedWeller,
   setSelectedWeller,
+  formRef,
+  updatedWellerId,
 }: {
   selectedWeller: any;
   setSelectedWeller: any;
+  formRef: React.RefObject<HTMLFormElement>;
+  updatedWellerId: any;
 }) => {
   const dispatch = useAppDispatch();
   const { weller } = useAppSelector((state: any) => state.wellers);
@@ -241,7 +245,11 @@ const WellerInfo = ({
   };
 
   const onSubmit = async (data: any) => {
-    const payload = transformPayload(data);
+    // const payload = transformPayload(data);
+    const payload = {
+      ...transformPayload(data),
+      id: updatedWellerId, // 👈 This is the updated ID from user
+    };
     const wellerId = wellerData?.id;
     console.log("📤 Transformed Payload:", payload);
     try {
@@ -261,6 +269,7 @@ const WellerInfo = ({
   return (
     <div>
       <form
+        ref={formRef}
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 md:grid-cols-2 gap-5"
       >

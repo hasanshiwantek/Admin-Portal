@@ -34,7 +34,6 @@ const DayPill: React.FC<{
 const PrayersGroup: React.FC = () => {
   // const [period, setPeriod] = useState<"AM" | "PM">("AM");
   // const [day, setDay] = useState<keyof typeof dayMap>("Tue");
-
   // const groups = useMemo(() => dayMap[day] || [], [day]);
   const dispatch = useAppDispatch();
   const { groups, loading, error } = useAppSelector((state: any) => state.home);
@@ -48,10 +47,7 @@ const PrayersGroup: React.FC = () => {
     dispatch(getPrayersGroup({ day: dayParam, time: timeParam }));
   }, [day, period, dispatch]);
 
-  if (error)
-    return (
-      <div className="px-4 text-red-600">Failed to load prayers group.</div>
-    );
+
   return (
     <div className="w-[67%] rounded-md bg-white p-5 shadow-sm ring-1 ring-gray-100">
       {/* Header */}
@@ -94,7 +90,11 @@ const PrayersGroup: React.FC = () => {
 
       {/* Cards grid */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {loading ? (
+        {error ? (
+          <div className="col-span-full text-center text-red-600 py-10 text-lg">
+            {error} Wellers not available.
+          </div>
+        ) : loading ? (
           <div className="col-span-full flex justify-center py-10">
             <Spinner />
           </div>
