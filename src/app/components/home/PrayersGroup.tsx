@@ -39,6 +39,7 @@ const PrayersGroup: React.FC = () => {
   const { groups, loading, error } = useAppSelector((state: any) => state.home);
   const [period, setPeriod] = useState<"AM" | "PM">("PM");
   const [day, setDay] = useState<"Tue" | "Wed" | "Thu">("Tue");
+  console.log("Groupds data:", groups);
 
   useEffect(() => {
     const timeParam = period.toLowerCase(); // "am" or "pm"
@@ -46,7 +47,6 @@ const PrayersGroup: React.FC = () => {
 
     dispatch(getPrayersGroup({ day: dayParam, time: timeParam }));
   }, [day, period, dispatch]);
-
 
   return (
     <div className="w-[67%] rounded-md bg-white p-5 shadow-sm ring-1 ring-gray-100">
@@ -92,7 +92,7 @@ const PrayersGroup: React.FC = () => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {error ? (
           <div className="col-span-full text-center text-red-600 py-10 text-lg">
-            {error} Wellers not available.
+            {error}
           </div>
         ) : loading ? (
           <div className="col-span-full flex justify-center py-10">
