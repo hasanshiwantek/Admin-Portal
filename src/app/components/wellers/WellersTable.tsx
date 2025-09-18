@@ -147,7 +147,7 @@ export default function Page({
           />
         ) : (
           // ✅ Columns View
-          <div className="grid grid-cols-5 gap-2 rounded-md overflow-y-auto ">
+          <div className="grid grid-flow-col auto-cols-[250px] gap-2 rounded-md overflow-x-auto ">
             {/* Name */}
             <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
               <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
@@ -234,7 +234,7 @@ export default function Page({
             </div>
 
             {/* Address */}
-            <div className="flex flex-col border w-[300px] rounded-md shadow-xs space-y-2">
+            <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
               <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
                 Address
               </div>
@@ -249,7 +249,7 @@ export default function Page({
             </div>
 
             {/* Class */}
-            <div className="flex flex-col w-full border rounded-md shadow-xs space-y-2 ml-[11rem]">
+            <div className="flex flex-col w-full border rounded-md shadow-xs space-y-2">
               <div className="font-semibold p-2 border-b !bg-[#F5F5F5] w-full">
                 Class
               </div>

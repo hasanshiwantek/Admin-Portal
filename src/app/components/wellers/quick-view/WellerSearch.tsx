@@ -130,7 +130,7 @@ const WellerSearch = ({
             </div>
             <p className="text-sm flex items-center gap-2">
               <LocationEdit className="h-5 w-5" />
-              {selectedWeller.addressStreet} · {selectedWeller.addressCity},{" "}
+              {selectedWeller.addressStreet} · {selectedWeller.addressCity},
               {selectedWeller.addressState} {selectedWeller.addressZip}
             </p>
             <p className="text-sm flex items-center gap-2">
