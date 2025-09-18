@@ -102,9 +102,9 @@ const SelectWeller = ({
         >
           Update & Save weller
         </Button>
-        <Button className="btn-outline-primary !rounded-full !p-7">
+        {/* <Button className="btn-outline-primary !rounded-full !p-7">
           Discrepancy check in
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

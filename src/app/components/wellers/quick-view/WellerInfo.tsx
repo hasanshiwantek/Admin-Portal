@@ -45,11 +45,11 @@ const WellerInfo = ({
           {/* Start / Drop Dates */}
           <div className="space-y-1 p-4">
             <p className="flex justify-between">
-              NW Start Date:{" "}
+              NW Start Date:
               <span className="font-medium text-gray-700">{nwStartDate}</span>
             </p>
             <p className="flex justify-between">
-              Drop Date:{" "}
+              Drop Date:
               <span className="font-medium text-gray-700">{dropDate}</span>
             </p>
           </div>
