@@ -294,6 +294,42 @@ export const saveNotesAndLocation = createAsyncThunk(
   }
 );
 
+export const getEditPG = createAsyncThunk(
+  "groups/getEditPG",
+  async ({ day, period }: { day: any; period: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.get(
+        `admin/prayer-groups/session-info?session=${day}_${period}`
+      );
+      console.log("Edit Current PG Response : ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to get current edit PG "
+      );
+    }
+  }
+);
+
+export const updatePrayerGroup = createAsyncThunk(
+  "groups/updatePrayerGroup",
+  async ({ data }: { data: any }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.post(`admin/update-prayer-groups`, data);
+      console.log("Edit Current PG Response : ", res.data);
+
+      return res.data;
+    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to update current edit PG "
+      );
+    }
+  }
+);
+
 // 2. Initial State
 const initialState = {
   groups: [],
@@ -302,6 +338,7 @@ const initialState = {
   wellersByPG: [],
   newWellers: [],
   pgNumbers: [],
+  editPG: [],
   loading: false,
   error: null as string | null,
   pagination: null,
@@ -398,6 +435,18 @@ const groupSlice = createSlice({
       .addCase(getPgNumbers.fulfilled, (state, action) => {
         state.loading = false;
         state.pgNumbers = action.payload.data;
+      })
+      .addCase(getEditPG.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getEditPG.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(getEditPG.fulfilled, (state, action) => {
+        state.loading = false;
+        state.editPG = action.payload;
       });
   },
 });

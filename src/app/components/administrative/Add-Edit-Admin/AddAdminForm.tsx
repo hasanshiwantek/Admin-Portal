@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { getAllWellers, assignRole } from "@/redux/slices/wellerSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 import { refetchWellers } from "@/lib/wellerUtils";
+import { adminRoles } from "@/redux/slices/wellerSlice";
 const AddAdminForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
@@ -57,6 +58,7 @@ const AddAdminForm = () => {
         // Refetch after a short delay
         setTimeout(() => {
           refetchWellers(dispatch);
+          dispatch(adminRoles());
         }, 5000);
       } else {
         console.log("Error Assigning role: ", resultAction?.payload);

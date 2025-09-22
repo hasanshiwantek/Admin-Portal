@@ -48,6 +48,19 @@ const NewWellers = () => {
     }
   };
 
+  const formatDateInput = (date: Date) => {
+    return date.toISOString().split("T")[0]; // formats as yyyy-mm-dd
+  };
+
+  useEffect(() => {
+    const today = new Date();
+    const past30 = new Date();
+    past30.setDate(today.getDate() - 30);
+
+    setToDate(formatDateInput(today));
+    setFromDate(formatDateInput(past30));
+  }, []);
+
   // 🚀 On tab change or date range update
   useEffect(() => {
     fetchWellersByTab(activeTab);
