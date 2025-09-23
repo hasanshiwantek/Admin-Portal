@@ -147,11 +147,11 @@ const AddAdminForm = () => {
 
         <div>
           <Label className="block  mb-2">Create password</Label>
-          <div className="relative border">
+          <div className="relative ">
             <Input
               type={showPassword ? "text" : "password"}
               placeholder="Write here"
-              className="pr-5 !border-none"
+              className="pr-5 "
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -160,9 +160,9 @@ const AddAdminForm = () => {
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
-                <EyeOff className="w-5 h-5" />
+                <EyeOff className="w-6 h-6" />
               ) : (
-                <Eye className="w-5 h-5" />
+                <Eye className="w-6 h-6" />
               )}
             </span>
           </div>
@@ -170,11 +170,11 @@ const AddAdminForm = () => {
 
         <div>
           <Label className="block  mb-2">Verify password</Label>
-          <div className="relative border">
+          <div className="relative ">
             <Input
               type={showVerify ? "text" : "password"}
               placeholder="Write here"
-              className="pr-5 !border-none"
+              className="pr-5 "
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
@@ -183,9 +183,9 @@ const AddAdminForm = () => {
               onClick={() => setShowVerify(!showVerify)}
             >
               {showVerify ? (
-                <EyeOff className="w-5 h-5" />
+                <EyeOff className="w-6 h-6" />
               ) : (
-                <Eye className="w-5 h-5" />
+                <Eye className="w-6 h-6" />
               )}
             </span>
           </div>
