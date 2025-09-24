@@ -147,22 +147,22 @@ const AddAdminForm = () => {
 
         <div>
           <Label className="block  mb-2">Create password</Label>
-          <div className="relative ">
+          <div className="relative">
             <Input
               type={showPassword ? "text" : "password"}
               placeholder="Write here"
-              className="pr-5 "
+              className="pr-5"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <span
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+              className="absolute left-105 top-1/2 -translate-y-1/2 cursor-pointer"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
-                <EyeOff className="w-6 h-6" />
+                <EyeOff className="w-5 h-5" />
               ) : (
-                <Eye className="w-6 h-6" />
+                <Eye className="w-5 h-5" />
               )}
             </span>
           </div>
@@ -170,22 +170,22 @@ const AddAdminForm = () => {
 
         <div>
           <Label className="block  mb-2">Verify password</Label>
-          <div className="relative ">
+          <div className="relative">
             <Input
               type={showVerify ? "text" : "password"}
               placeholder="Write here"
-              className="pr-5 "
+              className="pr-5"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <span
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+              className="absolute left-105 top-1/2 -translate-y-1/2 cursor-pointer"
               onClick={() => setShowVerify(!showVerify)}
             >
               {showVerify ? (
-                <EyeOff className="w-6 h-6" />
+                <EyeOff className="w-5 h-5" />
               ) : (
-                <Eye className="w-6 h-6" />
+                <Eye className="w-5 h-5" />
               )}
             </span>
           </div>
