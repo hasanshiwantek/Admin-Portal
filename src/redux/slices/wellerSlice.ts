@@ -39,7 +39,15 @@ export const getAllWellers = createAsyncThunk(
 // GET  WELLERS BY DAY THUNK
 export const getWellersByDay = createAsyncThunk(
   "wellers/getWellersByDay",
-  async ({ day, time ,page,perPage}: { day: any; time: any,page:any,perPage:any }, thunkAPI) => {
+  async (
+    {
+      day,
+      time,
+      page,
+      perPage,
+    }: { day: any; time: any; page: any; perPage: any },
+    thunkAPI
+  ) => {
     try {
       const res = await axiosInstance.get(
         `admin/wellers-by-day?day=${day}&time=${time}&page=${page}&perPage=${perPage}`
@@ -78,7 +86,7 @@ export const updateWeller = createAsyncThunk(
 // GET ALL WELLERS THUNK
 export const getWellerById = createAsyncThunk(
   "wellers/getWellerById",
-  async (wellerId, thunkAPI) => {
+  async ({ wellerId }: { wellerId: any }, thunkAPI) => {
     try {
       const res = await axiosInstance.get(`admin/wellers/${wellerId}`);
       console.log("✅ Get Weller Response Data By Id:", res.data);
