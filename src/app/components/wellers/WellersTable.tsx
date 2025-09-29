@@ -9,6 +9,8 @@ import { Columns, Table2 } from "lucide-react";
 import Pagination from "@/components/ui/pagination";
 import Spinner from "../loader/Spinner";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+
 const headers = [
   "Name",
   "PG",
@@ -48,7 +50,7 @@ export default function Page({
   const totalPages = wellersByDay?.pagination?.lastPage || 1;
 
   const rows = wellersByDay?.wellers;
-
+const router = useRouter();
   return (
     <div className="p-6 space-y-8 shadow-sm rounded-md bg-white ">
       {/* HEADER */}
@@ -138,7 +140,7 @@ export default function Page({
 
                 <TableCell>{row.pgNumber || "N/A"} </TableCell>
                 <TableCell>{row.lastAttended || "N/A"}</TableCell>
-                <TableCell>{row.email || "N/A"}</TableCell>
+                <TableCell onClick={() => router.push(`/info-leaders/quick-view/${row.id}`)} className="cursor-pointer hover:text-gray-500 hover:underline ">{row.email || "N/A"}</TableCell>
                 <TableCell>{row.phone || "N/A"}</TableCell>
                 <TableCell>{row.address || "N/A"}</TableCell>
                 <TableCell>{row.class || "N/A"}</TableCell>
@@ -168,7 +170,7 @@ export default function Page({
                   {row.isFirstTime && !row.isBackupLeader && (
                     <span className="inline-block w-2 h-2 rounded-full bg-blue-800 mr-1" />
                   )}
-                  <span className={cn(row.isLeader && "font-bold")}>
+                  <span className={cn(row.isLeader && "font-bold")} >
                     {row.name}
                   </span>
                 </div>
@@ -210,8 +212,9 @@ export default function Page({
               </div>
               {rows.map((row: any, i: number) => (
                 <div
+                onClick={() => router.push(`/info-leaders/quick-view/${row.id}`)}
                   key={i}
-                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A] "
+                  className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A] cursor-pointer hover:underline "
                 >
                   {row.email || "N/A"}
                 </div>
