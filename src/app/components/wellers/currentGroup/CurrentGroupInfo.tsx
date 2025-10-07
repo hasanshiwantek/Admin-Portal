@@ -16,10 +16,10 @@ type LegendItem = {
 
 const LEGEND_ITEMS: LegendItem[] = [
   { label: "BOLD", note: "Group Leader", type: "dot", color: "black" },
-  { label: "ORANGE", note: "2nd Time PG Leader", type: "dot", color: "orange" },
+  { label: "ORANGE", note: "2nd Time Group Leader", type: "dot", color: "orange" },
   { label: "Light Blue", note: "New This Session", type: "dot", color: "blue" },
   { label: "Bible Study Teacher" },
-  { label: "GREEN", note: "New PG Leader", type: "dot", color: "green" },
+  { label: "GREEN", note: "New Group Leader", type: "dot", color: "green" },
   {
     label: "DARK BLUE",
     note: "First Time Weller",
@@ -47,15 +47,15 @@ const CurrentGroupInfo = () => {
                 onClick={() => dispatch(printPrayerGroups())}
               >
                 <Printer className="!w-5 !h-5" />
-                Print PG
+                Print Group
               </Button>
             </div>
             <div className="flex justify-start items-center gap-5">
               <Button variant="outline" className="p-6  text-lg">
-                Email PG
+                Email Group
               </Button>
               <Button variant="outline" className="p-6  text-lg">
-                B/UP PGL
+                B/UP Group
               </Button>
             </div>
           </div>

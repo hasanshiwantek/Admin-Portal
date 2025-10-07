@@ -14,7 +14,7 @@ import {
 import Spinner from "../../loader/Spinner";
 
 const NewWellers = () => {
-  const tabOptions = ["New", "Guests", "Returnees", "Dropped"];
+  const tabOptions = ["New", "Dropped"];
   const [activeTab, setActiveTab] = useState("New");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
@@ -33,12 +33,6 @@ const NewWellers = () => {
     switch (tab) {
       case "New":
         await dispatch(getNewWellers(payload));
-        break;
-      case "Guests":
-        await dispatch(getGuestWellers(payload));
-        break;
-      case "Returnees":
-        await dispatch(getReturneeWellers(payload));
         break;
       case "Dropped":
         await dispatch(getDroppedWellers(payload));

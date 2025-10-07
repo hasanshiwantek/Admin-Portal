@@ -52,7 +52,7 @@ const PrayersGroup: React.FC = () => {
     <div className="w-[67%] rounded-md bg-white p-5 shadow-sm ring-1 ring-gray-100">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-semibold text-gray-800">Prayers groups</h2>
+        <h2 className="font-semibold text-gray-800">Total groups</h2>
         <Link href={"/info-leaders/current-groups"}>
           <button className="text-lg font-semibold text-[#008696] underline">
             View all
@@ -109,8 +109,8 @@ const PrayersGroup: React.FC = () => {
               className="rounded-xl border shadow-xs border-gray-200 bg-white"
             >
               <div className="flex gap-4">
-                <div className="flex w-20 items-start justify-center bg-gray-100/70">
-                  <div className="text-3xl font-extrabold text-gray-800 p-2 m-auto">
+                <div className="flex w-36 items-start justify-center bg-gray-100/70">
+                  <div className="text-2xl font-extrabold text-gray-800 p-2 m-auto">
                     {g.groupNumber}
                   </div>
                 </div>

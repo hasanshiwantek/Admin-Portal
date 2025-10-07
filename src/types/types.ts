@@ -21,7 +21,7 @@ export type Admin = {
     lastName: string;
     email: string;
     phone: string;
-    invitedBy: string;
+    howHeared: string;
     homeChurchName: string;
     street: string;
     city: string;

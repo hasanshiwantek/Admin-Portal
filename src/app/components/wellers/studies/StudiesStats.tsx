@@ -19,7 +19,7 @@ const LEGEND_ITEMS: LegendItem[] = [
     type: "dot",
     color: "darkBlue",
   },
-  { label: "GRAY BG", note: "Teacher", color: "black" },
+  { label: "GRAY BG", note: "Group Leader", color: "black" },
   { label: "YELLOW BACKGROUND", note: "Has Notes", type: "yellow" },
   // { label: "Bible Study Teacher" },
 ];
