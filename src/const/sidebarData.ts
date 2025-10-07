@@ -24,7 +24,7 @@ export const sidebarData = [
         title: "Add/Edit Administrator",
         url: "/administrative/add-edit-administrator",
       },
-      { title: "Edit PG Location", url: "/administrative/edit-pg-location" },
+      { title: "Read Edit PG Location", url: "/administrative/edit-pg-location" },
       { title: "Session Overview", url: "/administrative/session-overview" },
       {
         title: "Add New Weller Manually",
@@ -58,7 +58,7 @@ export const sidebarData = [
     icon: User,
     children: [
       { title: "View Wellers", url: "/wellers" },
-      { title: "Screen name", url: "/wellers/screen-name" },
+      { title: "Select Wellers by Group", url: "/wellers/screen-name" },
       // { title: "Wam Backup", url: "/wellers/wam-backup" },
       // { title: "Studies", url: "/wellers/studies" },
       // { title: "New Wellers", url: "/wellers/new-wellers" },

@@ -53,6 +53,8 @@ const SelectWeller = ({
                 const found = wellersData.find(
                   (w: any) => w.id === Number(value)
                 );
+                console.log("Found Id: ",found);
+                
                 setSelectedWeller(found);
               }}
             >
@@ -82,7 +84,7 @@ const SelectWeller = ({
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <Label htmlFor="id-tag">Add/Edit ID Tag</Label>
           <Input
             id="id-tag"
@@ -91,7 +93,7 @@ const SelectWeller = ({
             value={wellerId || ""}
             onChange={(e) => setWellerId(e.target.value)}
           />
-        </div>
+        </div> */}
       </div>
 
       {/* Right Section */}

@@ -20,7 +20,7 @@ const Stats = () => {
 
   const stats = [
     {
-      label: "Total Prayer Groups",
+      label: "Total  Groups",
       value: numberFmt(data?.totalPrayerGroups),
       icon: Users,
     },

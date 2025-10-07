@@ -35,6 +35,13 @@ const WellerInfo = ({
   const { weller } = useAppSelector((state: any) => state.wellers);
   const wellerData = weller?.data;
   console.log("Selected Weller data thru ID: ", wellerData);
+  const invitedByData = [
+    "Personal invite",
+    "Social",
+    "Bumper Magnet",
+    "Wellmail",
+    "Other",
+  ];
 
   const { wellers, error, loading } = useAppSelector(
     (state: any) => state.wellers
@@ -50,15 +57,16 @@ const WellerInfo = ({
 
   const wellerId = selectedWeller?.id;
 
+  console.log("Weller Id:::::::::", wellerId);
+
   // 👇 Fetch weller data on first mount
   useEffect(() => {
-    if (wellerId) dispatch(getWellerById(wellerId));
+    if (wellerId) dispatch(getWellerById({ wellerId: wellerId }));
   }, [dispatch, wellerId]);
 
   const days = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
   const sessions = ["TUE_PM", "WED_AM", "THU_AM", "THU_PM"];
   const studies = [
-    "Floater",
     "Boundaries",
     "Disciples Are Made",
     "Disunity",
@@ -74,7 +82,7 @@ const WellerInfo = ({
     lastName: "",
     email: "",
     phone: "",
-    invitedBy: "",
+    howHeared: "",
     homeChurchName: "",
     street: "",
     city: "",
@@ -156,7 +164,7 @@ const WellerInfo = ({
         lastName: wellerData.lastName || "",
         email: wellerData.email || "",
         phone: wellerData.phone || "",
-        invitedBy: wellerData.invitedBy || "",
+        howHeared: wellerData.howHeared || "",
         homeChurchName: wellerData.homeChurch || "",
         street: wellerData.addressStreet || "",
         city: wellerData.addressCity || "",
@@ -231,7 +239,7 @@ const WellerInfo = ({
       notes: rest.notes,
       isNewMember: !!newWeller,
       isReturningMember: !!returningWeller,
-      invitedBy: selectedInvitedByWeller?.id || null,
+      howHeared: rest.howHeared || null,
       startDate: rest.nwStartDate || null,
       returnDate: rest.returnDate || null,
       dropDate: rest.dropDate || null,
@@ -297,17 +305,17 @@ const WellerInfo = ({
             </div>
 
             <div className="flex flex-col">
-              <Label>Invited By</Label>
+              <Label>How He/She heard about The Well</Label>
               <Controller
-                name="invitedBy"
+                name="howHeared"
                 control={control}
                 render={({ field }) => (
                   <Select
                     value={field.value || ""}
                     onValueChange={(value) => {
                       field.onChange(value); // updates useForm state
-                      const found = wellersData.find(
-                        (w: any) => w.id === Number(value)
+                      const found = invitedByData.find(
+                        (w: any) => w === value
                       );
                       setSelectedInvitedByWeller(found);
                     }}
@@ -315,20 +323,15 @@ const WellerInfo = ({
                     <SelectTrigger className="w-full" id="select-weller">
                       <span>
                         {selectedInvitedByWeller
-                          ? `${selectedInvitedByWeller.firstName} ${selectedInvitedByWeller.lastName}`
-                          : "Select Weller"}
+                          ? `${selectedInvitedByWeller} `
+                          : "Select Invited By"}
                       </span>
                     </SelectTrigger>
                     <SelectContent>
-                      {wellersData?.map((weller: any) => (
-                        <SelectItem key={weller.id} value={String(weller.id)}>
+                      {invitedByData?.map((inv: any, ind) => (
+                        <SelectItem key={ind} value={String(inv)}>
                           <div className="flex flex-col">
-                            <span className="font-medium">
-                              {weller.firstName} {weller.lastName}
-                            </span>
-                            <span className="text-sm text-muted-foreground">
-                              {weller.email}
-                            </span>
+                            <span className="font-medium">{inv}</span>
                           </div>
                         </SelectItem>
                       ))}
@@ -350,13 +353,13 @@ const WellerInfo = ({
               </Select>
             </div>
 
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <Label>Home Church if 'Other' Selected</Label>
               <Input
                 placeholder="Lifespring Seventh Day Adventist Church"
                 {...register("homeChurchName")}
               />
-            </div>
+            </div> */}
           </div>
 
           <div className="space-y-5 bg-white p-5  shadow-sm rounded-md">
@@ -384,7 +387,7 @@ const WellerInfo = ({
           </div>
 
           <div className="space-y-5 bg-white p-5 shadow-sm rounded-md">
-            <h2 className="mb-4">Studies</h2>
+            <h2 className="mb-4">Groups</h2>
 
             {sessions.map((session) => (
               <div key={session} className="flex flex-col gap-2">
@@ -433,7 +436,7 @@ const WellerInfo = ({
                           checked={!!field.value}
                           onCheckedChange={(val) => field.onChange(!!val)}
                         />
-                        <Label htmlFor={`teacher-${session}`}>Teacher</Label>
+                        <Label htmlFor={`teacher-${session}`}>Group Leader</Label>
                       </>
                     )}
                   />
@@ -489,7 +492,7 @@ const WellerInfo = ({
                 )}
               />
 
-              <Controller
+              {/* <Controller
                 name="returningWeller"
                 control={control}
                 defaultValue={false}
@@ -503,7 +506,7 @@ const WellerInfo = ({
                     <span>Returning Weller</span>
                   </>
                 )}
-              />
+              /> */}
             </div>
 
             <div className="grid grid-cols-2 gap-4 mt-4">
@@ -554,7 +557,7 @@ const WellerInfo = ({
             {/* PG Numbers */}
             <div className="flex items-start gap-4">
               <div className="w-24 pt-2">
-                <Label className="block">PG #</Label>
+                <Label className="block">PG </Label>
               </div>
               <div className="grid grid-cols-4 gap-4 w-full">
                 {sessions.map((session) => (
@@ -573,7 +576,7 @@ const WellerInfo = ({
             {/* PG Leader */}
             <div className="flex items-start gap-4">
               <div className="w-48 pt-2">
-                <Label className="block">PG Leader</Label>
+                <Label className="block">Group Leader</Label>
               </div>
               <div className="grid grid-cols-4 gap-4 w-full">
                 {sessions.map((session) => (
@@ -597,7 +600,7 @@ const WellerInfo = ({
             {/* First Time PG Leader */}
             <div className="flex items-start gap-4">
               <div className="w-48 pt-2">
-                <Label className="block">First Time PG Leader</Label>
+                <Label className="block">First Time Group Leader</Label>
               </div>
               <div className="grid grid-cols-4 gap-4 w-full">
                 {sessions.map((session) => (
@@ -619,7 +622,7 @@ const WellerInfo = ({
             </div>
 
             {/* Second Time PG Leader */}
-            <div className="flex items-start gap-4">
+            {/* <div className="flex items-start gap-4">
               <div className="w-48 pt-2">
                 <Label className="block">Second Time PG Leader</Label>
               </div>
@@ -640,11 +643,11 @@ const WellerInfo = ({
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Mentor checkboxes and Save Button */}
             <div className="flex justify-between items-end pt-4">
-              <div className="space-y-4">
+              {/* <div className="space-y-4">
                 <Controller
                   name="mentorLead"
                   control={control}
@@ -680,7 +683,7 @@ const WellerInfo = ({
                     </div>
                   )}
                 />
-              </div>
+              </div> */}
 
               <Button type="submit" className="btn-primary !rounded-full !p-7">
                 Update & Save weller

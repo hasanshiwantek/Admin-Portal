@@ -10,10 +10,10 @@ import Pagination from "@/components/ui/pagination";
 import Spinner from "../loader/Spinner";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-
+import { Button } from "@/components/ui/button";
 const headers = [
   "Name",
-  "PG",
+  "Location",
   "Last Attended",
   "Email",
   "Phone",
@@ -50,18 +50,30 @@ export default function Page({
   const totalPages = wellersByDay?.pagination?.lastPage || 1;
 
   const rows = wellersByDay?.wellers;
-const router = useRouter();
+  const router = useRouter();
   return (
     <div className="p-6 space-y-8 shadow-sm rounded-md bg-white ">
       {/* HEADER */}
       <div className="flex justify-between items-center ">
-        <div>
-          <DayTabs
-            onDayChange={setSelectedDay}
-            onPeriodChange={setSelectedPeriod}
-            defaultDay={selectedDay}
-            defaultPeriod={selectedPeriod}
-          />
+        <div className="flex justify-start gap-6 items-center ">
+          <div>
+            <DayTabs
+              onDayChange={setSelectedDay}
+              onPeriodChange={setSelectedPeriod}
+              defaultDay={selectedDay}
+              defaultPeriod={selectedPeriod}
+            />
+          </div>
+
+          {/* CTA */}
+          <div className="">
+            <Button
+              variant="outline"
+              className="h-11 !rounded-full !p-7 btn-outline-primary !font-semibold"
+            >
+              See my Group only
+            </Button>
+          </div>
         </div>
 
         {/* View toggle */}
@@ -89,8 +101,8 @@ const router = useRouter();
 
       <h2>
         {`${selectedDay.toUpperCase()}-${selectedPeriod.toUpperCase()} Wellers: ${
-          wellersByDay?.statistics?.totalActiveAllDays
-        } Active | ${wellersByDay?.statistics?.totalDropped} Dropped`}
+          wellersByDay?.statistics?.totalActiveForSession
+        } Active | ${wellersByDay?.statistics?.totalDroppedForSession} Dropped`}
       </h2>
 
       <div>
@@ -140,7 +152,14 @@ const router = useRouter();
 
                 <TableCell>{row.pgNumber || "N/A"} </TableCell>
                 <TableCell>{row.lastAttended || "N/A"}</TableCell>
-                <TableCell onClick={() => router.push(`/info-leaders/quick-view/${row.id}`)} className="cursor-pointer hover:text-gray-500 hover:underline ">{row.email || "N/A"}</TableCell>
+                <TableCell
+                  onClick={() =>
+                    router.push(`/info-leaders/quick-view/${row.id}`)
+                  }
+                  className="cursor-pointer hover:text-gray-500 hover:underline "
+                >
+                  {row.email || "N/A"}
+                </TableCell>
                 <TableCell>{row.phone || "N/A"}</TableCell>
                 <TableCell>{row.address || "N/A"}</TableCell>
                 <TableCell>{row.class || "N/A"}</TableCell>
@@ -170,7 +189,7 @@ const router = useRouter();
                   {row.isFirstTime && !row.isBackupLeader && (
                     <span className="inline-block w-2 h-2 rounded-full bg-blue-800 mr-1" />
                   )}
-                  <span className={cn(row.isLeader && "font-bold")} >
+                  <span className={cn(row.isLeader && "font-bold")}>
                     {row.name}
                   </span>
                 </div>
@@ -179,7 +198,7 @@ const router = useRouter();
 
             {/* PG */}
             <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
-              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">PG</div>
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">Location</div>
               {rows.map((row: any, i: number) => (
                 <div
                   key={i}
@@ -212,7 +231,9 @@ const router = useRouter();
               </div>
               {rows.map((row: any, i: number) => (
                 <div
-                onClick={() => router.push(`/info-leaders/quick-view/${row.id}`)}
+                  onClick={() =>
+                    router.push(`/info-leaders/quick-view/${row.id}`)
+                  }
                   key={i}
                   className="p-2 border-b text-[11.5px] font-medium text-[#3A3A3A] cursor-pointer hover:underline "
                 >

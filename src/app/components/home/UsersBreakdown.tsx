@@ -9,8 +9,8 @@ const UsersBreakdown = () => {
   const dispatch = useAppDispatch();
   const { wellerStatus, loading } = useAppSelector((state: any) => state.home);
   const data = wellerStatus?.data;
-  const active = data?.activeUsers;
-  const inactive = data?.inactiveUsers;
+  const active = data?.activeUsers || 0;
+  const inactive = data?.newUsers || 0;
   const total = data?.totalUsers;
   const activePct = total ? Math.round((active / total) * 100) : 0;
 
@@ -78,7 +78,7 @@ const UsersBreakdown = () => {
                   className="inline-block h-2.5 w-2.5 rounded-full"
                   style={{ backgroundColor: pink }}
                 />
-                <span className="!text-black">Inactive Wellers</span>
+                <span className="!text-black">New Wellers</span>
               </div>
               <span className="!font-bold !text-black">
                 {inactive?.toLocaleString()}

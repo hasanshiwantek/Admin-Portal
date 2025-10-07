@@ -146,18 +146,18 @@ const WellerSearch = ({
 
       {/* Groups */}
       {selectedWeller?.prayerGroups?.length > 0 && (
-        <div className="space-y-3 bg-white p-4 rounded-md">
+        <div className="space-y-3 bg-white p-4 rounded-md ">
           <h2 className="text-base font-semibold">Groups</h2>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
             {selectedWeller.prayerGroups.map((pg: any, index: number) => (
               <div
                 key={index}
                 className="rounded-xl border shadow-xs border-gray-200 bg-white"
               >
                 <div className="flex gap-4">
-                  <div className="flex w-20 items-start justify-center bg-gray-100/70">
-                    <div className="text-3xl font-extrabold text-gray-800 p-2 m-auto">
-                      #{pg.pg_number}
+                  <div className="flex w-40 items-start justify-center bg-gray-100/70">
+                    <div className="text-2xl font-extrabold text-gray-800 p-2 m-auto w-full">
+                      {pg.pg_number}
                     </div>
                   </div>
                   <div className="min-w-0 flex-1 p-4">
@@ -199,7 +199,7 @@ const WellerSearch = ({
       {/* Studies */}
       {selectedWeller?.bibleStudies?.length > 0 && (
         <div className="space-y-3 bg-white p-4 rounded-md">
-          <h2 className="text-base font-semibold">Studies</h2>
+          <h2 className="text-base font-semibold">Groups</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {selectedWeller.bibleStudies.map((study: any, index: number) => (
               <div

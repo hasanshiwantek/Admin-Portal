@@ -36,7 +36,6 @@ const ViewWellersClass: React.FC<Props> = ({
   period,
 }) => {
   const studies = [
-    "Floater",
     "Boundaries",
     "Disciples Are Made",
     "Disunity",
@@ -90,7 +89,7 @@ const ViewWellersClass: React.FC<Props> = ({
 
           <Button variant="outline" className="gap-1 p-6 w-[10rem] text-lg">
             <Printer className="!w-5 !h-5" />
-            Email Class
+            Email Group
           </Button>
         </div>
       </div>

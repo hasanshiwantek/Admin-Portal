@@ -12,10 +12,10 @@ type Pill = {
 };
 
 const PILLS: Pill[] = [
-  { label: "BLUE", note: "New This Session", dot: "blue" },
+  // { label: "BLUE", note: "New This Session", dot: "blue" },
   { label: "DARK BLUE", note: "First Time Weller", dot: "darkBlue" },
-  { label: "BOLD", note: "PG Leader", variant: "bold" },
-  { label: "PINK", note: "Backup PG Leader", dot: "pink" },
+  // { label: "BOLD", note: "Group Leader", variant: "bold" },
+  // { label: "PINK", note: "Backup PG Leader", dot: "pink" },
   { label: "YELLOW BACKGROUND", note: "Has Notes", variant: "yellow" },
   { label: "Bible Study Teacher" },
 ];
@@ -76,15 +76,7 @@ export default function WellersStats({ wellersByDay }: { wellersByDay: any }) {
         ))}
       </div>
 
-      {/* CTA */}
-      <div className="mt-5">
-        <Button
-          variant="outline"
-          className="h-11 !rounded-full !p-6 btn-outline-primary"
-        >
-          See my PG only
-        </Button>
-      </div>
+  
     </section>
   );
 }
