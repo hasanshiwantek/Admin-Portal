@@ -33,7 +33,7 @@ const UsersBreakdown = () => {
       ) : (
         <>
           <h2 className="text-lg font-semibold text-gray-800">
-            Users breakdown
+            Wellers breakdown
           </h2>
 
           {/* Donut */}
@@ -52,7 +52,7 @@ const UsersBreakdown = () => {
                 <div className="text-3xl font-extrabold text-gray-800">
                   {total?.toLocaleString()}
                 </div>
-                <div className="text-lg text-gray-400 -mt-1 ">Total users</div>
+                <div className="text-lg text-gray-400 -mt-1 ">Total wellers</div>
               </div>
             </div>
           </div>
