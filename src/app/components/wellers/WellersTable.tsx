@@ -11,6 +11,8 @@ import Spinner from "../loader/Spinner";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { seeMyGroupWellers } from "@/redux/slices/wellerSlice";
+import { useAppDispatch } from "@/hooks/useReduxHooks";
 const headers = [
   "Name",
   "Location",
@@ -51,6 +53,29 @@ export default function Page({
 
   const rows = wellersByDay?.wellers;
   const router = useRouter();
+
+  const dispatch = useAppDispatch();
+
+  const seeMyGroupHandler = async () => {
+    try {
+      const result = await dispatch(
+        seeMyGroupWellers({
+          day: selectedDay,
+          time: selectedPeriod,
+          perPage: perPage,
+          page: currentPage,
+        })
+      );
+      if (seeMyGroupWellers.fulfilled.match(result)) {
+        console.log("✅", result?.payload);
+      } else {
+        console.log(result?.payload);
+      }
+    } catch (err) {
+      console.log("Something went wrong: ", err);
+    }
+  };
+
   return (
     <div className="p-6 space-y-8 shadow-sm rounded-md bg-white ">
       {/* HEADER */}
@@ -70,6 +95,7 @@ export default function Page({
             <Button
               variant="outline"
               className="h-11 !rounded-full !p-7 btn-outline-primary !font-semibold"
+              onClick={seeMyGroupHandler}
             >
               See my Group only
             </Button>
@@ -198,7 +224,9 @@ export default function Page({
 
             {/* PG */}
             <div className="flex flex-col border w-full rounded-md shadow-xs space-y-2">
-              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">Location</div>
+              <div className="font-semibold p-2 border-b !bg-[#F5F5F5]">
+                Location
+              </div>
               {rows.map((row: any, i: number) => (
                 <div
                   key={i}
