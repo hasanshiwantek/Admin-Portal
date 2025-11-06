@@ -202,6 +202,32 @@ export const removeRole = createAsyncThunk(
   }
 );
 
+export const seeMyGroupWellers = createAsyncThunk(
+  "wellers/seeMyGroupWellers",
+  async (
+    {
+      day,
+      time,
+      perPage,
+      page,
+    }: { day: any; time: any; perPage: any; page: any },
+    thunkAPI
+  ) => {
+    try {
+      const res = await axiosInstance.get(
+        `admin/my-pg?day=${day}&time=${time}&perPage=${perPage}&page=${page}`
+      );
+      console.log("✅ See my Group Response Data:", res.data);
+      return res.data;
+    } catch (err: any) {
+      console.error("❌ Error in Fetching group wellers:", err);
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to fetch wellers"
+      );
+    }
+  }
+);
+
 // 2. Initial State
 const initialState = {
   wellers: [],
@@ -285,6 +311,10 @@ const wellerSlice = createSlice({
         state.loading = false;
         state.error =
           (action.payload as string) || action.error.message || "Failed";
+      })
+      .addCase(seeMyGroupWellers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.wellersByDay = action.payload.data;
       })
       .addCase(adminRoles.pending, (state) => {
         state.loading = true;
