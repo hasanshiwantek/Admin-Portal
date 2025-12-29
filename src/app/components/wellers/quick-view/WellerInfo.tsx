@@ -1,8 +1,7 @@
 "use client";
 
 import { CalendarDays } from "lucide-react";
-import { format } from "date-fns";
-
+import { format, parse } from "date-fns";
 const WellerInfo = ({
   selectedWeller,
   setSelectedWeller,
@@ -12,17 +11,35 @@ const WellerInfo = ({
 }) => {
   const formatDate = (dateStr: string | null | undefined) => {
     if (!dateStr) return "NA";
+
     try {
+      // Handle DD-MM-YYYY
+      if (/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) {
+        const parsedDate = parse(dateStr, "dd-MM-yyyy", new Date());
+        return format(parsedDate, "MM/dd/yyyy");
+      }
+
+      // Handle ISO or valid formats
       return format(new Date(dateStr), "MM/dd/yyyy");
     } catch {
       return "NA";
     }
   };
 
-  const attendedDates: string[] =
-    selectedWeller?.attendances?.length > 0
-      ? selectedWeller.attendances.map((d: string) => formatDate(d))
-      : [];
+  const attendanceLabelMap: Record<string, string> = {
+  wed_am: "Wednesday (AM)",
+  wed_pm: "Wednesday (PM)",
+  tue_pm: "Tuesday (PM)",
+  thu_am: "Thursday (AM)",
+  thu_pm: "Thursday (PM)",
+}
+
+const attendedDates =
+  selectedWeller?.attendances?.length > 0
+    ? selectedWeller.attendances.map(
+        (d: string) => attendanceLabelMap[d] || d
+      )
+    : [];
 
   const lastAttended = formatDate(selectedWeller?.lastAttended);
   const dropDate = formatDate(selectedWeller?.dropDate);
@@ -62,7 +79,7 @@ const WellerInfo = ({
           </div>
           <div className="grid grid-cols-3 gap-5 p-4 text-center font-medium text-gray-800">
             {attendedDates.length > 0 ? (
-              attendedDates.map((date, i) => <div key={i}>{date}</div>)
+              attendedDates.map((date:any, i:number) => <div key={i}>{date}</div>)
             ) : (
               <div className="col-span-3">No attendance records</div>
             )}
