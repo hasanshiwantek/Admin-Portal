@@ -15,12 +15,14 @@ import { getAllWellers, assignRole } from "@/redux/slices/wellerSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxHooks";
 import { refetchWellers } from "@/lib/wellerUtils";
 import { adminRoles } from "@/redux/slices/wellerSlice";
+
 const AddAdminForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
   const [userRole, setUserRole] = useState<number | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
   const { wellers, error, loading } = useAppSelector(
@@ -29,13 +31,19 @@ const AddAdminForm = () => {
   const wellersData = wellers?.data;
   const [selectedWellerId, setSelectedWellerId] = useState<any | null>();
 
-  //  FETCH ALL WELLERS
+  // FETCH ALL WELLERS
   useEffect(() => {
     dispatch(getAllWellers());
   }, [dispatch]);
 
-  // HANDLE SUBMIT
+  // Filter wellers based on selected letter
+  const filteredWellers = selectedLetter
+    ? wellersData?.filter((weller: any) =>
+        weller.firstName?.toUpperCase().startsWith(selectedLetter)
+      )
+    : wellersData;
 
+  // HANDLE SUBMIT
   const handleSubmit = async () => {
     const payload = {
       roleId: userRole,
@@ -78,16 +86,34 @@ const AddAdminForm = () => {
       </div>
       <div className="flex flex-wrap gap-2 text-sm text-muted-foreground mb-4">
         {"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((char) => (
-          <span key={char} className="cursor-pointer hover:underline">
+          <span
+            key={char}
+            className={`cursor-pointer hover:underline ${
+              selectedLetter === char
+                ? "font-bold text-primary underline"
+                : ""
+            }`}
+            onClick={() =>
+              setSelectedLetter(selectedLetter === char ? null : char)
+            }
+          >
             {char}
           </span>
         ))}
+        {selectedLetter && (
+          <button
+            onClick={() => setSelectedLetter(null)}
+            className="text-xs text-primary hover:underline ml-2"
+          >
+            Clear filter
+          </button>
+        )}
       </div>
 
       {/* Admin Selector */}
       <div className="space-y-7">
         <div>
-          <Label className="block  mb-2">Select Admin</Label>
+          <Label className="block mb-2">Select Admin</Label>
           <Select
             value={selectedWellerId ? String(selectedWellerId.id) : ""}
             onValueChange={(value) => {
@@ -106,21 +132,28 @@ const AddAdminForm = () => {
             </SelectTrigger>
 
             <SelectContent>
-              {wellersData?.map((weller: any) => (
-                <SelectItem key={weller.id} value={String(weller.id)}>
-                  <div className="flex flex-col">
-                    <span className="font-medium">
-                      {weller.firstName} {weller.lastName}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      {weller.email}
-                    </span>
-                  </div>
-                </SelectItem>
-              ))}
+              {filteredWellers?.length > 0 ? (
+                filteredWellers.map((weller: any) => (
+                  <SelectItem key={weller.id} value={String(weller.id)}>
+                    <div className="flex flex-col">
+                      <span className="font-medium">
+                        {weller.firstName} {weller.lastName}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {weller.email}
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))
+              ) : (
+                <div className="p-2 text-sm text-muted-foreground">
+                  No wellers found starting with "{selectedLetter}"
+                </div>
+              )}
             </SelectContent>
           </Select>
         </div>
+
         <div>
           <Label className="block mb-2">Select Level of Access</Label>
           <Select
@@ -146,7 +179,7 @@ const AddAdminForm = () => {
         </div>
 
         <div>
-          <Label className="block  mb-2">Create password</Label>
+          <Label className="block mb-2">Create password</Label>
           <div className="relative">
             <Input
               type={showPassword ? "text" : "password"}
@@ -169,7 +202,7 @@ const AddAdminForm = () => {
         </div>
 
         <div>
-          <Label className="block  mb-2">Verify password</Label>
+          <Label className="block mb-2">Verify password</Label>
           <div className="relative">
             <Input
               type={showVerify ? "text" : "password"}

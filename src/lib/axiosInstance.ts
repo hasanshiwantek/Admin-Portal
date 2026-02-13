@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const axiosInstance = axios.create({
-  baseURL: "https://wellers.brokercell.com/api/",
+  baseURL: "https://backend.thewellinfo.com/api/",
 });
 
 axiosInstance.interceptors.request.use((config) => {

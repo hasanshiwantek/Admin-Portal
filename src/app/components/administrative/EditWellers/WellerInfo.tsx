@@ -463,7 +463,7 @@ const WellerInfo = ({
                     <SelectValue placeholder="Select Attendance Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    {["Active", "Inactive", "Guest", "Staff", "Archeive"].map(
+                    {["Active", "Inactive", "Guest", "Staff","Archive"].map(
                       (status) => (
                         <SelectItem key={status} value={status}>
                           {status}
