@@ -7,6 +7,7 @@ import {
   User,
   BarChart3,
   Settings,
+  Calendar,
 } from "lucide-react";
 export const sidebarData = [
   {
@@ -65,5 +66,18 @@ export const sidebarData = [
     ],
   },
   { title: "Weekly Reports", icon: BarChart3, url: "/weekly-reports" },
+  
+  {
+    title: "Events",
+    icon: Calendar,
+    children: [
+      { title: "Events List", url: "/events-list" },
+      { title: "Event Registrants", url: "/event-registraints" },
+      { title: "Add Walk-ins", url: "/add-walkins" },
+      // { title: "Wam Backup", url: "/wellers/wam-backup" },
+      // { title: "Studies", url: "/wellers/studies" },
+      // { title: "New Wellers", url: "/wellers/new-wellers" },
+    ],
+  },
   { title: "Account Settings", url: "/update-password", icon: Settings },
 ];
