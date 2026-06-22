@@ -72,7 +72,7 @@ export const sidebarData = [
     icon: Calendar,
     children: [
       { title: "Events List", url: "/events-list" },
-      { title: "Event Registrants", url: "/event-registraints" },
+      { title: "Event Registrants", url: "/event-registrants" },
       { title: "Add Walk-ins", url: "/add-walkins" },
       // { title: "Wam Backup", url: "/wellers/wam-backup" },
       // { title: "Studies", url: "/wellers/studies" },
