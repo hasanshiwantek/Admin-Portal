@@ -37,11 +37,7 @@ interface EventState {
     cancelled_count: number;
     checked_in_count: number;
   };
-  selectedEvent: {
-    id: 0,
-    title: "",
-    status: "",
-    },
+  selectedEvent: any,
   stats: any;
   totalRecords: number;
   registrationTotal: number;
@@ -63,6 +59,7 @@ const initialState: EventState = {
     cancelled_count: 0,
     checked_in_count: 0,
   },
+  selectedEvent: {},
   totalRecords: 0,
   registrationTotal: 0,
   currentPage: 1,
