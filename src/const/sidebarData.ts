@@ -71,9 +71,9 @@ export const sidebarData = [
     title: "Events",
     icon: Calendar,
     children: [
-      { title: "Events List", url: "/events-list" },
-      { title: "Event Registrants", url: "/event-registrants" },
-      { title: "Add Walk-ins", url: "/add-walkins" },
+      { title: "Events List", url: "/events/events-list" },
+      // { title: "Event Registrants", url: "/events/event-registrants" },
+      { title: "Add Walk-ins", url: "/events/add-walkins" },
       // { title: "Wam Backup", url: "/wellers/wam-backup" },
       // { title: "Studies", url: "/wellers/studies" },
       // { title: "New Wellers", url: "/wellers/new-wellers" },

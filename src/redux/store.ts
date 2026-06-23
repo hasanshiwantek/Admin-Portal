@@ -4,6 +4,7 @@ import authReducer from './slices/authSlice'
 import configReducer from './slices/configSlice'
 import wellersReducer from "./slices/wellerSlice"
 import groupReducer from "./slices/groupSlice"
+import eventReducer from "./slices/eventSlice";
  
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     auth: authReducer,
     config: configReducer,
     wellers:wellersReducer,
-    groups:groupReducer
+    groups:groupReducer,
+    events: eventReducer,
   },
 });
 
