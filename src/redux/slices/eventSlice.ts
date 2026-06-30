@@ -81,40 +81,41 @@ const eventSlice = createSlice({
       .addCase(getEvents.fulfilled, (state, action) => {
         state.loading = false;
 
-        state.events = action.payload.data || [];
+        const events = action.payload.data;
 
-        state.totalRecords = action.payload.total || 0;
+        state.events = events.data || [];
 
-        state.currentPage =
-            action.payload.current_page || 1;
+        state.totalRecords = events.total || 0;
 
-        state.lastPage =
-            action.payload.last_page || 1;
+        state.currentPage = events.current_page || 1;
+
+        state.lastPage = events.last_page || 1;
         })
         .addCase(getEventStats.fulfilled, (state, action) => {
-        state.stats = action.payload;
+        state.stats = action.payload.data;
         })
         .addCase(
             getEventRegistrations.fulfilled,
             (state, action) => {
+                const data = action.payload.data;
+
+                state.selectedEvent = data.event;
+
                 state.registrations =
-                action.payload.registrations.data;
+                    data.registrations.data || [];
 
                 state.registrationCurrentPage =
-                action.payload.registrations.current_page;
+                    data.registrations.current_page || 1;
 
                 state.registrationLastPage =
-                action.payload.registrations.last_page;
-
-                state.selectedEvent =
-                action.payload.event;
+                    data.registrations.last_page || 1;
             }
             )
             .addCase(
             getRegistrationStats.fulfilled,
             (state, action) => {
                 state.registrationStats =
-                action.payload;
+                action.payload.data;
             }
             )
       .addCase(getEvents.rejected, (state, action) => {
@@ -200,6 +201,190 @@ export const getRegistrationStats =
         );
       }
     }
+  );
+
+  export const updateRegistration = createAsyncThunk(
+  "events/updateRegistration",
+  async (
+    {
+      registrationId,
+      data,
+    }: {
+      registrationId: number;
+      data: any;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const res = await axiosInstance.put(
+        `admin/registrations/${registrationId}`,
+        data
+      );
+
+      return res.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message ||
+          "Failed to update registration"
+      );
+    }
+  }
+);
+
+export const deleteRegistration =
+  createAsyncThunk(
+    "events/deleteRegistration",
+    async (
+      registrationId: number,
+      thunkAPI
+    ) => {
+      try {
+        const res =
+          await axiosInstance.delete(
+            `admin/registrations/${registrationId}`
+          );
+
+        return res.data;
+      } catch (err: any) {
+        return thunkAPI.rejectWithValue(
+          err.response?.data?.message ||
+            "Failed to delete registration"
+        );
+      }
+    }
+  );
+
+  export const checkInRegistration =
+  createAsyncThunk(
+    "events/checkInRegistration",
+    async (
+      registrationId: number,
+      thunkAPI
+    ) => {
+      try {
+        const res =
+          await axiosInstance.post(
+            `admin/registrations/${registrationId}/check-in`
+          );
+
+        return res.data;
+      } catch (err: any) {
+        return thunkAPI.rejectWithValue(
+          err.response?.data?.message ||
+            "Failed to check in"
+        );
+      }
+    }
+  );
+
+  export const undoCheckInRegistration =
+  createAsyncThunk(
+    "events/undoCheckInRegistration",
+    async (
+      registrationId: number,
+      thunkAPI
+    ) => {
+      try {
+        const res =
+          await axiosInstance.post(
+            `admin/registrations/${registrationId}/undo-check-in`
+          );
+
+        return res.data;
+      } catch (err: any) {
+        return thunkAPI.rejectWithValue(
+          err.response?.data?.message ||
+            "Failed to undo check in"
+        );
+      }
+    }
+  );
+
+  export const bulkCheckInRegistrations =
+  createAsyncThunk(
+    "events/bulkCheckIn",
+    async (
+      registrationIds: number[],
+      thunkAPI
+    ) => {
+      try {
+        const res =
+          await axiosInstance.post(
+            "admin/registrations/bulk-check-in",
+            {
+              registration_ids:
+                registrationIds,
+            }
+          );
+
+        return res.data;
+      } catch (err: any) {
+        return thunkAPI.rejectWithValue(
+          err.response?.data?.message ||
+            "Bulk check in failed"
+        );
+      }
+    }
+  );
+
+  export const addWalkInRegistration =
+  createAsyncThunk(
+    "events/addWalkInRegistration",
+    async (
+      {
+        eventId,
+        data,
+      }: {
+        eventId: number;
+        data: any;
+      },
+      thunkAPI
+    ) => {
+      try {
+        const res =
+          await axiosInstance.post(
+            `admin/events/${eventId}/registrations`,
+            data
+          );
+
+        return res.data;
+      } catch (err: any) {
+        return thunkAPI.rejectWithValue(
+          err.response?.data?.message ||
+            "Failed to add walk in"
+        );
+      }
+    }
+  );
+
+  export const bulkUndoCheckInRegistrations =
+  createAsyncThunk(
+      "events/bulkUndoCheckInRegistrations",
+      async (
+          registrationIds: number[],
+          thunkAPI
+      ) => {
+          try {
+
+              const res =
+                  await axiosInstance.post(
+                      "admin/registrations/bulk-undo-check-in",
+                      {
+                          registration_ids:
+                              registrationIds,
+                      }
+                  );
+
+              return res.data;
+
+          } catch (err: any) {
+
+              return thunkAPI.rejectWithValue(
+                  err.response?.data?.message
+              );
+
+          }
+      }
   );
 
 export default eventSlice.reducer;

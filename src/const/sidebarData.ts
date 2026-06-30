@@ -73,7 +73,7 @@ export const sidebarData = [
     children: [
       { title: "Events List", url: "/events/events-list" },
       // { title: "Event Registrants", url: "/events/event-registrants" },
-      { title: "Add Walk-ins", url: "/events/add-walkins" },
+      // { title: "Add Walk-ins", url: "/events/add-walkins" },
       // { title: "Wam Backup", url: "/wellers/wam-backup" },
       // { title: "Studies", url: "/wellers/studies" },
       // { title: "New Wellers", url: "/wellers/new-wellers" },
