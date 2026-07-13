@@ -5,6 +5,7 @@ import configReducer from './slices/configSlice'
 import wellersReducer from "./slices/wellerSlice"
 import groupReducer from "./slices/groupSlice"
 import eventReducer from "./slices/eventSlice";
+import childWatchReducer from "./slices/childWatchSlice";
  
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     wellers:wellersReducer,
     groups:groupReducer,
     events: eventReducer,
+    childWatch: childWatchReducer,
   },
 });
 

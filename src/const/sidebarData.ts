@@ -7,7 +7,7 @@ import {
   User,
   BarChart3,
   Settings,
-  Calendar,
+  Calendar
 } from "lucide-react";
 export const sidebarData = [
   {
@@ -79,5 +79,36 @@ export const sidebarData = [
       // { title: "New Wellers", url: "/wellers/new-wellers" },
     ],
   },
+
+  {
+  title: "Child Watch",
+  icon: User,
+  children: [
+    {
+      title: "Dashboard",
+      url: "/child-watch",
+    },
+    {
+      title: "Check In",
+      url: "/child-watch/check-in",
+    },
+    {
+      title: "Check Out",
+      url: "/child-watch/checkout",
+    },
+    {
+      title: "Parents",
+      url: "/child-watch/parents",
+    },
+    {
+      title: "Children",
+      url: "/child-watch/children",
+    },
+    {
+      title: "Reports",
+      url: "/child-watch/reports",
+    },
+  ],
+},
   { title: "Account Settings", url: "/update-password", icon: Settings },
 ];
