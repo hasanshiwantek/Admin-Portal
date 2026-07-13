@@ -1,9 +1,9 @@
 interface Props {
-    children: any[];
+    currentChildren: any[];
 }
 
 export default function CurrentChildrenTable({
-    children = [],
+    currentChildren = [],
 }: Props) {
     return (
         <div className="bg-white rounded-lg shadow">
@@ -36,7 +36,7 @@ export default function CurrentChildrenTable({
 
                 <tbody>
 
-                    {children.map((item: any) => (
+                    {currentChildren.map((item: any) => (
 
                         <tr key={item.id}>
 

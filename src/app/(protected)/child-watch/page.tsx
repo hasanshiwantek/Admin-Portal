@@ -48,7 +48,7 @@ export default function ChildWatchDashboard() {
             />
 
             <CurrentChildrenTable
-                children={
+                currentChildren={
                     dashboard?.current_children
                 }
             />

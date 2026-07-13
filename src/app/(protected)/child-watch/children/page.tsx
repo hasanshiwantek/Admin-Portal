@@ -119,7 +119,7 @@ export default function ChildrenPage() {
 
             <ChildTable
 
-                children={children}
+                childList={children}
 
                 loading={loading}
 

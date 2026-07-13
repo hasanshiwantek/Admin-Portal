@@ -2,7 +2,7 @@
 
 interface Props {
 
-    children: any[];
+    childList: any[];
 
     loading: boolean;
 
@@ -28,7 +28,7 @@ interface Props {
 
 export default function ChildTable({
 
-    children,
+    childList,
 
     loading,
 
@@ -168,9 +168,9 @@ export default function ChildTable({
 
                 <tbody>
 
-                    {children.length > 0 ? (
+                    {childList.length > 0 ? (
 
-                        children.map((child: any) => (
+                        childList.map((child: any) => (
 
                             <tr
 
