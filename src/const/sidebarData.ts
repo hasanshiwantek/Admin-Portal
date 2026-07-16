@@ -110,5 +110,16 @@ export const sidebarData = [
     },
   ],
 },
+
+  {
+    title: "Employee Management",
+    icon: Users,
+    children: [
+        {
+            title: "Employees",
+            url: "/employees",
+        },
+    ],
+  },
   { title: "Account Settings", url: "/update-password", icon: Settings },
 ];
